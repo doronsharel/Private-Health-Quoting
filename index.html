@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Private Health Insurance Quoting Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="plM_KaPF54v2DxIRoIFnRgJKR0l_CcN6OQ4KJOMEQeY" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Hide content until auth check completes to prevent flashes for signed-out users */
+    body {
+      visibility: hidden;
+    }
+  </style>
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import { isOwnerEmail } from "./access-control.js";
+    import {
+      onAuthStateChanged,
+      setPersistence,
+      browserSessionPersistence,
+      signOut,
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    // Force session-only persistence so closing the browser ends the session.
+    // If persistence was previously different, reset by signing out once.
+    try {
+      await setPersistence(auth, browserSessionPersistence);
+    } catch (err) {
+      await signOut(auth);
+      await setPersistence(auth, browserSessionPersistence);
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const ownerStatus = isOwnerEmail(user.email || "");
+      window.__PHQ_USER = {
+        uid: user.uid,
+        email: user.email || "",
+        isOwner: ownerStatus,
+      };
+      window.dispatchEvent(
+        new CustomEvent("phq:user-ready", { detail: window.__PHQ_USER })
+      );
+      document.body.dataset.isOwner = ownerStatus ? "true" : "false";
+      document.body.style.visibility = "visible";
+    });
+  </script>
+</head>
+<body>
+  <div id="stateGate" class="state-gate">
+    <div class="state-modal">
+      <h2>Select client state</h2>
+      <p class="state-modal-copy">We only load plans available in the chosen state.</p>
+      <label for="stateSelect" class="state-label">State</label>
+      <select id="stateSelect" name="stateSelect"></select>
+      <div id="stateError" class="state-error"></div>
+      <div class="state-modal-actions">
+        <button id="stateConfirm" class="state-cta" type="button">Continue to plans</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <h1 class="app-title">Private Health Insurance Quoting Tool</h1>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="sidebar-title">Carriers</h2>
+
+      <!-- Main carrier (future-proof for LifeX / PSM) -->
+      <div class="sidebar-checkbox carrier-label static-label">
+        <span>Enroll Prime</span>
+      </div>
+
+      <!-- ACUSA -->
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="acusa"
+        />
+        <span>ACUSA</span>
+      </label>
+
+      <!-- AFI Cigna -->
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="afi-phcs"
+        />
+        <span>AFI Cigna</span>
+      </label>
+
+      <!-- AFI PHCS -->
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="afi-phcs-network"
+        />
+        <span>AFI PHCS</span>
+      </label>
+
+      <!-- BMI Cigna -->
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="bmi-cigna"
+        />
+        <span>BMI Cigna</span>
+      </label>
+
+      <!-- BMI PHCS -->
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="bmi-phcs"
+        />
+        <span>BMI PHCS</span>
+      </label>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="med-performance"
+        />
+        <span>Med Performance Cigna</span>
+      </label>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="med-access"
+        />
+        <span>Med Access Cigna</span>
+      </label>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="med-max"
+        />
+        <span>Med Max First Health</span>
+      </label>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="med-value"
+        />
+        <span>Med Value First Health</span>
+      </label>
+
+      <div class="sidebar-checkbox carrier-label static-label">
+        <span>LifeX</span>
+      </div>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="lifex-cigna"
+        />
+        <span>Cigna EPO Ded</span>
+      </label>
+
+      <div class="sidebar-checkbox carrier-label static-label">
+        <span>Population Science</span>
+      </div>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="pop-bcbs"
+        />
+        <span>Gigcare - BCBS</span>
+      </label>
+
+      <label class="sidebar-checkbox">
+        <input
+          type="checkbox"
+          class="filter-subgroup"
+          value="pop-maxguard"
+        />
+        <span>MaxGuard First Health</span>
+      </label>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="content-inner">
+      <div class="content-header-row">
+        <h2 class="section-title">Plans</h2>
+        <div class="state-chip-bar">
+          <div id="stateChip" class="state-chip state-chip-empty">State required</div>
+          <button id="changeStateBtn" class="state-chip-btn" type="button">Change</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="tag-filter">
+          <label for="planTagFilter">Show</label>
+          <select id="planTagFilter">
+            <option value="all">All plans</option>
+            <option value="mm">Only MM</option>
+            <option value="vl">Only VL</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="subscriptionBanner" class="subscription-banner" hidden>
+        <p id="subscriptionBannerText" class="subscription-banner-text">
+          Checking subscription status...
+        </p>
+        <button id="startSubscriptionBtn" class="subscribe-btn" type="button">
+          Start Subscription
+        </button>
+      </div>
+
+        <!-- Cards will be injected here by script.js -->
+        <div id="plansContainer" class="plans-grid"></div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

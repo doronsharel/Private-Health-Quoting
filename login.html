@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Health Quoting · Agent Portal</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: linear-gradient(180deg, #d7e1ff, #93a8e6);
+      margin: 0;
+      padding: 0;
+      color: #0f172a;
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 28px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+      padding: 22px 22px 26px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0ea5e9, #0f766e);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 750;
+      color: #0f172a;
+    }
+
+    p.sub {
+      margin: 4px 0 14px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+      color: #0f172a;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 6px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+
+    input:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.25);
+      background: #fff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px 12px;
+      margin-top: 14px;
+      background: linear-gradient(90deg, #2563eb, #4f46e5);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter 0.15s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .split {
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .muted {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 6px;
+    }
+
+    .alert {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      background: #eef2ff;
+      color: #312e81;
+      border: 1px solid #c7d2fe;
+      display: none;
+    }
+
+    .alert.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecdd3;
+    }
+
+    .link-btn {
+      margin-top: 8px;
+      background: transparent;
+      border: none;
+      color: #2563eb;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #334155;
+    }
+
+    .meta a {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .meta a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 18px 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="brand">
+        <div class="brand-mark">PHQ</div>
+        <div>
+          <h1>Private Health Quoting</h1>
+          <p class="sub">Agent portal · internal use only</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <strong>Existing user</strong>
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" autocomplete="email" />
+
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" />
+
+        <button class="btn" id="btn-login" type="button">Log in</button>
+        <button class="link-btn" id="btn-reset-password" type="button">Forgot password?</button>
+      </div>
+
+      <div class="alert" id="msg"></div>
+      <div class="alert error" id="err"></div>
+
+      <div class="divider"></div>
+      <div class="meta">
+        <div>Need help? Email <a href="mailto:support@privatehealthquoting.com">support@privatehealthquoting.com</a> or call your admin.</div>
+        <div>Trouble receiving codes? Confirm phone format (e.g., +1XXXXXXXXXX).</div>
+        <div>
+          <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import {
+      signInWithEmailAndPassword,
+      setPersistence,
+      browserSessionPersistence,
+      sendPasswordResetEmail,
+      signOut,
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    const msgEl = document.getElementById("msg");
+    const errEl = document.getElementById("err");
+    const loginBtn = document.getElementById("btn-login");
+    const resetBtn = document.getElementById("btn-reset-password");
+
+    let persistencePromise = null;
+
+    const clearMessages = () => {
+      msgEl.style.display = "none";
+      errEl.style.display = "none";
+    };
+
+    const showMessage = (text) => {
+      msgEl.textContent = text;
+      msgEl.style.display = "block";
+    };
+
+    const showError = (text) => {
+      errEl.textContent = text;
+      errEl.style.display = "block";
+    };
+
+    const redirectHome = () => {
+      window.location.href = "/";
+    };
+
+    const ensureSessionPersistence = () => {
+      // Use session storage so a closed browser tab requires fresh login.
+      if (!persistencePromise) {
+        persistencePromise = (async () => {
+          try {
+            await setPersistence(auth, browserSessionPersistence);
+          } catch (err) {
+            await signOut(auth);
+            await setPersistence(auth, browserSessionPersistence);
+          }
+        })();
+      }
+      return persistencePromise;
+    };
+
+    // Enforce session-only persistence on load (covers users already signed in).
+    ensureSessionPersistence();
+
+    const handleLogin = async () => {
+      clearMessages();
+
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      if (!email || !password) {
+        showError("Email and password are required.");
+        return;
+      }
+
+      try {
+        await ensureSessionPersistence();
+        await signInWithEmailAndPassword(auth, email, password);
+        showMessage("Logged in. Redirecting...");
+        redirectHome();
+      } catch (err) {
+        if (err.code === "auth/user-not-found") {
+          showError("No account found for that email. Contact admin to be added.");
+        } else {
+          showError(err.message || "Unable to log in.");
+        }
+      }
+    };
+
+    const confirmMfa = async () => {
+      clearMessages();
+      if (!mfaResolver || !mfaVerificationId) {
+        showError("No verification in progress. Please log in again.");
+        return;
+      }
+      const code = document.getElementById("mfa-code").value.trim();
+      if (!code) {
+        showError("Enter the SMS code.");
+        return;
+      }
+      try {
+        const cred = PhoneAuthProvider.credential(mfaVerificationId, code);
+        const assertion = PhoneMultiFactorGenerator.assertion(cred);
+        await mfaResolver.resolveSignIn(assertion);
+        showMessage("Signed in. Redirecting...");
+        redirectHome();
+      } catch (err) {
+        showError(err.message || "Code invalid. Try again.");
+      }
+    };
+
+    const handlePasswordReset = async () => {
+      clearMessages();
+      const email = document.getElementById("login-email").value.trim();
+      if (!email) {
+        showError("Enter your email in the login form to reset your password.");
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage("Password reset email sent. Check your inbox.");
+      } catch (err) {
+        showError(err.message || "Unable to send reset email.");
+      }
+    };
+
+    loginBtn.addEventListener("click", handleLogin);
+    resetBtn.addEventListener("click", handlePasswordReset);
+  </script>
+</body>
+</html>

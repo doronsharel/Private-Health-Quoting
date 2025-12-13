@@ -1,0 +1,2582 @@
+module.exports = [
+
+  /***************
+   *  ACUSA (GUARANTEE ISSUE)
+   ***************/
+  {
+    id: "acusa-elite-health",
+    name: "Elite Health USA",
+    subgroupFilter: "acusa",
+    benefitGroup: "acusa",
+    planTag: "vl",
+    badge: "ACUSA – Guarantee Issue",
+    pdf: "pdfs/Elite Health.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
+    premiums: {
+      member: 433.38,
+      memberSpouse: 695.64,
+      memberChildren: 712.17,
+      family: 1002.13,
+    },
+    benefits: {
+      deductible: "$2,500 / $5,000",
+      oopMax: "N/A",
+      preventative: "$0",
+      primaryCare: "$50",
+      specialist: "$100",
+      emergencyRoom: "$500, then 50% coinsurance (1 visit/yr)",
+      inpatient: "Not Covered",
+    },
+  },
+  {
+    id: "med-performance-value-7350",
+    name: "Value 7350",
+    subgroupFilter: "med-performance",
+    benefitGroup: "med-performance",
+    planTag: "mm",
+    badge: "Med Performance – Cigna Network",
+    pdf: "pdfs/Med Performance.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
+    premiums: {
+      member: 621.5,
+      memberSpouse: 1116.74,
+      memberChildren: 1027.79,
+      family: 1611.99,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 621.5,
+          memberSpouse: 1116.74,
+          memberChildren: 1027.79,
+          family: 1611.99,
+        },
+      },
+      {
+        age: "30-39",
+        premiums: {
+          member: 639.29,
+          memberSpouse: 1152.32,
+          memberChildren: 1059.81,
+          family: 1665.36,
+        },
+      },
+      {
+        age: "40-49",
+        premiums: {
+          member: 661.48,
+          memberSpouse: 1196.7,
+          memberChildren: 1099.76,
+          family: 1731.94,
+        },
+      },
+      {
+        age: "50-59",
+        premiums: {
+          member: 683.3,
+          memberSpouse: 1240.33,
+          memberChildren: 1139.02,
+          family: 1797.38,
+        },
+      },
+      {
+        age: "60-64",
+        premiums: {
+          member: 707.06,
+          memberSpouse: 1287.85,
+          memberChildren: 1181.79,
+          family: 1868.66,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$7,350 / $14,700",
+      oopMax: "$7,350 / $14,700",
+      preventative: "$0",
+      primaryCare: "$50",
+      specialist: "$100",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+  {
+    id: "med-access-mvp",
+    name: "Med Access MVP",
+    subgroupFilter: "med-access",
+    benefitGroup: "med-access",
+    planTag: "vl",
+    badge: "Cigna Network",
+    pdf: "pdfs/Med Access.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
+    premiums: {
+      member: 432.84,
+      memberSpouse: 776.12,
+      memberChildren: 670.15,
+      family: 997.01,
+    },
+    ageBands: [
+      {
+        age: "18-45",
+        premiums: {
+          member: 432.84,
+          memberSpouse: 776.12,
+          memberChildren: 670.15,
+          family: 997.01,
+        },
+      },
+      {
+        age: "46-64",
+        premiums: {
+          member: 550.0,
+          memberSpouse: 878.57,
+          memberChildren: 777.14,
+          family: 1090.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$0 / $0",
+      oopMax: "$7,350 / $14,700",
+      preventative: "Covered",
+      primaryCare: "$25 (6/yr)",
+      specialist: "$50 (6/yr)",
+      emergencyRoom: "$350 (1/yr)",
+      inpatient: "$350 (3/yr)",
+    },
+  },
+  {
+    id: "med-access-mvp-plus",
+    name: "Med Access MVP+",
+    subgroupFilter: "med-access",
+    benefitGroup: "med-access",
+    planTag: "vl",
+    badge: "Cigna Network",
+    pdf: "pdfs/Med Access.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
+    premiums: {
+      member: 567.16,
+      memberSpouse: 1097.01,
+      memberChildren: 886.57,
+      family: 1455.22,
+    },
+    ageBands: [
+      {
+        age: "18-45",
+        premiums: {
+          member: 567.16,
+          memberSpouse: 1097.01,
+          memberChildren: 886.57,
+          family: 1455.22,
+        },
+      },
+      {
+        age: "46-64",
+        premiums: {
+          member: 714.29,
+          memberSpouse: 1221.43,
+          memberChildren: 1020.0,
+          family: 1564.29,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$0 / $0",
+      oopMax: "$5,000 / $10,000",
+      preventative: "Covered",
+      primaryCare: "$15 (12/yr)",
+      specialist: "$25 (12/yr)",
+      emergencyRoom: "$350 (2/yr)",
+      inpatient: "$350 (10/yr)",
+    },
+  },
+  {
+    id: "acusa-elite-health-plus",
+    name: "Elite Health PLUS USA",
+    subgroupFilter: "acusa",
+    benefitGroup: "acusa",
+    planTag: "vl",
+    badge: "ACUSA – Guarantee Issue",
+    pdf: "pdfs/Elite Health.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
+    premiums: {
+      member: 522.28,
+      memberSpouse: 858.81,
+      memberChildren: 894.89,
+      family: 1203.76,
+    },
+    benefits: {
+      deductible: "$1,000 / $2,000",
+      oopMax: "N/A",
+      preventative: "$0",
+      primaryCare: "$35",
+      specialist: "$75",
+      emergencyRoom: "$500, then 50% coinsurance (1 visit/yr)",
+      inpatient: "Not Covered",
+    },
+  },
+  {
+    id: "acusa-bronze-2",
+    name: "Bronze 2",
+    subgroupFilter: "acusa",
+    benefitGroup: "acusa",
+    planTag: "vl",
+    badge: "ACUSA – Guarantee Issue",
+    pdf: "pdfs/Bronze and Silver.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
+    premiums: {
+      member: 725.35,
+      memberSpouse: 999.24,
+      memberChildren: 932.88,
+      family: 1331.72,
+    },
+    benefits: {
+      deductible: "$0 / $0",
+      oopMax: "$10,500 / $21,000",
+      preventative: "$0",
+      primaryCare: "$25 (8/yr)",
+      specialist: "$50 (8/yr)",
+      emergencyRoom: "50% coinsurance (1 visit/yr)",
+      inpatient: "50% coinsurance (5 days, 2 surgeries)",
+    },
+  },
+  {
+    id: "acusa-silver-2",
+    name: "Silver 2",
+    subgroupFilter: "acusa",
+    benefitGroup: "acusa",
+    planTag: "vl",
+    badge: "ACUSA – Guarantee Issue",
+    pdf: "pdfs/Bronze and Silver.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
+    premiums: {
+      member: 887.96,
+      memberSpouse: 1158.04,
+      memberChildren: 1067.63,
+      family: 1536.90,
+    },
+    benefits: {
+      deductible: "$0 / $0",
+      oopMax: "$10,500 / $21,000",
+      preventative: "$0",
+      primaryCare: "$15 (10/yr)",
+      specialist: "$25 (10/yr)",
+      emergencyRoom: "50% coinsurance (1 visit/yr)",
+      inpatient: "50% coinsurance (7 days, 3 surgeries)",
+    },
+  },
+
+  /***************
+   *  MED MAX – FIRST HEALTH NETWORK
+   ***************/
+  {
+    id: "med-max-dvp-250",
+    name: "Med Max DVP 250",
+    subgroupFilter: "med-max",
+    benefitGroup: "med-max",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Max.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
+    premiums: {
+      member: 369,
+      memberSpouse: 689,
+      memberChildren: 659,
+      family: 959,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 369,
+          memberSpouse: 689,
+          memberChildren: 659,
+          family: 959,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 439,
+          memberSpouse: 759,
+          memberChildren: 739,
+          family: 999,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 469,
+          memberSpouse: 769,
+          memberChildren: 759,
+          family: 1049,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 519,
+          memberSpouse: 789,
+          memberChildren: 769,
+          family: 1079,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$250 / $500",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (after deductible, 10/yr)",
+      specialist: "$50 (after deductible, 10/yr)",
+      emergencyRoom: "$250 (after deductible, 2/yr)",
+      inpatient: "$1,000 (after deductible, 10 days/yr)",
+    },
+  },
+  {
+    id: "med-max-dvp-500",
+    name: "Med Max DVP 500",
+    subgroupFilter: "med-max",
+    benefitGroup: "med-max",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Max.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
+    premiums: {
+      member: 349,
+      memberSpouse: 669,
+      memberChildren: 639,
+      family: 909,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 349,
+          memberSpouse: 669,
+          memberChildren: 639,
+          family: 909,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 409,
+          memberSpouse: 709,
+          memberChildren: 699,
+          family: 969,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 439,
+          memberSpouse: 749,
+          memberChildren: 739,
+          family: 1019,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 489,
+          memberSpouse: 769,
+          memberChildren: 749,
+          family: 1059,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$500 / $1,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (after deductible, 10/yr)",
+      specialist: "$50 (after deductible, 10/yr)",
+      emergencyRoom: "$250 (after deductible, 2/yr)",
+      inpatient: "$1,000 (after deductible, 10 days/yr)",
+    },
+  },
+  {
+    id: "med-max-dvp-750",
+    name: "Med Max DVP 750",
+    subgroupFilter: "med-max",
+    benefitGroup: "med-max",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Max.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
+    premiums: {
+      member: 329,
+      memberSpouse: 649,
+      memberChildren: 629,
+      family: 889,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 329,
+          memberSpouse: 649,
+          memberChildren: 629,
+          family: 889,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 389,
+          memberSpouse: 679,
+          memberChildren: 669,
+          family: 939,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 419,
+          memberSpouse: 719,
+          memberChildren: 709,
+          family: 999,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 469,
+          memberSpouse: 749,
+          memberChildren: 729,
+          family: 1019,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$750 / $1,500",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (after deductible, 10/yr)",
+      specialist: "$50 (after deductible, 10/yr)",
+      emergencyRoom: "$250 (after deductible, 2/yr)",
+      inpatient: "$1,000 (after deductible, 10 days/yr)",
+    },
+  },
+  {
+    id: "med-max-dvp-1000",
+    name: "Med Max DVP 1000",
+    subgroupFilter: "med-max",
+    benefitGroup: "med-max",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Max.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
+    premiums: {
+      member: 309,
+      memberSpouse: 629,
+      memberChildren: 619,
+      family: 869,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 309,
+          memberSpouse: 629,
+          memberChildren: 619,
+          family: 869,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 369,
+          memberSpouse: 659,
+          memberChildren: 649,
+          family: 909,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 399,
+          memberSpouse: 699,
+          memberChildren: 689,
+          family: 979,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 449,
+          memberSpouse: 729,
+          memberChildren: 719,
+          family: 999,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,000 / $2,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (after deductible, 10/yr)",
+      specialist: "$50 (after deductible, 10/yr)",
+      emergencyRoom: "$250 (after deductible, 2/yr)",
+      inpatient: "$1,000 (after deductible, 10 days/yr)",
+    },
+  },
+  {
+    id: "med-max-dvp-1500",
+    name: "Med Max DVP 1500",
+    subgroupFilter: "med-max",
+    benefitGroup: "med-max",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Max.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
+    premiums: {
+      member: 289,
+      memberSpouse: 609,
+      memberChildren: 599,
+      family: 849,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 289,
+          memberSpouse: 609,
+          memberChildren: 599,
+          family: 849,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 339,
+          memberSpouse: 639,
+          memberChildren: 623,
+          family: 889,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 379,
+          memberSpouse: 689,
+          memberChildren: 669,
+          family: 959,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 429,
+          memberSpouse: 719,
+          memberChildren: 679,
+          family: 979,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,500 / $3,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (after deductible, 10/yr)",
+      specialist: "$50 (after deductible, 10/yr)",
+      emergencyRoom: "$250 (after deductible, 2/yr)",
+      inpatient: "$1,000 (after deductible, 10 days/yr)",
+    },
+  },
+
+  /***************
+   *  MED VALUE – FIRST HEALTH NETWORK
+   ***************/
+  {
+    id: "med-value-hdvp-2000",
+    name: "Med Value HDVP 2000",
+    subgroupFilter: "med-value",
+    benefitGroup: "med-value",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Value 2000.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
+    premiums: {
+      member: 319.99,
+      memberSpouse: 639.99,
+      memberChildren: 629.99,
+      family: 879.99,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 319.99,
+          memberSpouse: 639.99,
+          memberChildren: 629.99,
+          family: 879.99,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 379.99,
+          memberSpouse: 679.99,
+          memberChildren: 669.99,
+          family: 939.99,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 409.99,
+          memberSpouse: 719.99,
+          memberChildren: 709.99,
+          family: 989.99,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 459.99,
+          memberSpouse: 739.99,
+          memberChildren: 719.99,
+          family: 1029.99,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$2,000 / $4,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (4 after deductible, 2 before; 6/yr total)",
+      specialist: "$50 (4 after deductible, 2 before; 6/yr total)",
+      emergencyRoom: "$500 (after deductible, 1/yr)",
+      inpatient: "$1,000 (after deductible, 5 days/yr)",
+    },
+  },
+  {
+    id: "med-value-hdvp-4000",
+    name: "Med Value HDVP 4000",
+    subgroupFilter: "med-value",
+    benefitGroup: "med-value",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Value 4000.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
+    premiums: {
+      member: 279.99,
+      memberSpouse: 599.99,
+      memberChildren: 589.99,
+      family: 839.99,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 279.99,
+          memberSpouse: 599.99,
+          memberChildren: 589.99,
+          family: 839.99,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 339.99,
+          memberSpouse: 629.99,
+          memberChildren: 619.99,
+          family: 879.99,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 369.99,
+          memberSpouse: 669.99,
+          memberChildren: 659.99,
+          family: 949.99,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 419.99,
+          memberSpouse: 699.99,
+          memberChildren: 689.99,
+          family: 969.99,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$4,000 / $8,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (4 after deductible, 2 before; 6/yr total)",
+      specialist: "$50 (4 after deductible, 2 before; 6/yr total)",
+      emergencyRoom: "$500 (after deductible, 1/yr)",
+      inpatient: "$1,000 (after deductible, 5 days/yr)",
+    },
+  },
+  {
+    id: "med-value-hdvp-6000",
+    name: "Med Value HDVP 6000",
+    subgroupFilter: "med-value",
+    benefitGroup: "med-value",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/Med Value 6000.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
+    premiums: {
+      member: 259.99,
+      memberSpouse: 579.99,
+      memberChildren: 569.99,
+      family: 819.99,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 259.99,
+          memberSpouse: 579.99,
+          memberChildren: 569.99,
+          family: 819.99,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 294.99,
+          memberSpouse: 609.99,
+          memberChildren: 593.99,
+          family: 859.99,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 349.99,
+          memberSpouse: 659.99,
+          memberChildren: 639.99,
+          family: 929.99,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 399.99,
+          memberSpouse: 689.99,
+          memberChildren: 649.99,
+          family: 949.99,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$6,000 / $12,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "$0",
+      primaryCare: "$50 (4 after deductible, 2 before; 6/yr total)",
+      specialist: "$50 (4 after deductible, 2 before; 6/yr total)",
+      emergencyRoom: "$500 (after deductible, 1/yr)",
+      inpatient: "$1,000 (after deductible, 5 days/yr)",
+    },
+  },
+
+  /***************
+   *  AFI – PHCS NETWORK
+   ***************/
+  {
+    id: "afi-hsa-8050",
+    name: "HSA 8050",
+    subgroupFilter: "afi-phcs",
+    benefitGroup: "afi-phcs",
+    planTag: "mm",
+    badge: "AFI – Cigna Network",
+    pdf: "pdfs/AFI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
+    premiums: {
+      member: 636.58,
+      memberSpouse: 994.01,
+      memberChildren: 1096.14,
+      family: 1351.15,
+    },
+    benefits: {
+      deductible: "$8,050 / $16,100",
+      oopMax: "$8,050 / $16,100",
+      preventative: "$0",
+      primaryCare: "Deductible + 0%",
+      specialist: "Deductible + 0%",
+      emergencyRoom: "Deductible + 0%",
+      inpatient: "Deductible + 0%",
+    },
+  },
+  {
+    id: "afi-hsa-3500",
+    name: "HSA 3500",
+    subgroupFilter: "afi-phcs",
+    benefitGroup: "afi-phcs",
+    planTag: "mm",
+    badge: "AFI – Cigna Network",
+    pdf: "pdfs/AFI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
+    premiums: {
+      member: 736.81,
+      memberSpouse: 1358.57,
+      memberChildren: 1240.78,
+      family: 1856.5,
+    },
+    benefits: {
+      deductible: "$3,500 / $7,000",
+      oopMax: "$7,000 / $14,000",
+      preventative: "$0",
+      primaryCare: "Deductible + 30%",
+      specialist: "Deductible + 30%",
+      emergencyRoom: "Deductible + 30%",
+      inpatient: "Deductible + 30%",
+    },
+  },
+  {
+    id: "afi-copay-4500",
+    name: "COPAY 4500",
+    subgroupFilter: "afi-phcs",
+    benefitGroup: "afi-phcs",
+    planTag: "mm",
+    badge: "AFI – Cigna Network",
+    pdf: "pdfs/AFI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
+    premiums: {
+      member: 773.62,
+      memberSpouse: 1440.73,
+      memberChildren: 1324.36,
+      family: 1892.97,
+    },
+    benefits: {
+      deductible: "$4,500 / $9,000",
+      oopMax: "$8,150 / $16,300",
+      preventative: "$0",
+      primaryCare: "$40",
+      specialist: "$75",
+      emergencyRoom: "Deductible + 30%",
+      inpatient: "Deductible + 30%",
+    },
+  },
+  {
+    id: "afi-copay-3500",
+    name: "COPAY 3500",
+    subgroupFilter: "afi-phcs",
+    benefitGroup: "afi-phcs",
+    planTag: "mm",
+    badge: "AFI – Cigna Network",
+    pdf: "pdfs/AFI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
+    premiums: {
+      member: 866.44,
+      memberSpouse: 1511.45,
+      memberChildren: 1478.43,
+      family: 2147.72,
+    },
+    benefits: {
+      deductible: "$3,500 / $7,000",
+      oopMax: "$7,350 / $14,700",
+      preventative: "$0",
+      primaryCare: "$40",
+      specialist: "$75",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+
+  /***************
+   *  AFI – PHCS NETWORK (NEW SUBGROUP)
+   ***************/
+  {
+    id: "afi-hsa-8050-phcs",
+    name: "HSA 8050",
+    subgroupFilter: "afi-phcs-network",
+    benefitGroup: "afi-phcs-network",
+    planTag: "mm",
+    badge: "AFI – PHCS Network",
+    pdf: "pdfs/AFI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
+    premiums: {
+      member: 585.58,
+      memberSpouse: 943.01,
+      memberChildren: 1045.14,
+      family: 1300.15,
+    },
+    benefits: {
+      deductible: "$8,050 / $16,100",
+      oopMax: "$8,050 / $16,100",
+      preventative: "$0",
+      primaryCare: "Deductible + 0%",
+      specialist: "Deductible + 0%",
+      emergencyRoom: "Deductible + 0%",
+      inpatient: "Deductible + 0%",
+    },
+  },
+  {
+    id: "afi-hsa-3500-phcs",
+    name: "HSA 3500",
+    subgroupFilter: "afi-phcs-network",
+    benefitGroup: "afi-phcs-network",
+    planTag: "mm",
+    badge: "AFI – PHCS Network",
+    pdf: "pdfs/AFI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
+    premiums: {
+      member: 685.81,
+      memberSpouse: 1307.57,
+      memberChildren: 1189.78,
+      family: 1805.5,
+    },
+    benefits: {
+      deductible: "$3,500 / $7,000",
+      oopMax: "$7,000 / $14,000",
+      preventative: "$0",
+      primaryCare: "Deductible + 30%",
+      specialist: "Deductible + 30%",
+      emergencyRoom: "Deductible + 30%",
+      inpatient: "Deductible + 30%",
+    },
+  },
+  {
+    id: "afi-copay-4500-phcs",
+    name: "COPAY 4500",
+    subgroupFilter: "afi-phcs-network",
+    benefitGroup: "afi-phcs-network",
+    planTag: "mm",
+    badge: "AFI – PHCS Network",
+    pdf: "pdfs/AFI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
+    premiums: {
+      member: 722.62,
+      memberSpouse: 1389.73,
+      memberChildren: 1273.36,
+      family: 1841.97,
+    },
+    benefits: {
+      deductible: "$4,500 / $9,000",
+      oopMax: "$8,150 / $16,300",
+      preventative: "$0",
+      primaryCare: "$40",
+      specialist: "$75",
+      emergencyRoom: "Deductible + 30%",
+      inpatient: "Deductible + 30%",
+    },
+  },
+  {
+    id: "afi-copay-3500-phcs",
+    name: "COPAY 3500",
+    subgroupFilter: "afi-phcs-network",
+    benefitGroup: "afi-phcs-network",
+    planTag: "mm",
+    badge: "AFI – PHCS Network",
+    pdf: "pdfs/AFI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
+    premiums: {
+      member: 815.44,
+      memberSpouse: 1460.45,
+      memberChildren: 1427.43,
+      family: 2096.72,
+    },
+    benefits: {
+      deductible: "$3,500 / $7,000",
+      oopMax: "$7,350 / $14,700",
+      preventative: "$0",
+      primaryCare: "$40",
+      specialist: "$75",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+
+  /***************
+   *  MED PERFORMANCE – CIGNA NETWORK
+   ***************/
+  {
+    id: "med-performance-classic-3500",
+    name: "Classic 3500",
+    subgroupFilter: "med-performance",
+    benefitGroup: "med-performance",
+    planTag: "mm",
+    badge: "Med Performance – Cigna Network",
+    pdf: "pdfs/Med Performance.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
+    premiums: {
+      member: 731.44,
+      memberSpouse: 1332.82,
+      memberChildren: 1222.64,
+      family: 1934.21,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 731.44,
+          memberSpouse: 1332.82,
+          memberChildren: 1222.64,
+          family: 1934.21,
+        },
+      },
+      {
+        age: "30-39",
+        premiums: {
+          member: 753.47,
+          memberSpouse: 1376.89,
+          memberChildren: 1262.31,
+          family: 2000.32,
+        },
+      },
+      {
+        age: "40-49",
+        premiums: {
+          member: 780.96,
+          memberSpouse: 1431.87,
+          memberChildren: 1311.79,
+          family: 2082.79,
+        },
+      },
+      {
+        age: "50-59",
+        premiums: {
+          member: 807.98,
+          memberSpouse: 1485.91,
+          memberChildren: 1360.42,
+          family: 2163.84,
+        },
+      },
+      {
+        age: "60-64",
+        premiums: {
+          member: 837.42,
+          memberSpouse: 1544.77,
+          memberChildren: 1413.4,
+          family: 2252.14,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$3,500 / $7,000",
+      oopMax: "$7,350 / $14,700",
+      preventative: "$0",
+      primaryCare: "$45",
+      specialist: "$90",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+  {
+    id: "med-performance-classic-5000",
+    name: "Classic 5000",
+    subgroupFilter: "med-performance",
+    benefitGroup: "med-performance",
+    planTag: "mm",
+    badge: "Med Performance – Cigna Network",
+    pdf: "pdfs/Med Performance.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
+    premiums: {
+      member: 694.11,
+      memberSpouse: 1259.45,
+      memberChildren: 1156.48,
+      family: 1824.8,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 694.11,
+          memberSpouse: 1259.45,
+          memberChildren: 1156.48,
+          family: 1824.8,
+        },
+      },
+      {
+        age: "30-39",
+        premiums: {
+          member: 714.7,
+          memberSpouse: 1300.64,
+          memberChildren: 1193.55,
+          family: 1886.59,
+        },
+      },
+      {
+        age: "40-49",
+        premiums: {
+          member: 740.4,
+          memberSpouse: 1352.02,
+          memberChildren: 1239.8,
+          family: 1963.66,
+        },
+      },
+      {
+        age: "50-59",
+        premiums: {
+          member: 765.65,
+          memberSpouse: 1402.52,
+          memberChildren: 1285.25,
+          family: 2039.41,
+        },
+      },
+      {
+        age: "60-64",
+        premiums: {
+          member: 793.15,
+          memberSpouse: 1457.54,
+          memberChildren: 1334.76,
+          family: 2121.94,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$7,350 / $14,700",
+      preventative: "$0",
+      primaryCare: "$45",
+      specialist: "$90",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+  {
+    id: "med-performance-hsa-5000",
+    name: "HSA 5000",
+    subgroupFilter: "med-performance",
+    benefitGroup: "med-performance",
+    planTag: "mm",
+    badge: "Med Performance – Cigna Network",
+    pdf: "pdfs/Med Performance.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
+    premiums: {
+      member: 644.53,
+      memberSpouse: 1162.01,
+      memberChildren: 1068.61,
+      family: 1679.49,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 644.53,
+          memberSpouse: 1162.01,
+          memberChildren: 1068.61,
+          family: 1679.49,
+        },
+      },
+      {
+        age: "30-39",
+        premiums: {
+          member: 663.21,
+          memberSpouse: 1199.37,
+          memberChildren: 1102.24,
+          family: 1753.53,
+        },
+      },
+      {
+        age: "40-49",
+        premiums: {
+          member: 686.51,
+          memberSpouse: 1245.97,
+          memberChildren: 1144.18,
+          family: 1805.44,
+        },
+      },
+      {
+        age: "50-59",
+        premiums: {
+          member: 709.42,
+          memberSpouse: 1291.78,
+          memberChildren: 1185.41,
+          family: 1874.15,
+        },
+      },
+      {
+        age: "60-64",
+        premiums: {
+          member: 734.37,
+          memberSpouse: 1341.68,
+          memberChildren: 1230.32,
+          family: 1949.09,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$6,550 / $13,100",
+      preventative: "$0",
+      primaryCare: "20%",
+      specialist: "20%",
+      emergencyRoom: "Deductible + 20%",
+      inpatient: "Deductible + 20%",
+    },
+  },
+
+  /***************
+   *  BMI ESSENTIALS – CIGNA
+   ***************/
+  {
+    id: "bmi-ess-7500-cigna",
+    name: "ESSENTIALS 7500",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI Essentials – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 433.48,
+      memberSpouse: 677.28,
+      memberChildren: 626.28,
+      family: 891.48,
+    },
+    benefits: {
+      deductible: "$7,500 / $15,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 (2/yr)",
+      specialist: "$75 (2/yr)",
+      emergencyRoom: "Deductible + 50% (1/yr)",
+      inpatient: "Deductible + 50%",
+    },
+  },
+  {
+    id: "bmi-ess-5000-cigna",
+    name: "ESSENTIALS 5000",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI Essentials – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 501.48,
+      memberSpouse: 745.28,
+      memberChildren: 694.28,
+      family: 959.48,
+    },
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Included",
+      primaryCare: "$25 (2/yr)",
+      specialist: "$50 (2/yr)",
+      emergencyRoom: "Deductible + 50%",
+      inpatient: "Deductible + 50%",
+    },
+  },
+  {
+    id: "bmi-ess-2500-cigna",
+    name: "ESSENTIALS 2500",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI Essentials – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 582.08,
+      memberSpouse: 786.08,
+      memberChildren: 735.08,
+      family: 1041.08,
+    },
+    benefits: {
+      deductible: "$2,500 / $5,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$25 (4/yr)",
+      specialist: "$50 (4/yr)",
+      emergencyRoom: "Deductible + 50% (1/yr)",
+      inpatient: "Deductible + 50% (5/yr)",
+    },
+  },
+
+  /***************
+   *  BMI MVP – CIGNA
+   ***************/
+  {
+    id: "bmi-mvp-basic-cigna",
+    name: "MVP BASIC",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI MVP – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 651.51,
+      memberSpouse: 993.24,
+      memberChildren: 886.8,
+      family: 1228.54,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$8,700 / $17,400",
+      preventative: "Covered",
+      primaryCare: "$25 (8/yr)",
+      specialist: "$50 (8/yr)",
+      emergencyRoom: "$350 (1/yr)",
+      inpatient: "$350 (5 days)",
+    },
+  },
+  {
+    id: "bmi-mvp-value-cigna",
+    name: "MVP VALUE",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI MVP – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 712.12,
+      memberSpouse: 1126.6,
+      memberChildren: 995.93,
+      family: 1410.39,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$5,000 / $10,000",
+      preventative: "Covered",
+      primaryCare: "$15 (10/yr)",
+      specialist: "$25 (10/yr)",
+      emergencyRoom: "$350 (1/yr)",
+      inpatient: "$350 (7 days)",
+    },
+  },
+  {
+    id: "bmi-mvp-adv-cigna",
+    name: "MVP ADVANTAGE",
+    subgroupFilter: "bmi-cigna",
+    benefitGroup: "bmi-cigna",
+    planTag: "vl",
+    badge: "BMI MVP – Cigna Network",
+    pdf: "pdfs/BMI Cigna.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
+    premiums: {
+      member: 759.45,
+      memberSpouse: 1206.1,
+      memberChildren: 1057.21,
+      family: 1503.86,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$5,000 / $10,000",
+      preventative: "Covered",
+      primaryCare: "$15 (12/yr)",
+      specialist: "$25 (12/yr)",
+      emergencyRoom: "$350 (2/yr)",
+      inpatient: "$350 (10 days)",
+    },
+  },
+
+  /***************
+   *  BMI MEC – PHCS
+   ***************/
+  {
+    id: "bmi-mec-classic",
+    name: "MEC Classic",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI MEC – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 127.5,
+      memberSpouse: 181.9,
+      memberChildren: 181.9,
+      family: 231.67,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "N/A",
+      preventative: "Covered",
+      primaryCare: "Not Covered",
+      specialist: "Not Covered",
+      emergencyRoom: "Not Covered",
+      inpatient: "Not Covered",
+    },
+  },
+  {
+    id: "bmi-mec-choice",
+    name: "MEC Choice",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI MEC – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 209.1,
+      memberSpouse: 290.7,
+      memberChildren: 290.7,
+      family: 399.5,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$8,700",
+      preventative: "Covered",
+      primaryCare: "$35",
+      specialist: "$75",
+      emergencyRoom: "Not Covered",
+      inpatient: "Not Covered",
+    },
+  },
+
+  /***************
+   *  BMI ESSENTIALS – PHCS
+   ***************/
+  {
+    id: "bmi-dvp-ess-7500",
+    name: "DVP ESSENTIALS 7500",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI Essentials – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 372.28,
+      memberSpouse: 616.08,
+      memberChildren: 565.08,
+      family: 830.28,
+    },
+    benefits: {
+      deductible: "$7,500 / $15,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 (2/yr)",
+      specialist: "$75 (2/yr)",
+      emergencyRoom: "Deductible + 50% (5 days)",
+      inpatient: "Deductible + 50% (1/yr)",
+    },
+  },
+  {
+    id: "bmi-dvp-ess-5000",
+    name: "DVP ESSENTIALS 5000",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI Essentials – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 433.48,
+      memberSpouse: 677.28,
+      memberChildren: 626.28,
+      family: 891.48,
+    },
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$25 (2/yr)",
+      specialist: "$50 (2/yr)",
+      emergencyRoom: "Deductible + 50% (5 days)",
+      inpatient: "Deductible + 50% (1/yr)",
+    },
+  },
+  {
+    id: "bmi-dvs-ess-2500",
+    name: "DVS ESSENTIALS 2500",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI Essentials – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 514.08,
+      memberSpouse: 718.08,
+      memberChildren: 667.08,
+      family: 973.08,
+    },
+    benefits: {
+      deductible: "$2,500 / $5,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$25 (4/yr)",
+      specialist: "$50 (4/yr)",
+      emergencyRoom: "Deductible + 50% (5 days)",
+      inpatient: "Deductible + 50% (1/yr)",
+    },
+  },
+
+  /***************
+   *  BMI MVP – PHCS
+   ***************/
+  {
+    id: "bmi-mvp-basic-phcs",
+    name: "MVP BASIC",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI MVP – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 583.51,
+      memberSpouse: 925.24,
+      memberChildren: 818.8,
+      family: 1160.54,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$8,700 / $17,400",
+      preventative: "Covered",
+      primaryCare: "$25 (8/yr)",
+      specialist: "$50 (8/yr)",
+      emergencyRoom: "$350 (5 days)",
+      inpatient: "$350 (1/yr)",
+    },
+  },
+  {
+    id: "bmi-mvp-value-phcs",
+    name: "MVP VALUE",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI MVP – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 644.12,
+      memberSpouse: 1058.6,
+      memberChildren: 927.93,
+      family: 1342.39,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$5,000 / $10,000",
+      preventative: "Covered",
+      primaryCare: "$25 (10/yr)",
+      specialist: "$50 (10/yr)",
+      emergencyRoom: "$350 (7 days)",
+      inpatient: "$350 (1/yr)",
+    },
+  },
+  {
+    id: "bmi-mvp-adv-phcs",
+    name: "MVP ADVANTAGE",
+    subgroupFilter: "bmi-phcs",
+    benefitGroup: "bmi-phcs",
+    planTag: "vl",
+    badge: "BMI MVP – PHCS Network",
+    pdf: "pdfs/BMI PHCS.pdf",
+    enrollUrl:
+      "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
+    premiums: {
+      member: 691.45,
+      memberSpouse: 1138.1,
+      memberChildren: 989.21,
+      family: 1435.86,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "$5,000 / $10,000",
+      preventative: "Covered",
+      primaryCare: "$25 (12/yr)",
+      specialist: "$50 (12/yr)",
+      emergencyRoom: "$350 (10 days)",
+      inpatient: "$350 (2/yr)",
+    },
+  },
+
+  /***************
+   *  LIFEX – CIGNA EPO DEDUCTIBLE
+   ***************/
+  {
+    id: "lifex-cigna-epo-500",
+    name: "Cigna EPO 500",
+    subgroupFilter: "lifex-cigna",
+    benefitGroup: "lifex-cigna-epo",
+    carrier: "lifex",
+    planTag: "mm",
+    badge: "Cigna Network",
+    pdf: "pdfs/LifeX Cigna EPO 500.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
+    premiums: {
+      member: 429.0,
+      memberSpouse: 789.0,
+      memberChildren: 779.0,
+      family: 1059.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 429.0,
+          memberSpouse: 789.0,
+          memberChildren: 779.0,
+          family: 1059.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 489.0,
+          memberSpouse: 829.0,
+          memberChildren: 819.0,
+          family: 1119.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 519.0,
+          memberSpouse: 869.0,
+          memberChildren: 859.0,
+          family: 1169.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 569.0,
+          memberSpouse: 889.0,
+          memberChildren: 869.0,
+          family: 1209.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$500 / $1,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 after deductible",
+      specialist: "$50 after deductible",
+      emergencyRoom: "$1,000 after deductible",
+      inpatient: "$2,500 after deductible",
+    },
+  },
+  {
+    id: "lifex-cigna-epo-750",
+    name: "Cigna EPO 750",
+    subgroupFilter: "lifex-cigna",
+    benefitGroup: "lifex-cigna-epo",
+    carrier: "lifex",
+    planTag: "mm",
+    badge: "Cigna Network",
+    pdf: "pdfs/LifeX Cigna EPO 750.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
+    premiums: {
+      member: 409.0,
+      memberSpouse: 769.0,
+      memberChildren: 759.0,
+      family: 1039.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 409.0,
+          memberSpouse: 769.0,
+          memberChildren: 759.0,
+          family: 1039.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 469.0,
+          memberSpouse: 799.0,
+          memberChildren: 789.0,
+          family: 1089.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 499.0,
+          memberSpouse: 839.0,
+          memberChildren: 829.0,
+          family: 1149.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 549.0,
+          memberSpouse: 869.0,
+          memberChildren: 849.0,
+          family: 1169.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$750 / $1,500",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 after deductible",
+      specialist: "$50 after deductible",
+      emergencyRoom: "$1,000 after deductible",
+      inpatient: "$2,500 after deductible",
+    },
+  },
+  {
+    id: "lifex-cigna-epo-1000",
+    name: "Cigna EPO 1000",
+    subgroupFilter: "lifex-cigna",
+    benefitGroup: "lifex-cigna-epo",
+    carrier: "lifex",
+    planTag: "mm",
+    badge: "Cigna Network",
+    pdf: "pdfs/LifeX Cigna EPO 1000.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
+    premiums: {
+      member: 389.0,
+      memberSpouse: 749.0,
+      memberChildren: 739.0,
+      family: 1019.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 389.0,
+          memberSpouse: 749.0,
+          memberChildren: 739.0,
+          family: 1019.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 449.0,
+          memberSpouse: 779.0,
+          memberChildren: 769.0,
+          family: 1059.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 479.0,
+          memberSpouse: 819.0,
+          memberChildren: 809.0,
+          family: 1129.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 529.0,
+          memberSpouse: 849.0,
+          memberChildren: 839.0,
+          family: 1149.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,000 / $2,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 after deductible",
+      specialist: "$50 after deductible",
+      emergencyRoom: "$1,000 after deductible",
+      inpatient: "$2,500 after deductible",
+    },
+  },
+  {
+    id: "lifex-cigna-epo-1500",
+    name: "Cigna EPO 1500",
+    subgroupFilter: "lifex-cigna",
+    benefitGroup: "lifex-cigna-epo",
+    carrier: "lifex",
+    planTag: "mm",
+    badge: "Cigna Network",
+    pdf: "pdfs/LifeX Cigna EPO 1500.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
+    premiums: {
+      member: 369.0,
+      memberSpouse: 729.0,
+      memberChildren: 719.0,
+      family: 999.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 369.0,
+          memberSpouse: 729.0,
+          memberChildren: 719.0,
+          family: 999.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 419.0,
+          memberSpouse: 759.0,
+          memberChildren: 743.0,
+          family: 1039.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 459.0,
+          memberSpouse: 809.0,
+          memberChildren: 789.0,
+          family: 1109.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 509.0,
+          memberSpouse: 839.0,
+          memberChildren: 799.0,
+          family: 1129.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,500 / $3,000",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$50 after deductible",
+      specialist: "$50 after deductible",
+      emergencyRoom: "$1,000 after deductible",
+      inpatient: "$2,500 after deductible",
+    },
+  },
+  {
+    id: "pop-bcbs-gigcare-1500",
+    name: "GigCare 1500 PPO",
+    subgroupFilter: "pop-bcbs",
+    benefitGroup: "pop-bcbs-gigcare",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "Blue Cross Blue Shield Network",
+    pdf: "pdfs/GigCare 1500.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 881.05,
+      memberSpouse: 1631.59,
+      memberChildren: 1483.52,
+      family: 2387.67,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 881.05,
+          memberSpouse: 1631.59,
+          memberChildren: 1483.52,
+          family: 2387.67,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 910.77,
+          memberSpouse: 1691.03,
+          memberChildren: 1537.02,
+          family: 2476.83,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 955.39,
+          memberSpouse: 1780.7,
+          memberChildren: 1617.68,
+          family: 2611.55,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 1068.28,
+          memberSpouse: 2006.49,
+          memberChildren: 1820.89,
+          family: 2950.24,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,500 / $3,000",
+      oopMax: "$8,500 / $17,000",
+      preventative: "$0",
+      primaryCare: "$25",
+      specialist: "$40",
+      emergencyRoom: "70/30 after Deductible",
+      inpatient: "70/30 after Deductible",
+    },
+  },
+  {
+    id: "pop-bcbs-gigcare-2500",
+    name: "GigCare 2500 PPO",
+    subgroupFilter: "pop-bcbs",
+    benefitGroup: "pop-bcbs-gigcare",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "Blue Cross Blue Shield Network",
+    pdf: "pdfs/GigCare 2500.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 821.97,
+      memberSpouse: 1513.43,
+      memberChildren: 1377.18,
+      family: 2210.43,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 821.97,
+          memberSpouse: 1513.43,
+          memberChildren: 1377.18,
+          family: 2210.43,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 849.32,
+          memberSpouse: 1568.14,
+          memberChildren: 1426.42,
+          family: 2292.5,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 890.36,
+          memberSpouse: 1650.65,
+          memberChildren: 1500.63,
+          family: 2416.48,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 994.28,
+          memberSpouse: 1858.48,
+          memberChildren: 1687.68,
+          family: 2728.23,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$2,500 / $5,000",
+      oopMax: "$8,500 / $17,000",
+      preventative: "Covered",
+      primaryCare: "$25",
+      specialist: "$40",
+      emergencyRoom: "70/30 after deductible",
+      inpatient: "70/30 after deductible",
+    },
+  },
+  {
+    id: "pop-bcbs-gigcare-5000",
+    name: "GigCare 5000 EPO",
+    subgroupFilter: "pop-bcbs",
+    benefitGroup: "pop-bcbs-gigcare",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "Blue Cross Blue Shield Network",
+    pdf: "pdfs/GigCare 5000.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 692.17,
+      memberSpouse: 1254.27,
+      memberChildren: 1143.89,
+      family: 1821.91,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 692.17,
+          memberSpouse: 1254.27,
+          memberChildren: 1143.89,
+          family: 1821.91,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 714.35,
+          memberSpouse: 1298.64,
+          memberChildren: 1183.82,
+          family: 1888.46,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 742.02,
+          memberSpouse: 1353.98,
+          memberChildren: 1233.63,
+          family: 1971.47,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 798.85,
+          memberSpouse: 1467.63,
+          memberChildren: 1335.91,
+          family: 2141.95,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$7,350 / $14,700",
+      preventative: "Covered",
+      primaryCare: "$25",
+      specialist: "$40",
+      emergencyRoom: "70/30 after deductible",
+      inpatient: "70/30 after deductible",
+    },
+  },
+  {
+    id: "pop-bcbs-gigcare-7350",
+    name: "GigCare 7350 EPO",
+    subgroupFilter: "pop-bcbs",
+    benefitGroup: "pop-bcbs-gigcare",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "Blue Cross Blue Shield Network",
+    pdf: "pdfs/GigCare 7350.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 600.92,
+      memberSpouse: 1071.77,
+      memberChildren: 979.64,
+      family: 1548.16,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 600.92,
+          memberSpouse: 1071.77,
+          memberChildren: 979.64,
+          family: 1548.16,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 619.45,
+          memberSpouse: 1108.83,
+          memberChildren: 1013.0,
+          family: 1603.75,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 642.57,
+          memberSpouse: 1155.07,
+          memberChildren: 1054.61,
+          family: 1673.11,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 690.04,
+          memberSpouse: 1250.02,
+          memberChildren: 1140.06,
+          family: 1815.53,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$7,350 / $14,700",
+      oopMax: "$9,200 / $18,400",
+      preventative: "Covered",
+      primaryCare: "$25",
+      specialist: "$40",
+      emergencyRoom: "70/30 after deductible",
+      inpatient: "70/30 after deductible",
+    },
+  },
+  {
+    id: "pop-bcbs-gigcare-hsa-5000",
+    name: "GigCare 5000 HSA/PPO",
+    subgroupFilter: "pop-bcbs",
+    benefitGroup: "pop-bcbs-gigcare",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "Blue Cross Blue Shield Network",
+    pdf: "pdfs/GigCare HSA.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 631.37,
+      memberSpouse: 1131.58,
+      memberChildren: 1033.58,
+      family: 1637.32,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 631.37,
+          memberSpouse: 1131.58,
+          memberChildren: 1033.58,
+          family: 1637.32,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 651.07,
+          memberSpouse: 1170.99,
+          memberChildren: 1069.05,
+          family: 1696.44,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 675.66,
+          memberSpouse: 1220.16,
+          memberChildren: 1113.3,
+          family: 1770.19,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 726.14,
+          memberSpouse: 1321.12,
+          memberChildren: 1204.17,
+          family: 1921.64,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$5,000 / $10,000",
+      oopMax: "$8,500 / $17,000",
+      preventative: "Covered",
+      primaryCare: "70/30 after deductible",
+      specialist: "70/30 after deductible",
+      emergencyRoom: "70/30 after deductible",
+      inpatient: "70/30 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-300",
+    name: "MaxGuard EPO 300",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 329.0,
+      memberSpouse: 619.0,
+      memberChildren: 599.0,
+      family: 849.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 329.0,
+          memberSpouse: 619.0,
+          memberChildren: 599.0,
+          family: 849.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 379.0,
+          memberSpouse: 679.0,
+          memberChildren: 649.0,
+          family: 909.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 409.0,
+          memberSpouse: 699.0,
+          memberChildren: 679.0,
+          family: 929.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 449.0,
+          memberSpouse: 709.0,
+          memberChildren: 689.0,
+          family: 949.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$300 / $600",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-600",
+    name: "MaxGuard EPO 600",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 309.0,
+      memberSpouse: 599.0,
+      memberChildren: 579.0,
+      family: 809.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 309.0,
+          memberSpouse: 599.0,
+          memberChildren: 579.0,
+          family: 809.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 349.0,
+          memberSpouse: 639.0,
+          memberChildren: 619.0,
+          family: 879.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 379.0,
+          memberSpouse: 679.0,
+          memberChildren: 649.0,
+          family: 899.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 429.0,
+          memberSpouse: 689.0,
+          memberChildren: 659.0,
+          family: 929.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$600 / $1,200",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-900",
+    name: "MaxGuard EPO 900",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 289.0,
+      memberSpouse: 579.0,
+      memberChildren: 559.0,
+      family: 799.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 289.0,
+          memberSpouse: 579.0,
+          memberChildren: 559.0,
+          family: 799.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 329.0,
+          memberSpouse: 619.0,
+          memberChildren: 589.0,
+          family: 839.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 359.0,
+          memberSpouse: 659.0,
+          memberChildren: 629.0,
+          family: 889.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 409.0,
+          memberSpouse: 669.0,
+          memberChildren: 639.0,
+          family: 909.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$900 / $1,800",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-1500",
+    name: "MaxGuard EPO 1500",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 269.0,
+      memberSpouse: 559.0,
+      memberChildren: 539.0,
+      family: 789.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 269.0,
+          memberSpouse: 559.0,
+          memberChildren: 539.0,
+          family: 789.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 309.0,
+          memberSpouse: 599.0,
+          memberChildren: 569.0,
+          family: 809.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 339.0,
+          memberSpouse: 639.0,
+          memberChildren: 619.0,
+          family: 869.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 389.0,
+          memberSpouse: 649.0,
+          memberChildren: 629.0,
+          family: 889.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$1,500 / $3,000",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-2000",
+    name: "MaxGuard EPO 2000",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 249.0,
+      memberSpouse: 539.0,
+      memberChildren: 519.0,
+      family: 779.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 249.0,
+          memberSpouse: 539.0,
+          memberChildren: 519.0,
+          family: 779.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 279.0,
+          memberSpouse: 579.0,
+          memberChildren: 549.0,
+          family: 799.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 319.0,
+          memberSpouse: 629.0,
+          memberChildren: 599.0,
+          family: 849.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 369.0,
+          memberSpouse: 639.0,
+          memberChildren: 609.0,
+          family: 869.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$2,000 / $4,000",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+  {
+    id: "pop-maxguard-epo-2500",
+    name: "MaxGuard EPO 2500",
+    subgroupFilter: "pop-maxguard",
+    benefitGroup: "pop-maxguard",
+    carrier: "popscience",
+    planTag: "mm",
+    badge: "First Health Network",
+    pdf: "pdfs/MaxGuard PSM.pdf",
+    enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
+    premiums: {
+      member: 239.0,
+      memberSpouse: 519.0,
+      memberChildren: 499.0,
+      family: 769.0,
+    },
+    ageBands: [
+      {
+        age: "18-29",
+        premiums: {
+          member: 239.0,
+          memberSpouse: 519.0,
+          memberChildren: 499.0,
+          family: 769.0,
+        },
+      },
+      {
+        age: "30-44",
+        premiums: {
+          member: 249.0,
+          memberSpouse: 549.0,
+          memberChildren: 529.0,
+          family: 789.0,
+        },
+      },
+      {
+        age: "45-54",
+        premiums: {
+          member: 289.0,
+          memberSpouse: 619.0,
+          memberChildren: 579.0,
+          family: 829.0,
+        },
+      },
+      {
+        age: "55-64",
+        premiums: {
+          member: 349.0,
+          memberSpouse: 629.0,
+          memberChildren: 589.0,
+          family: 859.0,
+        },
+      },
+    ],
+    benefits: {
+      deductible: "$2,500 / $5,000",
+      oopMax: "$1,000,000",
+      preventative: "Covered",
+      primaryCare: "$50 after Deductible",
+      specialist: "$50 after Deductible",
+      emergencyRoom: "$300 after deductible",
+      inpatient: "$850 after deductible",
+    },
+  },
+];

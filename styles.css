@@ -1,0 +1,817 @@
+/* =========================================================
+   BASE STYLES
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-gradient-top: #1b2a4a;
+  --bg-gradient-bottom: #0f172a;
+
+  --sidebar-bg: #f7f9ff;
+
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+
+  --accent: #2563eb;
+  --accent-soft: #e0ecff;
+
+  --text-main: #111827;
+  --text-muted: #6b7280;
+
+  --badge-bg: #eef2ff;
+  --badge-border: #c7d2fe;
+
+  --divider: rgba(148, 163, 184, 0.4);
+
+  --benefits-bg: #f3f4ff;
+  --benefits-border: #cbd5f5;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: linear-gradient(
+    180deg,
+    var(--bg-gradient-top),
+    var(--bg-gradient-bottom)
+  );
+  color: var(--text-main);
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.top-bar {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.top-bar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 12px 24px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* =========================================================
+   APP LAYOUT
+========================================================= */
+
+.app-shell {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr); /* SIDEBAR MADE NARROWER */
+  gap: 22px;
+  align-items: flex-start;
+}
+
+/* =========================================================
+   STATE GATE + BADGE
+========================================================= */
+
+.state-gate {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+  z-index: 60;
+}
+
+.state-gate.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.state-modal {
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 18px 20px;
+  box-shadow: 0 24px 42px rgba(15, 23, 42, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.state-modal h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.state-modal-copy {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.state-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.state-modal select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  font-size: 14px;
+  background: #f8fafc;
+  color: #111827;
+}
+
+.state-modal select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.22);
+  background: #ffffff;
+}
+
+.state-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #b91c1c;
+  display: none;
+}
+
+.state-modal-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.state-cta {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ffffff;
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.32);
+}
+
+.state-chip-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.state-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  min-width: 160px;
+  text-align: center;
+}
+
+.state-chip-empty {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #991b1b;
+}
+
+.state-chip-btn {
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  color: #111827;
+}
+
+.state-chip-btn:hover {
+  background: #f1f5f9;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+  background: var(--sidebar-bg);
+  border-radius: 12px;
+  padding: 16px 14px 18px;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.07);
+}
+
+.sidebar-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #4b5563;
+}
+
+.sidebar-subheading {
+  margin: 14px 0 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.sidebar-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 4px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #111827;
+}
+
+.sidebar-checkbox.carrier-label {
+  font-size: 15px;
+  font-weight: 700;
+  gap: 10px;
+  padding: 8px 0 8px 2px;
+  margin-left: -6px; /* nudge carriers left so they stand apart */
+  cursor: default;
+}
+
+.sidebar-checkbox:hover {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.sidebar-checkbox input {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.sidebar-checkbox.carrier-label input {
+  accent-color: var(--accent);
+}
+
+.sidebar-checkbox.static-label:hover {
+  background: transparent;
+}
+
+.sidebar-checkbox-disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sidebar-checkbox-disabled:hover {
+  background: transparent;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+  min-height: 480px;
+}
+
+.content-inner {
+  background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 45%, #e0f2fe 100%);
+  border-radius: 14px;
+  padding: 18px 18px 26px;
+
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.16);
+}
+
+.content-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.filter-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+}
+
+.subscription-banner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(226, 232, 240, 0.75);
+}
+
+.subscription-banner[data-state="warning"] {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.subscription-banner[data-state="success"] {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #065f46;
+}
+
+.subscription-banner-text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.subscribe-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+}
+
+.subscribe-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.tag-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  border-radius: 10px;
+  padding: 6px 10px;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.tag-filter label {
+  font-weight: 600;
+}
+
+.tag-filter select {
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 13px;
+  background: #fff;
+  color: #0f172a;
+}
+
+.tag-filter select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.2);
+}
+
+.section-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f9fafb;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* =========================================================
+   PLAN GRID
+========================================================= */
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px; /* widened slightly for breathing room */
+}
+
+@media (max-width: 1100px) {
+  .plans-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .plans-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.state-empty {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px dashed rgba(148, 163, 184, 0.6);
+  border-radius: 12px;
+  color: #111827;
+  font-weight: 600;
+  text-align: center;
+}
+
+.state-empty-error {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.45);
+  background: rgba(254, 226, 226, 0.85);
+}
+
+/* =========================================================
+   PLAN CARDS
+========================================================= */
+
+.plan-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 2px solid var(--card-border);
+  padding: 12px 12px 4px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid transparent; /* network accent stripe */
+}
+
+.plan-name {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.plan-badge {
+  display: inline-flex;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+
+  color: #4b5563;
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+}
+
+.plan-card.network-cigna {
+  border-color: #166534; /* dark green for Cigna */
+  border-left-color: #166534;
+}
+
+.plan-card.network-phcs {
+  border-color: #facc15; /* light yellow for PHCS */
+  border-left-color: #facc15;
+}
+
+.plan-card.network-bcbs {
+  border-color: #1d4ed8; /* dark blue for BCBS */
+  border-left-color: #1d4ed8;
+}
+
+.plan-card.network-firsthealth {
+  border-color: #d97706; /* dark yellow accent */
+  border-left-color: #d97706;
+}
+
+.plan-card.guarantee-issue {
+  border-color: #dc2626;
+  border-left-color: #dc2626;
+}
+
+.plan-badge.network-cigna {
+  background: #e6f4ec;
+  border-color: #b7e1c5;
+  color: #14532d;
+}
+
+.plan-badge.network-phcs {
+  background: #fff7d6;
+  border-color: #fde68a;
+  color: #92400e;
+}
+
+.plan-badge.network-bcbs {
+  background: #e4ebff;
+  border-color: #c5d2ff;
+  color: #0f2a8a;
+}
+
+.plan-badge.network-firsthealth {
+  background: #fff7e0;
+  border-color: #f1d48a;
+  color: #b45309;
+}
+
+.plan-badge.guarantee-issue {
+  background: #fee2e2;
+  border-color: #fecdd3;
+  color: #b91c1c;
+}
+
+.plan-badge + .plan-badge {
+  margin-top: 4px;
+}
+
+.plan-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.plan-tag-inline {
+  margin-left: auto;
+}
+
+.plan-tag-mm {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0b7ea4;
+}
+
+.plan-tag-vl {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #7f1d1d;
+}
+
+.age-group-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #374151;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 10px;
+  padding: 6px 10px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.age-group-select label {
+  font-weight: 600;
+}
+
+.age-group-select select {
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 11px;
+  background: #fff;
+  color: #111827;
+}
+
+.age-group-select select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.18);
+}
+
+.age-group-flat {
+  justify-content: space-between;
+  min-height: 30px;
+}
+
+.age-group-flat .flat-label {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.age-group-flat .flat-note {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.age-band-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #1f2937;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  border-radius: 10px;
+  padding: 4px 8px;
+  width: fit-content;
+}
+
+/* =========================================================
+   PREMIUM ROWS
+========================================================= */
+
+.premiums {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--divider);
+  font-size: 12px;
+}
+
+.premium-row {
+  margin: 2px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 14px;
+}
+
+.premium-label {
+  font-weight: 600;
+  text-align: left;
+  padding-right: 4px;
+  white-space: nowrap;
+}
+
+.premium-value {
+  text-align: right;
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   FOOTER (PDF + BUTTON)
+========================================================= */
+
+.card-footer {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--divider);
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-link {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.summary-link:hover {
+  text-decoration: underline;
+}
+
+.enroll-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #059669, #10b981);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.35);
+}
+
+.enroll-btn:hover {
+  filter: brightness(1.05);
+}
+
+.toggle-benefits {
+  width: 100%;
+  padding: 7px 12px;
+  margin-top: 2px;
+  border: none;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  color: #ffffff;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-benefits:hover {
+  filter: brightness(1.07);
+}
+
+/* =========================================================
+   BENEFITS PANEL (DROPDOWN)
+========================================================= */
+
+.benefits-panel {
+  margin-top: 0;
+  padding: 0;
+  font-size: 11px;
+
+  background: var(--benefits-bg);
+  border: none;
+  border-radius: 12px;
+
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transform: translateY(-4px);
+  transition:
+    max-height 0.22s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.benefits-panel.open {
+  max-height: 280px; /* roomy for all benefits */
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 2px;
+  padding: 10px 10px;
+  border: 1px solid var(--benefits-border);
+}
+
+/* Proper bullet formatting */
+.benefits-panel ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  line-height: 1.4;
+}
+
+.benefits-panel li {
+  margin: 6px 0;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.benefits-panel li strong {
+  margin-right: 6px;
+}
+
+/* Carrier logo placement (LifeX, Enroll Prime, etc.) */
+.carrier-logo-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-top: 2px;
+}
+
+.carrier-logo {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+}
+
+.carrier-logo.hidden {
+  display: none;
+}
