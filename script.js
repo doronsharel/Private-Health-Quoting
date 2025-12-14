@@ -1,4 +1,5 @@
 import { auth } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 /************************************************************
  *  FULL CLEAN SCRIPT.JS — RESTORED LAYOUT + ALL GROUPS
@@ -168,26 +169,64 @@ function waitForAuthUser() {
   });
 }
 
+async function waitForAuthCurrentUser() {
+  // If already available, return immediately
+  if (auth.currentUser) return auth.currentUser;
+  
+  // Wait for the user-ready event first (this ensures window.__PHQ_USER is set)
+  await waitForAuthUser();
+  
+  // Now wait for auth.currentUser to be set (it should be set by onAuthStateChanged)
+  if (auth.currentUser) return auth.currentUser;
+  
+  // If still not set, wait for onAuthStateChanged
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      unsubscribe();
+      reject(new Error("Authentication timed out. Please sign in again."));
+    }, AUTH_TIMEOUT_MS);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        clearTimeout(timeout);
+        unsubscribe();
+        resolve(user);
+      }
+    });
+  });
+}
+
 async function fetchPlansFromApi() {
-  const currentUser = auth.currentUser;
-  if (!currentUser) {
-    await waitForAuthUser();
-  }
-  const user = auth.currentUser;
+  const user = await waitForAuthCurrentUser();
   if (!user) {
     throw new Error("Session invalid. Refresh the page and sign in again.");
   }
   const token = await user.getIdToken(/* forceRefresh */ true);
-  const response = await fetch(PLANS_ENDPOINT, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  
+  let response;
+  try {
+    response = await fetch(PLANS_ENDPOINT, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (fetchErr) {
+    console.error("[fetchPlansFromApi] Fetch error:", fetchErr);
+    throw new Error(`Network error: ${fetchErr.message || "Failed to connect to server"}`);
+  }
 
-  const payload = await response.json();
+  let payload;
+  const text = await response.text();
+  try {
+    payload = JSON.parse(text);
+  } catch (parseErr) {
+    console.error("[fetchPlansFromApi] Parse error:", parseErr);
+    console.error("[fetchPlansFromApi] Response text:", text);
+    throw new Error(`Server returned invalid JSON. Status: ${response.status}. Response: ${text.substring(0, 200)}`);
+  }
+  
   if (!response.ok) {
-    const error = new Error(payload?.error || "Unable to load plans.");
+    const error = new Error(payload?.error || `Server error (${response.status})`);
     error.status = response.status;
     error.payload = payload;
     throw error;
@@ -229,7 +268,13 @@ async function initializePlans() {
     };
     updateSubscriptionBanner();
   } catch (err) {
-    plansLoadError = err?.message || "Unable to load plans.";
+    // Show more detailed error for debugging
+    const errorMessage = err?.message || err?.toString() || "Unable to load plans.";
+    plansLoadError = errorMessage;
+    
+    // Log the full error for debugging
+    console.error("[initializePlans] Error loading plans:", err);
+    
     if (err.payload?.needsSubscription) {
       subscriptionAccess = {
         status: err.payload.subscriptionStatus || "none",

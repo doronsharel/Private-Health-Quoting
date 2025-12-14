@@ -1,5 +1,5 @@
 const { getFirestore, getAuth, FieldValue, Timestamp } = require("./firebase");
-const { isOwnerEmail } = require("../../access-control.js");
+const { isOwnerEmail } = require("../access-control.js");
 
 const USERS_COLLECTION = "users";
 const ACCESS_STATUSES = new Set(["active", "trialing"]);

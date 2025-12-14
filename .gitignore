@@ -1,0 +1,28 @@
+# Local Netlify folder
+.netlify
+
+# Environment variables (contains sensitive data)
+.env
+.env.local
+.env.*
+
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+create-deploy-zip.sh
+.netlify-deploy-checklist.txt
+*.zip

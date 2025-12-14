@@ -1,8 +1,23 @@
-const plans = require("./plans-data.js");
-const {
-  authenticateRequest,
-  userHasPaidAccess,
-} = require("./lib/users.js");
+// Wrap requires in try-catch to handle initialization errors
+let plans, authenticateRequest, userHasPaidAccess;
+
+try {
+  plans = require("./plans-data.js");
+  const usersModule = require("./lib/users.js");
+  authenticateRequest = usersModule.authenticateRequest;
+  userHasPaidAccess = usersModule.userHasPaidAccess;
+} catch (requireErr) {
+  console.error("[get-plans] Failed to load dependencies:", requireErr);
+  // Export a handler that shows the error
+  exports.handler = async () => ({
+    statusCode: 500,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ 
+      error: `Function initialization failed: ${requireErr.message}` 
+    }),
+  });
+  throw requireErr;
+}
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -10,7 +25,18 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
 
-exports.handler = async (event) => {
+async function handler(event) {
+  // Ensure all responses are JSON
+  const jsonResponse = (statusCode, body, extraHeaders = {}) => ({
+    statusCode,
+    headers: {
+      ...CORS_HEADERS,
+      "Content-Type": "application/json",
+      ...extraHeaders,
+    },
+    body: JSON.stringify(body),
+  });
+
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 204,
@@ -19,11 +45,7 @@ exports.handler = async (event) => {
   }
 
   if (event.httpMethod !== "GET") {
-    return {
-      statusCode: 405,
-      headers: { ...CORS_HEADERS },
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
+    return jsonResponse(405, { error: "Method not allowed" });
   }
 
   try {
@@ -31,13 +53,7 @@ exports.handler = async (event) => {
     const hasAccess = userHasPaidAccess(userRecord);
 
     if (!hasAccess) {
-      return {
-        statusCode: 402,
-        headers: {
-          ...CORS_HEADERS,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      return jsonResponse(402, {
           error:
             "An active subscription is required to load plans. Start your subscription to continue.",
           needsSubscription: true,
@@ -48,18 +64,12 @@ exports.handler = async (event) => {
           },
           subscriptionStatus:
             userRecord.docData?.subscriptionStatus || "none",
-        }),
-      };
+      });
     }
 
-    return {
-      statusCode: 200,
-      headers: {
-        ...CORS_HEADERS,
-        "Content-Type": "application/json",
-        "Cache-Control": "no-store",
-      },
-      body: JSON.stringify({
+    return jsonResponse(
+      200,
+      {
         plans,
         user: {
           uid: userRecord.uid,
@@ -70,13 +80,17 @@ exports.handler = async (event) => {
           userRecord.docData?.subscriptionStatus || (userRecord.isOwner
             ? "owner"
             : "active"),
-      }),
-    };
+      },
+      { "Cache-Control": "no-store" }
+    );
   } catch (err) {
-    return {
-      statusCode: err.statusCode || 500,
-      headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: err.message || "Unauthorized" }),
-    };
+    console.error("[get-plans] error", err);
+    const errorMessage = err.message || err.toString() || "Internal server error";
+    return jsonResponse(err.statusCode || 500, {
+      error: errorMessage,
+      ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    });
   }
-};
+}
+
+exports.handler = handler;
