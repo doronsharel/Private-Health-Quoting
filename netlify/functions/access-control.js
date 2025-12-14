@@ -18,8 +18,5 @@ const isOwnerEmail = (email) => {
 
 const getOwnerEmails = () => OWNER_EMAILS.slice();
 
-export { isOwnerEmail, getOwnerEmails };
-
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { isOwnerEmail, getOwnerEmails };
-}
+// CommonJS export for Netlify Functions (Node.js environment)
+module.exports = { isOwnerEmail, getOwnerEmails };
