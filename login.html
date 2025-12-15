@@ -199,6 +199,7 @@
 
         <button class="btn" id="btn-login" type="button">Log in</button>
         <button class="link-btn" id="btn-reset-password" type="button">Forgot password?</button>
+        <button class="link-btn" id="btn-request-access" type="button">Request access</button>
       </div>
 
       <div class="alert" id="msg"></div>
@@ -229,6 +230,7 @@
     const errEl = document.getElementById("err");
     const loginBtn = document.getElementById("btn-login");
     const resetBtn = document.getElementById("btn-reset-password");
+    const requestAccessBtn = document.getElementById("btn-request-access");
 
     let persistencePromise = null;
 
@@ -330,8 +332,48 @@
       }
     };
 
+    const handleRequestAccess = async () => {
+      clearMessages();
+
+      let email = document.getElementById("login-email").value.trim();
+      if (!email) {
+        email = window.prompt("Enter your work email to request access:");
+        if (!email) {
+          return;
+        }
+        email = email.trim();
+      }
+
+      showMessage("Submitting access request...");
+
+      try {
+        await fetch("/.netlify/functions/request-access", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        showMessage(
+          "Access request received. We'll contact you with next steps."
+        );
+
+        // Also open a pre-filled email so you get notified immediately.
+        const subject = encodeURIComponent("Access request for Private Health Quoting");
+        const body = encodeURIComponent(`Please grant access for: ${email}`);
+        window.location.href = `mailto:support@privatehealthquoting.com?subject=${subject}&body=${body}`;
+      } catch (err) {
+        console.error("request-access failed", err);
+        showError(
+          "Unable to submit access request. Please email support@privatehealthquoting.com."
+        );
+      }
+    };
+
     loginBtn.addEventListener("click", handleLogin);
     resetBtn.addEventListener("click", handlePasswordReset);
+    requestAccessBtn.addEventListener("click", handleRequestAccess);
   </script>
 </body>
 </html>
