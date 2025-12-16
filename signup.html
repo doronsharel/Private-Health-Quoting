@@ -158,7 +158,16 @@
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    let token = params.get("token");
+    
+    // Decode token in case it was double-encoded
+    if (token) {
+      try {
+        token = decodeURIComponent(token);
+      } catch (e) {
+        console.warn("Token decode error:", e);
+      }
+    }
 
     const emailInput = document.getElementById("email");
     const firstNameInput = document.getElementById("firstName");

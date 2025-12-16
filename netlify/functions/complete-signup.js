@@ -43,13 +43,30 @@ exports.handler = async (event) => {
     }
 
     const db = getFirestore();
+    console.log(`[complete-signup] Looking up token: ${token.substring(0, 10)}... (length: ${token.length})`);
+    
     const snapshot = await db
       .collection("access_requests")
       .where("token", "==", token)
       .limit(1)
       .get();
 
+    console.log(`[complete-signup] Query returned ${snapshot.size} documents`);
+
     if (snapshot.empty) {
+      // Try to find by email as fallback (for debugging)
+      console.log(`[complete-signup] Token not found, checking if token might be in a different format`);
+      
+      // Also check if there are any recent pending requests (for debugging)
+      const recentSnapshot = await db
+        .collection("access_requests")
+        .where("status", "==", "pending")
+        .orderBy("createdAt", "desc")
+        .limit(5)
+        .get();
+      
+      console.log(`[complete-signup] Found ${recentSnapshot.size} recent pending requests`);
+      
       return {
         statusCode: 400,
         headers: { ...CORS_HEADERS },
