@@ -378,11 +378,26 @@
         showMessage("Sending verification code...");
         
         // Initialize reCAPTCHA verifier
+        // Use visible reCAPTCHA to avoid domain authorization issues
         if (!recaptchaVerifier) {
-          recaptchaVerifier = new RecaptchaVerifier(auth, "btn-send-code", {
-            size: "invisible",
-            callback: () => {},
+          // Create a container for visible reCAPTCHA
+          const recaptchaContainer = document.createElement("div");
+          recaptchaContainer.id = "recaptcha-container";
+          recaptchaContainer.style.marginTop = "12px";
+          document.getElementById("phone-input-section").appendChild(recaptchaContainer);
+          
+          recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+            size: "normal", // Use visible reCAPTCHA
+            callback: () => {
+              // reCAPTCHA verified, can proceed
+            },
+            "expired-callback": () => {
+              showError("reCAPTCHA expired. Please try again.");
+            },
           });
+          
+          // Render the reCAPTCHA
+          await recaptchaVerifier.render();
         }
 
         const user = currentUser || auth.currentUser;
