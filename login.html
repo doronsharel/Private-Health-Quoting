@@ -347,7 +347,7 @@
       showMessage("Submitting access request...");
 
       try {
-        await fetch("/.netlify/functions/request-access", {
+        const response = await fetch("/.netlify/functions/request-access", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -355,8 +355,14 @@
           body: JSON.stringify({ email }),
         });
 
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || `Server error: ${response.status}`);
+        }
+
         showMessage(
-          "Access request received. We'll contact you with next steps."
+          "Access request received! Check your email for a signup link."
         );
 
         // Also open a pre-filled email so you get notified immediately.
@@ -366,7 +372,7 @@
       } catch (err) {
         console.error("request-access failed", err);
         showError(
-          "Unable to submit access request. Please email support@privatehealthquoting.com."
+          err.message || "Unable to submit access request. Please email support@privatehealthquoting.com."
         );
       }
     };

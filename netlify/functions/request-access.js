@@ -106,8 +106,25 @@ exports.handler = async (event) => {
 
       try {
         await sgMail.send(msg);
+        console.log(`[request-access] Signup email sent successfully to ${email}`);
       } catch (emailErr) {
         console.error("[request-access] Failed to send signup email", emailErr);
+        
+        // Provide more detailed error information
+        let errorMessage = "Failed to send signup email.";
+        if (emailErr.response) {
+          const errors = emailErr.response.body?.errors || [];
+          if (errors.length > 0) {
+            errorMessage = errors.map(e => e.message).join("; ");
+          }
+          console.error("[request-access] SendGrid error details:", JSON.stringify(emailErr.response.body, null, 2));
+        } else {
+          errorMessage = emailErr.message || errorMessage;
+        }
+        
+        // Still return success since the request was recorded in DB
+        // but log the email error for debugging
+        console.error(`[request-access] Email error for ${email}: ${errorMessage}`);
       }
     }
 

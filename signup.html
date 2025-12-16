@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Health Quoting · Complete signup</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: linear-gradient(180deg, #d7e1ff, #93a8e6);
+      margin: 0;
+      padding: 0;
+      color: #0f172a;
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 28px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+      padding: 22px 22px 26px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      font-weight: 750;
+    }
+
+    p.sub {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+      color: #0f172a;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 6px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+
+    input:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.25);
+      background: #fff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px 12px;
+      margin-top: 16px;
+      background: linear-gradient(90deg, #2563eb, #4f46e5);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter 0.15s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .alert {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .alert.info {
+      background: #eef2ff;
+      color: #312e81;
+      border: 1px solid #c7d2fe;
+    }
+
+    .alert.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecdd3;
+    }
+
+    .muted {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Complete your signup</h1>
+      <p class="sub">
+        Create your password for the Private Health Quoting agent portal.
+      </p>
+
+      <div id="token-error" class="alert error"></div>
+
+      <form id="signup-form">
+        <label>Email</label>
+        <input id="email" type="email" disabled />
+
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="new-password" />
+
+        <label for="confirm">Confirm password</label>
+        <input id="confirm" type="password" autocomplete="new-password" />
+
+        <button class="btn" type="submit">Create account</button>
+      </form>
+
+      <div id="info" class="alert info"></div>
+
+      <p class="muted">
+        Already have an account?
+        <a href="/login.html">Go to login</a>.
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import {
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmInput = document.getElementById("confirm");
+    const form = document.getElementById("signup-form");
+    const infoEl = document.getElementById("info");
+    const tokenErrorEl = document.getElementById("token-error");
+
+    function showInfo(msg) {
+      infoEl.textContent = msg;
+      infoEl.style.display = "block";
+    }
+
+    function showError(msg) {
+      tokenErrorEl.textContent = msg;
+      tokenErrorEl.style.display = "block";
+    }
+
+    async function validateToken() {
+      if (!token) {
+        showError("Signup link is missing or invalid.");
+        form.style.display = "none";
+        return;
+      }
+
+      try {
+        const res = await fetch("/.netlify/functions/complete-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, action: "preview" }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Invalid or expired signup link.");
+        }
+        emailInput.value = data.email;
+      } catch (err) {
+        showError(err.message || "Invalid or expired signup link.");
+        form.style.display = "none";
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      infoEl.style.display = "none";
+      tokenErrorEl.style.display = "none";
+
+      const password = passwordInput.value;
+      const confirm = confirmInput.value;
+
+      if (!password || password.length < 8) {
+        showError("Password must be at least 8 characters.");
+        return;
+      }
+      if (password !== confirm) {
+        showError("Passwords do not match.");
+        return;
+      }
+
+      try {
+        const res = await fetch("/.netlify/functions/complete-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Unable to complete signup.");
+        }
+
+        // Account created successfully - now log them in
+        showInfo("Account created! Logging you in and redirecting to checkout...");
+        
+        try {
+          // Sign in the user with the password they just created
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            data.email,
+            password
+          );
+          
+          // Get the ID token for authentication
+          const idToken = await userCredential.user.getIdToken(/* forceRefresh */ true);
+          
+          // Create Stripe checkout session
+          const checkoutRes = await fetch("/.netlify/functions/create-checkout-session", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${idToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          
+          const checkoutData = await checkoutRes.json();
+          
+          if (!checkoutRes.ok) {
+            throw new Error(checkoutData.error || "Unable to start checkout.");
+          }
+          
+          if (checkoutData.url) {
+            // Redirect to Stripe checkout
+            window.location.href = checkoutData.url;
+            return;
+          } else if (checkoutData.alreadySubscribed) {
+            // User already has subscription, redirect to main app
+            showInfo("You already have an active subscription. Redirecting...");
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1500);
+            return;
+          }
+        } catch (authErr) {
+          console.error("Auth/checkout error:", authErr);
+          // If Stripe checkout fails, at least let them log in manually
+          showInfo(
+            "Account created! You can now log in from the main login page."
+          );
+          form.style.display = "none";
+        }
+      } catch (err) {
+        showError(err.message || "Unable to complete signup.");
+      }
+    });
+
+    validateToken();
+  </script>
+</body>
+</html>
+
+
+
