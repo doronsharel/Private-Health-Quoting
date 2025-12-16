@@ -335,7 +335,8 @@
           if (mfaData.phoneNumber) {
             document.getElementById("phone-input-section").style.display = "none";
             document.getElementById("code-input-section").style.display = "block";
-            await sendMfaCode(mfaData.phoneNumber);
+            // Pass the user directly to ensure it's available
+            await sendMfaCode(mfaData.phoneNumber, currentUser);
           } else {
             document.getElementById("phone-input-section").style.display = "block";
             document.getElementById("code-input-section").style.display = "none";
@@ -360,7 +361,7 @@
       }
     };
 
-    const sendMfaCode = async (phoneNumber) => {
+    const sendMfaCode = async (phoneNumber, providedUser = null) => {
       clearMessages();
       
       if (!phoneNumber) {
@@ -378,15 +379,9 @@
       try {
         showMessage("Sending verification code...");
         
-        // Get the current user FIRST - prioritize currentUser from login flow
-        let user = currentUser;
-        console.log("[sendMfaCode] Initial check - currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
-        
-        // If currentUser is not set, try auth.currentUser
-        if (!user) {
-          user = auth.currentUser;
-          console.log("[sendMfaCode] Using auth.currentUser:", user?.uid);
-        }
+        // Get the current user - prioritize provided user, then currentUser, then auth.currentUser
+        let user = providedUser || currentUser || auth.currentUser;
+        console.log("[sendMfaCode] Initial check - providedUser:", providedUser?.uid, "currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
         
         // If still no user, wait for auth state to be available
         if (!user) {
@@ -419,7 +414,7 @@
         }
         
         if (!user) {
-          console.error("[sendMfaCode] User authentication failed - currentUser:", currentUser, "auth.currentUser:", auth.currentUser);
+          console.error("[sendMfaCode] User authentication failed - providedUser:", providedUser, "currentUser:", currentUser, "auth.currentUser:", auth.currentUser);
           showError("User not authenticated. Please log in again.");
           // Redirect back to login panel
           document.getElementById("mfa-panel").style.display = "none";
