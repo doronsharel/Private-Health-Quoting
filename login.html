@@ -341,8 +341,9 @@
           document.getElementById("login-panel").style.display = "none";
           document.getElementById("mfa-panel").style.display = "block";
           
-          // If phone number exists, go straight to code input
+          // If phone number exists, go straight to code input and send code automatically
           if (mfaData.phoneNumber) {
+            console.log("[handleLogin] Phone number exists, sending code automatically");
             document.getElementById("phone-input-section").style.display = "none";
             document.getElementById("code-input-section").style.display = "block";
             
@@ -350,8 +351,11 @@
             console.log("[handleLogin] Calling sendMfaCode with phone:", mfaData.phoneNumber, "user:", loggedInUser.uid);
             await sendMfaCode(mfaData.phoneNumber, loggedInUser);
           } else {
+            // No phone number - show input field and wait for user to enter it
+            console.log("[handleLogin] No phone number stored, showing phone input section");
             document.getElementById("phone-input-section").style.display = "block";
             document.getElementById("code-input-section").style.display = "none";
+            showMessage("Please enter your phone number to receive a verification code.");
           }
         } else {
           // MFA not required, proceed to home
@@ -375,19 +379,27 @@
 
     const sendMfaCode = async (phoneNumber, providedUser = null) => {
       clearMessages();
+      console.log("[sendMfaCode] Called with phoneNumber:", phoneNumber || "null", "providedUser:", providedUser?.uid || "null");
       
+      // Get phone number from input if not provided
       if (!phoneNumber) {
-        phoneNumber = document.getElementById("mfa-phone")?.value.trim();
+        const phoneInput = document.getElementById("mfa-phone");
+        phoneNumber = phoneInput?.value.trim();
+        console.log("[sendMfaCode] Got phone from input:", phoneNumber || "empty");
+        
         if (!phoneNumber) {
-          console.log("[sendMfaCode] Phone number is required - showing error");
+          console.log("[sendMfaCode] ERROR: Phone number is required");
           showError("Phone number is required. Please enter your phone number in the format +1XXXXXXXXXX.");
           // Make sure phone input section is visible
           document.getElementById("phone-input-section").style.display = "block";
           document.getElementById("code-input-section").style.display = "none";
+          // Focus on phone input
+          phoneInput?.focus();
           return;
         }
         if (!phoneNumber.startsWith("+")) {
           showError("Phone number must include country code (e.g., +1234567890).");
+          phoneInput?.focus();
           return;
         }
       }
