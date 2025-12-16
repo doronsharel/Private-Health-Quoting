@@ -310,6 +310,23 @@ function showPlansError(message) {
 
 async function initializePlans() {
   if (plansLoaded) return;
+  
+  // Check cache first to avoid unnecessary function calls
+  const cached = getCachedPlans();
+  if (cached) {
+    plans = cached.plans || [];
+    plansLoaded = true;
+    plansLoadError = null;
+    subscriptionAccess = {
+      status: cached.subscriptionStatus || "active",
+      needsSubscription: false,
+      user: cached.user || null,
+      message: "",
+    };
+    updateSubscriptionBanner();
+    return;
+  }
+  
   showPlansLoading();
   try {
     const payload = await fetchPlansFromApi();
@@ -323,6 +340,9 @@ async function initializePlans() {
       message: "",
     };
     updateSubscriptionBanner();
+    
+    // Cache the response
+    setCachedPlans(payload);
   } catch (err) {
     // Show more detailed error for debugging
     const errorMessage = err?.message || err?.toString() || "Unable to load plans.";
@@ -680,6 +700,37 @@ const subgroupStateAvailability = {
 let plans = [];
 let plansLoaded = false;
 let plansLoadError = null;
+
+// Cache plans in localStorage to reduce function invocations
+const PLANS_CACHE_KEY = "phq_plans_cache";
+const PLANS_CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
+
+function getCachedPlans() {
+  try {
+    const cached = localStorage.getItem(PLANS_CACHE_KEY);
+    if (!cached) return null;
+    const data = JSON.parse(cached);
+    const now = Date.now();
+    if (now - data.timestamp > PLANS_CACHE_DURATION_MS) {
+      localStorage.removeItem(PLANS_CACHE_KEY);
+      return null;
+    }
+    return data.payload;
+  } catch (e) {
+    return null;
+  }
+}
+
+function setCachedPlans(payload) {
+  try {
+    localStorage.setItem(PLANS_CACHE_KEY, JSON.stringify({
+      timestamp: Date.now(),
+      payload: payload
+    }));
+  } catch (e) {
+    // Ignore localStorage errors (e.g., private browsing)
+  }
+}
 
 /************************************************************
  *  HELPER FUNCTIONS
