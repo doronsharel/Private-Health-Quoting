@@ -413,6 +413,11 @@ const subgroupPlanOrder = {
   ],
   "ahw-first-health": [
     "ahw-first-health-1",
+    "ahw-first-health-2",
+    "ahw-first-health-3",
+    "ahw-first-health-4",
+    "ahw-first-health-5",
+    "ahw-first-health-6",
   ],
   "lifex-cigna": [
     "lifex-cigna-epo-500",
