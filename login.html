@@ -378,6 +378,59 @@
       try {
         showMessage("Sending verification code...");
         
+        // Get the current user FIRST - prioritize currentUser from login flow
+        let user = currentUser;
+        console.log("[sendMfaCode] Initial check - currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
+        
+        // If currentUser is not set, try auth.currentUser
+        if (!user) {
+          user = auth.currentUser;
+          console.log("[sendMfaCode] Using auth.currentUser:", user?.uid);
+        }
+        
+        // If still no user, wait for auth state to be available
+        if (!user) {
+          console.log("[sendMfaCode] No user found, waiting for auth state...");
+          // Wait for auth state to update (up to 2 seconds)
+          user = await new Promise((resolve) => {
+            const timeout = setTimeout(() => {
+              unsubscribe();
+              console.log("[sendMfaCode] Auth state timeout");
+              resolve(null);
+            }, 2000);
+            
+            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+              if (authUser) {
+                clearTimeout(timeout);
+                unsubscribe();
+                console.log("[sendMfaCode] Auth state updated:", authUser.uid);
+                resolve(authUser);
+              }
+            });
+            
+            // Also check immediately in case it's already set
+            if (auth.currentUser) {
+              clearTimeout(timeout);
+              unsubscribe();
+              console.log("[sendMfaCode] Found auth.currentUser immediately:", auth.currentUser.uid);
+              resolve(auth.currentUser);
+            }
+          });
+        }
+        
+        if (!user) {
+          console.error("[sendMfaCode] User authentication failed - currentUser:", currentUser, "auth.currentUser:", auth.currentUser);
+          showError("User not authenticated. Please log in again.");
+          // Redirect back to login panel
+          document.getElementById("mfa-panel").style.display = "none";
+          document.getElementById("login-panel").style.display = "block";
+          return;
+        }
+        
+        // Update currentUser for consistency
+        currentUser = user;
+        console.log("[sendMfaCode] Using user:", user.uid, user.email);
+        
         // Initialize reCAPTCHA verifier
         // Use visible reCAPTCHA to avoid domain authorization issues
         if (!recaptchaVerifier) {
@@ -400,46 +453,6 @@
           // Render the reCAPTCHA
           await recaptchaVerifier.render();
         }
-
-        // Get the current user - try multiple sources
-        let user = currentUser || auth.currentUser;
-        
-        // If still no user, wait for auth state to be available
-        if (!user) {
-          // Wait for auth state to update (up to 2 seconds)
-          user = await new Promise((resolve, reject) => {
-            const timeout = setTimeout(() => {
-              unsubscribe();
-              resolve(null);
-            }, 2000);
-            
-            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-              if (authUser) {
-                clearTimeout(timeout);
-                unsubscribe();
-                resolve(authUser);
-              }
-            });
-            
-            // Also check immediately in case it's already set
-            if (auth.currentUser) {
-              clearTimeout(timeout);
-              unsubscribe();
-              resolve(auth.currentUser);
-            }
-          });
-        }
-        
-        if (!user) {
-          showError("User not authenticated. Please log in again.");
-          // Redirect back to login panel
-          document.getElementById("mfa-panel").style.display = "none";
-          document.getElementById("login-panel").style.display = "block";
-          return;
-        }
-        
-        // Update currentUser for consistency
-        currentUser = user;
 
         // Check if email is verified - Firebase requires this before MFA enrollment
         if (!user.emailVerified) {
