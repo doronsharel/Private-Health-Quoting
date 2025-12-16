@@ -53,10 +53,15 @@ exports.handler = async (event) => {
         await handleCheckoutCompleted(stripeEvent.data.object);
         break;
       case "customer.subscription.created":
-        await syncSubscription(stripeEvent.data.object);
+        const subscription = stripeEvent.data.object;
+        await syncSubscription(subscription);
         // Send confirmation email for new subscriptions
-        if (stripeEvent.data.object.status === "active" || stripeEvent.data.object.status === "trialing") {
-          await sendSubscriptionConfirmationEmail(metadata?.firebaseUid || stripeEvent.data.object.metadata?.firebaseUid, stripeEvent.data.object);
+        if (subscription.status === "active" || subscription.status === "trialing") {
+          const metadata = subscription.metadata || {};
+          const uid = metadata.firebaseUid;
+          if (uid) {
+            await sendSubscriptionConfirmationEmail(uid, subscription);
+          }
         }
         break;
       case "customer.subscription.updated":
