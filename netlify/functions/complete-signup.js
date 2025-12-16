@@ -137,7 +137,7 @@ exports.handler = async (event) => {
     );
 
     // Store user name in Firestore users collection
-    const db = getFirestore();
+    // (db was already declared above, reuse it)
     const userRef = db.collection("users").doc(userRecord.uid);
     await userRef.set({
       uid: userRecord.uid,
