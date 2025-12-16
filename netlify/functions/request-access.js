@@ -1,4 +1,9 @@
 const { getFirestore, FieldValue } = require("./lib/firebase");
+const sgMail = require("@sendgrid/mail");
+const crypto = require("crypto");
+
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -8,6 +13,22 @@ const CORS_HEADERS = {
 
 function serverTimestamp() {
   return FieldValue.serverTimestamp();
+}
+
+function getOrigin(event) {
+  if (event.headers.origin) return event.headers.origin;
+  const host =
+    event.headers["x-forwarded-host"] ||
+    event.headers.host ||
+    "localhost:8888";
+  const protocol =
+    event.headers["x-forwarded-proto"] ||
+    (host.startsWith("localhost") ? "http" : "https");
+  return `${protocol}://${host}`;
+}
+
+function generateToken() {
+  return crypto.randomBytes(32).toString("hex");
 }
 
 exports.handler = async (event) => {
@@ -38,12 +59,28 @@ exports.handler = async (event) => {
       };
     }
 
+    if (!SENDGRID_API_KEY || !SENDGRID_FROM_EMAIL) {
+      console.warn(
+        "[request-access] SendGrid env vars missing. Will record request without email."
+      );
+    } else {
+      sgMail.setApiKey(SENDGRID_API_KEY);
+    }
+
     const db = getFirestore();
     const ref = db.collection("access_requests").doc();
+
+    const token = generateToken();
+    const origin = getOrigin(event);
+    const signupUrl = `${origin}/signup.html?token=${encodeURIComponent(
+      token
+    )}`;
 
     await ref.set({
       email,
       status: "pending",
+      token,
+      signupUrl,
       createdAt: serverTimestamp(),
       userAgent: event.headers["user-agent"] || null,
       ip:
@@ -52,6 +89,27 @@ exports.handler = async (event) => {
         event.ip ||
         null,
     });
+
+    if (SENDGRID_API_KEY && SENDGRID_FROM_EMAIL) {
+      const msg = {
+        to: email,
+        from: SENDGRID_FROM_EMAIL,
+        subject: "Private Health Quoting · Complete your signup",
+        text: `You've requested access to the Private Health Quoting portal.\n\nClick the link below to create your account and set your password:\n\n${signupUrl}\n\nIf you did not request this, you can safely ignore this email.`,
+        html: `<p>You've requested access to the <strong>Private Health Quoting</strong> agent portal.</p>
+<p>Click the button below to create your account and set your password:</p>
+<p><a href="${signupUrl}" style="display:inline-block;padding:10px 18px;border-radius:6px;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:600;">Complete signup</a></p>
+<p>If the button doesn't work, copy and paste this URL into your browser:</p>
+<p><code>${signupUrl}</code></p>
+<p>If you did not request this, you can safely ignore this email.</p>`,
+      };
+
+      try {
+        await sgMail.send(msg);
+      } catch (emailErr) {
+        console.error("[request-access] Failed to send signup email", emailErr);
+      }
+    }
 
     return {
       statusCode: 200,
