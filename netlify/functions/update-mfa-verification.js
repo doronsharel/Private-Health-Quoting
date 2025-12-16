@@ -36,22 +36,13 @@ exports.handler = async (event) => {
     const decoded = await getAuth().verifyIdToken(token);
     const uid = decoded.uid;
 
-    const body = JSON.parse(event.body || "{}");
-    const phoneNumber = body.phoneNumber || null;
-
     const db = getFirestore();
     const userRef = db.collection("users").doc(uid);
     
-    const updates = {
+    await userRef.set({
       lastMfaVerification: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
-    };
-
-    if (phoneNumber) {
-      updates.phoneNumber = phoneNumber;
-    }
-
-    await userRef.set(updates, { merge: true });
+    }, { merge: true });
 
     return {
       statusCode: 200,
@@ -69,4 +60,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
+
+
 

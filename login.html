@@ -203,19 +203,12 @@
       </div>
 
       <div class="panel" id="mfa-panel" style="display: none;">
-        <strong>Phone Verification Required</strong>
-        <p class="muted" style="margin: 8px 0 12px;">For security, please verify your phone number. This is required once per week.</p>
+        <strong>Email Verification Required</strong>
+        <p class="muted" style="margin: 8px 0 12px;">For security, please verify your email address. This is required once per week.</p>
         
-        <div id="phone-input-section">
-          <label for="mfa-phone">Phone Number</label>
-          <input id="mfa-phone" type="tel" placeholder="+1234567890" autocomplete="tel" />
-          <p class="muted">Format: +1 followed by your 10-digit number</p>
-          <button class="btn" id="btn-send-code" type="button" disabled>Send Verification Code</button>
-        </div>
-
-        <div id="code-input-section" style="display: none;">
+        <div id="code-input-section">
           <label for="mfa-code">Verification Code</label>
-          <input id="mfa-code" type="text" placeholder="Enter 6-digit code" maxlength="6" />
+          <input id="mfa-code" type="text" placeholder="Enter 6-digit code" maxlength="6" inputmode="numeric" pattern="[0-9]*" />
           <button class="btn" id="btn-verify-code" type="button">Verify Code</button>
           <button class="link-btn" id="btn-resend-code" type="button">Resend code</button>
         </div>
@@ -227,7 +220,7 @@
       <div class="divider"></div>
       <div class="meta">
         <div>Need help? Email <a href="mailto:shareldoron@gmail.com">shareldoron@gmail.com</a> or call your admin.</div>
-        <div>Trouble receiving codes? Confirm phone format (e.g., +1XXXXXXXXXX).</div>
+        <div>Trouble receiving codes? Check your email inbox and spam folder.</div>
         <div>
           <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
         </div>
@@ -244,10 +237,6 @@
       sendPasswordResetEmail,
       sendEmailVerification,
       signOut,
-      multiFactor,
-      PhoneAuthProvider,
-      PhoneMultiFactorGenerator,
-      RecaptchaVerifier,
       onAuthStateChanged,
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -259,35 +248,6 @@
 
     let persistencePromise = null;
     let currentUser = null;
-    let mfaResolver = null;
-    let mfaVerificationId = null;
-    let recaptchaVerifier = null;
-    
-    const ensureRecaptcha = async () => {
-      if (recaptchaVerifier) return recaptchaVerifier;
-
-      // Create a container for visible reCAPTCHA
-      let recaptchaContainer = document.getElementById("recaptcha-container");
-      if (!recaptchaContainer) {
-        recaptchaContainer = document.createElement("div");
-        recaptchaContainer.id = "recaptcha-container";
-        recaptchaContainer.style.marginTop = "12px";
-        document.getElementById("phone-input-section").appendChild(recaptchaContainer);
-      }
-
-      recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-        size: "normal", // Use visible reCAPTCHA
-        callback: () => {
-          // reCAPTCHA verified, can proceed
-        },
-        "expired-callback": () => {
-          showError("reCAPTCHA expired. Please try again.");
-        },
-      });
-
-      await recaptchaVerifier.render();
-      return recaptchaVerifier;
-    };
 
     const clearMessages = () => {
       msgEl.style.display = "none";
@@ -363,37 +323,14 @@
         console.log("[handleLogin] MFA check result:", mfaData);
         
         if (mfaData.mfaRequired) {
-          // Show MFA panel
+          // Show MFA panel and send email code automatically
           document.getElementById("login-panel").style.display = "none";
           document.getElementById("mfa-panel").style.display = "block";
+          document.getElementById("code-input-section").style.display = "block";
           
-          // Enable the send code button now that login is complete
-          const sendCodeBtn = document.getElementById("btn-send-code");
-          if (sendCodeBtn) {
-            sendCodeBtn.disabled = false;
-            console.log("[handleLogin] Send code button enabled, disabled state:", sendCodeBtn.disabled);
-            // Attach direct handler as fallback
-            attachDirectHandler();
-          } else {
-            console.error("[handleLogin] Send code button not found!");
-          }
-          
-          // If phone number exists, go straight to code input and send code automatically
-          if (mfaData.phoneNumber) {
-            console.log("[handleLogin] Phone number exists, sending code automatically");
-            document.getElementById("phone-input-section").style.display = "none";
-            document.getElementById("code-input-section").style.display = "block";
-            
-            // Use the loggedInUser directly - it's guaranteed to be valid
-            console.log("[handleLogin] Calling sendMfaCode with phone:", mfaData.phoneNumber, "user:", loggedInUser.uid);
-            await sendMfaCode(mfaData.phoneNumber, loggedInUser);
-          } else {
-            // No phone number - show input field and wait for user to enter it
-            console.log("[handleLogin] No phone number stored, showing phone input section");
-            document.getElementById("phone-input-section").style.display = "block";
-            document.getElementById("code-input-section").style.display = "none";
-            showMessage("Please enter your phone number to receive a verification code.");
-          }
+          // Automatically send verification code to email
+          showMessage("Sending verification code to your email...");
+          await sendEmailMfaCode(loggedInUser);
         } else {
           // MFA not required, proceed to home
           showMessage("Logged in. Redirecting...");
@@ -402,176 +339,49 @@
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           showError("No account found for that email. Contact admin to be added.");
-        } else if (err.code === "auth/multi-factor-auth-required") {
-          // User has MFA enrolled, handle it
-          mfaResolver = err.resolver;
-          document.getElementById("login-panel").style.display = "none";
-          document.getElementById("mfa-panel").style.display = "block";
-          
-          const sendCodeBtn = document.getElementById("btn-send-code");
-          if (sendCodeBtn) {
-            sendCodeBtn.disabled = false;
-            attachDirectHandler();
-          }
-
-          // Pre-fill the stored phone hint and send code for sign-in flows
-          const hintPhone = mfaResolver?.hints?.[0]?.phoneNumber || "";
-          const phoneInput = document.getElementById("mfa-phone");
-          if (phoneInput && hintPhone) {
-            phoneInput.value = hintPhone;
-            phoneInput.disabled = true;
-          }
-          document.getElementById("phone-input-section").style.display = "block";
-          document.getElementById("code-input-section").style.display = "none";
-          
-          showMessage("Sending verification code to your enrolled phone...");
-          await sendMfaCodeForResolver();
         } else {
           showError(err.message || "Unable to log in.");
         }
       }
     };
 
-    const sendMfaCode = async (phoneNumber, providedUser = null) => {
+    // Send email verification code
+    const sendEmailMfaCode = async (user = null) => {
       clearMessages();
-      console.log("[sendMfaCode] Called with phoneNumber:", phoneNumber || "null", "providedUser:", providedUser?.uid || "null");
       
-      // Get phone number from input if not provided
-      if (!phoneNumber) {
-        const phoneInput = document.getElementById("mfa-phone");
-        phoneNumber = phoneInput?.value.trim();
-        console.log("[sendMfaCode] Got phone from input:", phoneNumber || "empty");
-        
-        if (!phoneNumber) {
-          console.log("[sendMfaCode] ERROR: Phone number is required");
-          showError("Phone number is required. Please enter your phone number in the format +1XXXXXXXXXX.");
-          // Make sure phone input section is visible
-          document.getElementById("phone-input-section").style.display = "block";
-          document.getElementById("code-input-section").style.display = "none";
-          // Focus on phone input
-          phoneInput?.focus();
-          return;
-        }
-        if (!phoneNumber.startsWith("+")) {
-          showError("Phone number must include country code (e.g., +1234567890).");
-          phoneInput?.focus();
-          return;
-        }
+      const targetUser = user || currentUser || auth.currentUser;
+      if (!targetUser) {
+        showError("Authentication error. Please refresh and log in again.");
+        return;
       }
 
       try {
-        showMessage("Sending verification code...");
+        showMessage("Sending verification code to your email...");
         
-        // Get the current user - prioritize provided user (from login), then currentUser, then auth.currentUser
-        let user = providedUser || currentUser || auth.currentUser;
-        console.log("[sendMfaCode] providedUser:", providedUser?.uid || "null", "currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
-        
-        // If still no user, this is a problem - but try one more time with a short wait
-        if (!user) {
-          console.warn("[sendMfaCode] No user found, waiting briefly...");
-          await new Promise(resolve => setTimeout(resolve, 200));
-          user = providedUser || currentUser || auth.currentUser;
-        }
-        
-        if (!user) {
-          console.error("[sendMfaCode] CRITICAL: No user available! providedUser:", !!providedUser, "currentUser:", !!currentUser, "auth.currentUser:", !!auth.currentUser);
-          showError("Authentication error. Please refresh the page and log in again.");
-          document.getElementById("mfa-panel").style.display = "none";
-          document.getElementById("login-panel").style.display = "block";
-          return;
-        }
-        
-        // Update currentUser for consistency
-        currentUser = user;
-        console.log("[sendMfaCode] Using user:", user.uid, user.email);
-        
-        // Initialize reCAPTCHA verifier
-        const appVerifier = await ensureRecaptcha();
+        const token = await targetUser.getIdToken();
+        const response = await fetch("/.netlify/functions/send-email-mfa-code", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-        // Check if email is verified - Firebase requires this before MFA enrollment
-        if (!user.emailVerified) {
-          // For existing users, verify email automatically via backend
-          try {
-            const token = await user.getIdToken();
-            const verifyResponse = await fetch("/.netlify/functions/verify-user-email", {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            });
-            
-            if (verifyResponse.ok) {
-              // Refresh user token to get updated emailVerified status
-              await user.reload();
-              // Retry MFA code sending
-              showMessage("Email verified. Sending verification code...");
-            } else {
-              // If auto-verify fails, send verification email
-              await sendEmailVerification(user);
-              showError("Please verify your email first. A verification email has been sent to your inbox.");
-              return;
-            }
-          } catch (verifyErr) {
-            console.error("Email verification error:", verifyErr);
-            // Fallback: send verification email
-            try {
-              await sendEmailVerification(user);
-              showError("Please verify your email first. A verification email has been sent.");
-            } catch (emailErr) {
-              showError("Email verification required. Please contact support.");
-            }
-            return;
-          }
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to send verification code.");
         }
 
-        // Get multi-factor session
-        const multiFactorUser = multiFactor(user);
-        const session = await multiFactorUser.getSession();
-        
-        // For Firebase web MFA, the API structure is different
-        // We need to pass phoneNumber and session to verifyPhoneNumber
-        // The method signature for web MFA is: verifyPhoneNumber(auth, phoneInfoOptions, appVerifier)
-        const phoneInfoOptions = {
-          phoneNumber: phoneNumber,
-          session: session
-        };
-        
-        // Debug: Check what's available on PhoneAuthProvider
-        console.log("PhoneAuthProvider:", PhoneAuthProvider);
-        console.log("Available methods:", Object.getOwnPropertyNames(PhoneAuthProvider));
-        
-        // Try the correct Firebase web MFA API
-        // According to Firebase docs, for web MFA it should be a static method
-        if (PhoneAuthProvider && typeof PhoneAuthProvider.verifyPhoneNumber === 'function') {
-          mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
-            phoneInfoOptions,
-            appVerifier
-          );
-        } else {
-          // If static method doesn't exist, try instance method
-          const phoneAuthProvider = new PhoneAuthProvider(auth);
-          if (typeof phoneAuthProvider.verifyPhoneNumber === 'function') {
-            mfaVerificationId = await phoneAuthProvider.verifyPhoneNumber(
-              phoneInfoOptions,
-              appVerifier
-            );
-          } else {
-            throw new Error("PhoneAuthProvider.verifyPhoneNumber is not available. Check Firebase SDK version and imports.");
-          }
-        }
-
-        // Show code input
-        document.getElementById("phone-input-section").style.display = "none";
-        document.getElementById("code-input-section").style.display = "block";
-        showMessage("Verification code sent! Check your phone.");
+        showMessage("Verification code sent! Check your email inbox.");
       } catch (err) {
-        console.error("Send MFA code error:", err);
+        console.error("Send email MFA code error:", err);
         showError(err.message || "Failed to send verification code.");
       }
     };
 
-    const verifyMfaCode = async () => {
+    // Verify email code
+    const verifyEmailMfaCode = async () => {
       clearMessages();
       
       const code = document.getElementById("mfa-code").value.trim();
@@ -580,53 +390,40 @@
         return;
       }
 
-      if (!mfaVerificationId) {
-        showError("No verification in progress. Please send a new code.");
+      if (code.length !== 6 || !/^\d+$/.test(code)) {
+        showError("Please enter a valid 6-digit code.");
         return;
       }
 
       try {
         showMessage("Verifying code...");
         
-        const cred = PhoneAuthProvider.credential(mfaVerificationId, code);
-        
-        if (mfaResolver) {
-          // User has MFA enrolled, resolve sign-in
-          const assertion = PhoneMultiFactorGenerator.assertion(cred);
-          await mfaResolver.resolveSignIn(assertion);
-        } else {
-          // First time setting up MFA
-          const user = currentUser || auth.currentUser;
-          const multiFactorUser = multiFactor(user);
-          const phoneAuthCredential = PhoneAuthProvider.credential(mfaVerificationId, code);
-          const assertion = PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
-          await multiFactorUser.enroll(assertion, "Phone");
+        const user = currentUser || auth.currentUser;
+        if (!user) {
+          showError("Authentication error. Please refresh and log in again.");
+          return;
         }
 
-        // Update last MFA verification date - wait for it to complete before redirecting
-        const token = await auth.currentUser.getIdToken();
-        const phoneNumber = document.getElementById("mfa-phone").value.trim() || null;
-        
-        showMessage("Saving verification...");
-        const updateResponse = await fetch("/.netlify/functions/update-mfa-verification", {
+        const token = await user.getIdToken();
+        const response = await fetch("/.netlify/functions/verify-email-mfa-code", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ phoneNumber }),
+          body: JSON.stringify({ code }),
         });
-        
-        if (!updateResponse.ok) {
-          const errorData = await updateResponse.json();
-          console.error("Failed to update MFA verification:", errorData);
-          // Still allow login, but log the error
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Invalid verification code.");
         }
 
         showMessage("Verified! Redirecting...");
         setTimeout(() => redirectHome(), 500);
       } catch (err) {
-        console.error("Verify MFA code error:", err);
+        console.error("Verify email MFA code error:", err);
         showError(err.message || "Invalid code. Please try again.");
       }
     };
@@ -696,196 +493,16 @@
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
-    // MFA button handler - use event delegation on the mfa-panel container
-    const handleSendCode = async (e) => {
-      // Prevent default and stop propagation
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const sendCodeBtn = document.getElementById("btn-send-code");
-      if (!sendCodeBtn) {
-        console.error("[handleSendCode] Button not found!");
-        return;
-      }
-      
-      console.log("[handleSendCode] Button clicked, disabled state:", sendCodeBtn.disabled);
-      
-      // Check if button is disabled (login not complete)
-      if (sendCodeBtn.disabled) {
-        console.log("[handleSendCode] Button is disabled, login not complete yet");
-        showError("Please wait for login to complete.");
-        return;
-      }
-      
-      // Get user - check multiple sources
-      let user = currentUser || auth.currentUser;
-      console.log("[handleSendCode] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
-      
-      // If no user found, wait briefly for auth state
-      if (!user) {
-        console.log("[handleSendCode] No user found, waiting...");
-        user = await new Promise((resolve) => {
-          const timeout = setTimeout(() => {
-            console.log("[handleSendCode] Timeout waiting for user");
-            resolve(null);
-          }, 2000);
-          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            if (authUser) {
-              console.log("[handleSendCode] User found via onAuthStateChanged:", authUser.uid);
-              clearTimeout(timeout);
-              unsubscribe();
-              resolve(authUser);
-            }
-          });
-          if (auth.currentUser) {
-            console.log("[handleSendCode] User found immediately:", auth.currentUser.uid);
-            clearTimeout(timeout);
-            unsubscribe();
-            resolve(auth.currentUser);
-          }
-        });
-      }
-      
-      if (!user && mfaResolver) {
-        console.log("[handleSendCode] No current user but resolver exists, using resolver flow");
-        await sendMfaCodeForResolver();
-        return;
-      } else if (!user) {
-        console.error("[handleSendCode] ERROR: No user found after all checks");
-        showError("Please log in first.");
-        document.getElementById("mfa-panel").style.display = "none";
-        document.getElementById("login-panel").style.display = "block";
-        return;
-      }
-      
-      console.log("[handleSendCode] User found:", user.uid, "calling sendMfaCode");
-      // Update currentUser for consistency
-      currentUser = user;
-      
-      // sendMfaCode will check for phone number itself
-      await sendMfaCode(null, user);
-    };
-    
-    // Use event delegation on the mfa-panel container - this works even if button is dynamically shown
-    const mfaPanel = document.getElementById("mfa-panel");
-    if (mfaPanel) {
-      mfaPanel.addEventListener("click", (e) => {
-        console.log("[event-delegation] Click detected in mfa-panel, target:", e.target.id, "tagName:", e.target.tagName);
-        
-        // Check if the clicked element is the send code button or a child of it
-        const clickedBtn = e.target.id === "btn-send-code" ? e.target : e.target.closest("#btn-send-code");
-        if (clickedBtn) {
-          console.log("[event-delegation] Send code button clicked via delegation, button disabled:", clickedBtn.disabled);
-          handleSendCode(e);
-        } else {
-          console.log("[event-delegation] Click was not on send code button");
-        }
-      });
-      console.log("[init] Event delegation attached to mfa-panel for send code button");
-    } else {
-      console.error("[init] mfa-panel not found!");
-    }
-    
-    // Function to attach direct handler to button (defined after handleSendCode)
-    const attachDirectHandler = () => {
-      const sendCodeBtn = document.getElementById("btn-send-code");
-      if (sendCodeBtn && !sendCodeBtn.hasAttribute("data-direct-handler")) {
-        sendCodeBtn.addEventListener("click", (e) => {
-          console.log("[direct-handler] Send code button clicked directly, disabled:", sendCodeBtn.disabled);
-          e.stopPropagation(); // Prevent delegation handler from also firing
-          handleSendCode(e);
-        });
-        sendCodeBtn.setAttribute("data-direct-handler", "true");
-        console.log("[attachDirectHandler] Direct handler attached to button");
-      }
-    };
-    
-    // Try to attach direct handler immediately
-    attachDirectHandler();
-    
-    // Also try after a delay in case button isn't ready
-    setTimeout(attachDirectHandler, 500);
-    document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
+    // MFA button handlers
+    document.getElementById("btn-verify-code")?.addEventListener("click", verifyEmailMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
-      const phoneNumber = document.getElementById("mfa-phone").value.trim();
-      
-      // Try to get user - check multiple sources and wait if needed
-      let user = currentUser || auth.currentUser;
-      
-      // If no user found, wait for auth state (up to 1 second)
-      if (!user) {
-        user = await new Promise((resolve) => {
-          const timeout = setTimeout(() => resolve(null), 1000);
-          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            if (authUser) {
-              clearTimeout(timeout);
-              unsubscribe();
-              resolve(authUser);
-            }
-          });
-          // Check immediately in case it's already set
-          if (auth.currentUser) {
-            clearTimeout(timeout);
-            unsubscribe();
-            resolve(auth.currentUser);
-          }
-        });
-      }
-      
+      const user = currentUser || auth.currentUser;
       if (!user) {
         showError("Please log in first.");
-        document.getElementById("mfa-panel").style.display = "none";
-        document.getElementById("login-panel").style.display = "block";
         return;
       }
-      
-      // Update currentUser for consistency
-      currentUser = user;
-      
-      if (phoneNumber) {
-        await sendMfaCode(phoneNumber, user);
-      } else {
-        document.getElementById("code-input-section").style.display = "none";
-        document.getElementById("phone-input-section").style.display = "block";
-      }
+      await sendEmailMfaCode(user);
     });
-
-    // MFA code sender for sign-in flows where mfaResolver is returned
-    const sendMfaCodeForResolver = async () => {
-      clearMessages();
-      if (!mfaResolver) {
-        showError("Login session expired. Please sign in again.");
-        return;
-      }
-
-      const hint = mfaResolver.hints?.[0];
-      const phoneNumber = hint?.phoneNumber;
-      if (!phoneNumber) {
-        showError("No phone number on file. Please contact support.");
-        return;
-      }
-
-      try {
-        showMessage("Sending verification code...");
-        const appVerifier = await ensureRecaptcha();
-
-        const phoneAuthProvider = new PhoneAuthProvider(auth);
-        mfaVerificationId = await phoneAuthProvider.verifyPhoneNumber(
-          {
-            multiFactorHint: hint,
-            session: mfaResolver.session,
-          },
-          appVerifier
-        );
-
-        document.getElementById("phone-input-section").style.display = "none";
-        document.getElementById("code-input-section").style.display = "block";
-        showMessage("Verification code sent! Check your phone.");
-      } catch (err) {
-        console.error("Send MFA code (resolver) error:", err);
-        showError(err.message || "Failed to send verification code.");
-      }
-    };
   </script>
 </body>
 </html>

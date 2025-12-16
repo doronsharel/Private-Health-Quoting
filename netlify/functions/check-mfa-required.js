@@ -66,7 +66,6 @@ exports.handler = async (event) => {
       headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       body: JSON.stringify({
         mfaRequired,
-        phoneNumber: userData?.phoneNumber || null,
         lastMfaVerification: lastMfaVerification
           ? lastMfaVerification.toDate().toISOString()
           : null,
