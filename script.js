@@ -47,7 +47,8 @@ function updateSubscriptionBanner() {
   const banner = document.getElementById("subscriptionBanner");
   if (!banner) return;
   const textEl = document.getElementById("subscriptionBannerText");
-  const ctaBtn = document.getElementById("startSubscriptionBtn");
+  const startBtn = document.getElementById("startSubscriptionBtn");
+  const manageBtn = document.getElementById("manageSubscriptionBtn");
 
   if (subscriptionAccess.needsSubscription) {
     banner.hidden = false;
@@ -58,19 +59,36 @@ function updateSubscriptionBanner() {
       (subscriptionBannerOverride && subscriptionBannerOverride.text) ||
       subscriptionAccess.message ||
       "An active subscription is required to view plan data.";
-    if (ctaBtn) {
-      ctaBtn.hidden = false;
-      ctaBtn.disabled = false;
-      ctaBtn.textContent = "Start Subscription";
+    if (startBtn) {
+      startBtn.hidden = false;
+      startBtn.disabled = false;
+      startBtn.textContent = "Start Subscription";
     }
+    if (manageBtn) manageBtn.hidden = true;
     return;
+  }
+
+  // If user has active subscription, show manage button
+  if (subscriptionAccess.status === "active" || subscriptionAccess.status === "trialing") {
+    if (!subscriptionBannerOverride) {
+      banner.hidden = false;
+      banner.dataset.state = "success";
+      textEl.textContent = "Your subscription is active.";
+      if (startBtn) startBtn.hidden = true;
+      if (manageBtn) {
+        manageBtn.hidden = false;
+        manageBtn.disabled = false;
+      }
+      return;
+    }
   }
 
   if (subscriptionBannerOverride) {
     banner.hidden = false;
     banner.dataset.state = subscriptionBannerOverride.type || "info";
     textEl.textContent = subscriptionBannerOverride.text;
-    if (ctaBtn) ctaBtn.hidden = true;
+    if (startBtn) startBtn.hidden = true;
+    if (manageBtn) manageBtn.hidden = true;
     return;
   }
 
@@ -126,6 +144,44 @@ async function startSubscriptionCheckout() {
       btn.disabled = false;
       btn.textContent = "Start Subscription";
     }
+  }
+}
+
+async function openSubscriptionPortal() {
+  const btn = document.getElementById("manageSubscriptionBtn");
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = "Loading...";
+  try {
+    const user = auth.currentUser || (await waitForAuthUser());
+    const token = await user.getIdToken(/* forceRefresh */ true);
+    const response = await fetch(
+      "/.netlify/functions/create-portal-session",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload?.error || "Unable to open subscription portal.");
+    }
+    if (payload.url) {
+      window.location.href = payload.url;
+      return;
+    }
+    showSubscriptionNotice("Unable to open subscription portal.", "warning");
+  } catch (err) {
+    showSubscriptionNotice(
+      err.message || "Unable to open subscription portal.",
+      "warning"
+    );
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Manage Subscription";
   }
 }
 
@@ -1189,6 +1245,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const subscribeBtn = document.getElementById("startSubscriptionBtn");
   if (subscribeBtn)
     subscribeBtn.addEventListener("click", startSubscriptionCheckout);
+  
+  const manageBtn = document.getElementById("manageSubscriptionBtn");
+  if (manageBtn)
+    manageBtn.addEventListener("click", openSubscriptionPortal);
 
   initStateGate();
   attachFilters();
