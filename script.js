@@ -192,9 +192,13 @@ function handleCheckoutQueryParams() {
 
   if (status === "success") {
     showSubscriptionNotice(
-      "Thanks! Your subscription is processing. If plans aren't available yet, refresh in a moment.",
+      "🎉 Payment successful! Your subscription is now active. You should receive a confirmation email shortly. If plans aren't visible yet, please refresh the page.",
       "success"
     );
+    // Force refresh subscription status
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   } else if (status === "cancel") {
     subscriptionAccess.message =
       "Checkout canceled. Your card has not been charged.";

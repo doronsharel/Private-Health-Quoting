@@ -99,11 +99,36 @@ exports.handler = async (event) => {
 
     let ensuredCustomerId = customerId;
     if (!ensuredCustomerId) {
+      // Get user name from Firestore
+      const db = getFirestore();
+      const userDoc = await db.collection("users").doc(userRecord.uid).get();
+      const userData = userDoc.exists ? userDoc.data() : {};
+      const firstName = userData.firstName || "";
+      const lastName = userData.lastName || "";
+      const name = firstName && lastName ? `${firstName} ${lastName}`.trim() : undefined;
+
       const customer = await stripe.customers.create({
         email: userRecord.email,
+        name: name,
         metadata: { firebaseUid: userRecord.uid },
       });
       ensuredCustomerId = customer.id;
+    } else {
+      // Update existing customer with name if available
+      const db = getFirestore();
+      const userDoc = await db.collection("users").doc(userRecord.uid).get();
+      const userData = userDoc.exists ? userDoc.data() : {};
+      const firstName = userData.firstName || "";
+      const lastName = userData.lastName || "";
+      const name = firstName && lastName ? `${firstName} ${lastName}`.trim() : undefined;
+      
+      if (name) {
+        try {
+          await stripe.customers.update(ensuredCustomerId, { name });
+        } catch (updateErr) {
+          console.error("[create-checkout-session] Failed to update customer name:", updateErr);
+        }
+      }
     }
 
     if (ensuredCustomerId !== customerId) {

@@ -30,6 +30,8 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body || "{}");
     const token = (body.token || "").trim();
     const password = body.password || "";
+    const firstName = (body.firstName || "").trim();
+    const lastName = (body.lastName || "").trim();
     const isPreview = body.action === "preview";
 
     if (!token) {
@@ -74,6 +76,16 @@ exports.handler = async (event) => {
       };
     }
 
+    if (!firstName || !lastName) {
+      return {
+        statusCode: 400,
+        headers: { ...CORS_HEADERS },
+        body: JSON.stringify({
+          error: "First name and last name are required.",
+        }),
+      };
+    }
+
     if (!password || password.length < 8) {
       return {
         statusCode: 400,
@@ -103,6 +115,18 @@ exports.handler = async (event) => {
       },
       { merge: true }
     );
+
+    // Store user name in Firestore users collection
+    const db = getFirestore();
+    const userRef = db.collection("users").doc(userRecord.uid);
+    await userRef.set({
+      uid: userRecord.uid,
+      email: data.email,
+      firstName,
+      lastName,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
 
     return {
       statusCode: 200,

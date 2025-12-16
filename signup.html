@@ -126,6 +126,12 @@
         <label>Email</label>
         <input id="email" type="email" disabled />
 
+        <label for="firstName">First Name</label>
+        <input id="firstName" type="text" autocomplete="given-name" required />
+
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" autocomplete="family-name" required />
+
         <label for="password">Password</label>
         <input id="password" type="password" autocomplete="new-password" />
 
@@ -155,6 +161,8 @@
     const token = params.get("token");
 
     const emailInput = document.getElementById("email");
+    const firstNameInput = document.getElementById("firstName");
+    const lastNameInput = document.getElementById("lastName");
     const passwordInput = document.getElementById("password");
     const confirmInput = document.getElementById("confirm");
     const form = document.getElementById("signup-form");
@@ -202,7 +210,13 @@
 
       const password = passwordInput.value;
       const confirm = confirmInput.value;
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
 
+      if (!firstName || !lastName) {
+        showError("First name and last name are required.");
+        return;
+      }
       if (!password || password.length < 8) {
         showError("Password must be at least 8 characters.");
         return;
@@ -216,7 +230,7 @@
         const res = await fetch("/.netlify/functions/complete-signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, password }),
+          body: JSON.stringify({ token, password, firstName, lastName }),
         });
         const data = await res.json();
         if (!res.ok) {
