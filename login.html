@@ -570,11 +570,6 @@
         showMessage(
           "Access request received! Check your email for a signup link."
         );
-
-        // Also open a pre-filled email so you get notified immediately.
-        const subject = encodeURIComponent("Access request for Private Health Quoting");
-        const body = encodeURIComponent(`Please grant access for: ${email}`);
-          window.location.href = `mailto:shareldoron@gmail.com?subject=${subject}&body=${body}`;
       } catch (err) {
         console.error("request-access failed", err);
         showError(
