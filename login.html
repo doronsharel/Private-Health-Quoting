@@ -339,6 +339,35 @@
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           showError("No account found for that email. Contact admin to be added.");
+        } else if (err.code === "auth/multi-factor-auth-required") {
+          // User has old Firebase phone MFA enrolled - show email MFA panel instead
+          console.log("[handleLogin] Firebase MFA required - switching to email MFA");
+          document.getElementById("login-panel").style.display = "none";
+          document.getElementById("mfa-panel").style.display = "block";
+          document.getElementById("code-input-section").style.display = "block";
+          
+          // Send email code using unauthenticated endpoint (uses email from form)
+          showMessage("Sending verification code to your email...");
+          try {
+            const response = await fetch("/.netlify/functions/send-email-mfa-code-unauthenticated", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Failed to send verification code.");
+            }
+
+            showMessage("Verification code sent! Check your email inbox.");
+          } catch (emailErr) {
+            console.error("Send email MFA code (unauthenticated) error:", emailErr);
+            showError(emailErr.message || "Failed to send verification code. Please contact shareldoron@gmail.com.");
+          }
         } else {
           showError(err.message || "Unable to log in.");
         }
@@ -399,29 +428,56 @@
         showMessage("Verifying code...");
         
         const user = currentUser || auth.currentUser;
-        if (!user) {
-          showError("Authentication error. Please refresh and log in again.");
-          return;
+        const email = document.getElementById("login-email").value.trim();
+        
+        // If user is authenticated, use authenticated endpoint
+        if (user) {
+          const token = await user.getIdToken();
+          const response = await fetch("/.netlify/functions/verify-email-mfa-code", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Invalid verification code.");
+          }
+
+          showMessage("Verified! Redirecting...");
+          setTimeout(() => redirectHome(), 500);
+        } else {
+          // User not authenticated (stuck with old Firebase MFA) - use unauthenticated endpoint
+          if (!email) {
+            showError("Email is required. Please refresh and try again.");
+            return;
+          }
+
+          const response = await fetch("/.netlify/functions/verify-email-mfa-code-unauthenticated", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code, email }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Invalid verification code.");
+          }
+
+          showMessage("Verified! Please log in again.");
+          // Show login panel again
+          document.getElementById("mfa-panel").style.display = "none";
+          document.getElementById("login-panel").style.display = "block";
+          // Clear password field
+          document.getElementById("login-password").value = "";
         }
-
-        const token = await user.getIdToken();
-        const response = await fetch("/.netlify/functions/verify-email-mfa-code", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ code }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Invalid verification code.");
-        }
-
-        showMessage("Verified! Redirecting...");
-        setTimeout(() => redirectHome(), 500);
       } catch (err) {
         console.error("Verify email MFA code error:", err);
         showError(err.message || "Invalid code. Please try again.");
