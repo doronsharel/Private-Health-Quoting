@@ -210,7 +210,7 @@
           <label for="mfa-phone">Phone Number</label>
           <input id="mfa-phone" type="tel" placeholder="+1234567890" autocomplete="tel" />
           <p class="muted">Format: +1 followed by your 10-digit number</p>
-          <button class="btn" id="btn-send-code" type="button">Send Verification Code</button>
+          <button class="btn" id="btn-send-code" type="button" disabled>Send Verification Code</button>
         </div>
 
         <div id="code-input-section" style="display: none;">
@@ -355,6 +355,11 @@
             console.log("[handleLogin] No phone number stored, showing phone input section");
             document.getElementById("phone-input-section").style.display = "block";
             document.getElementById("code-input-section").style.display = "none";
+            // Enable the send code button now that login is complete
+            const sendCodeBtn = document.getElementById("btn-send-code");
+            if (sendCodeBtn) {
+              sendCodeBtn.disabled = false;
+            }
             showMessage("Please enter your phone number to receive a verification code.");
           }
         } else {
@@ -666,6 +671,14 @@
     document.getElementById("btn-send-code")?.addEventListener("click", async () => {
       console.log("[btn-send-code] Button clicked");
       
+      // Check if button is disabled (login not complete)
+      const sendCodeBtn = document.getElementById("btn-send-code");
+      if (sendCodeBtn?.disabled) {
+        console.log("[btn-send-code] Button is disabled, login not complete yet");
+        showError("Please wait for login to complete.");
+        return;
+      }
+      
       // Get user - check multiple sources
       let user = currentUser || auth.currentUser;
       console.log("[btn-send-code] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
@@ -677,7 +690,7 @@
           const timeout = setTimeout(() => {
             console.log("[btn-send-code] Timeout waiting for user");
             resolve(null);
-          }, 500);
+          }, 2000); // Increased timeout
           const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
               console.log("[btn-send-code] User found via onAuthStateChanged:", authUser.uid);
