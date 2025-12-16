@@ -87,10 +87,11 @@ exports.handler = async (event) => {
     const auth = getAuth();
 
     // Create the user in Firebase Auth.
+    // Set emailVerified to true since they came from an email link (already verified)
     const userRecord = await auth.createUser({
       email: data.email,
       password,
-      emailVerified: false,
+      emailVerified: true, // Verified via email link
     });
 
     // Mark the request as completed.

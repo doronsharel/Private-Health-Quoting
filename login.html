@@ -242,6 +242,7 @@
       setPersistence,
       browserSessionPersistence,
       sendPasswordResetEmail,
+      sendEmailVerification,
       signOut,
       multiFactor,
       PhoneAuthProvider,
@@ -387,6 +388,19 @@
         const user = currentUser || auth.currentUser;
         if (!user) {
           throw new Error("User not authenticated.");
+        }
+
+        // Check if email is verified - Firebase requires this before MFA enrollment
+        if (!user.emailVerified) {
+          showError("Please verify your email first. Check your inbox for a verification email.");
+          // Send verification email if not already sent
+          try {
+            await sendEmailVerification(user);
+            showMessage("Verification email sent! Please check your inbox and verify your email, then try again.");
+          } catch (verifyErr) {
+            console.error("Failed to send verification email:", verifyErr);
+          }
+          return;
         }
 
         // Get multi-factor session
