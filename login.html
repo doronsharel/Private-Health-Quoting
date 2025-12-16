@@ -471,12 +471,50 @@
             throw new Error(data.error || "Invalid verification code.");
           }
 
-          showMessage("Verified! Please log in again.");
-          // Show login panel again
-          document.getElementById("mfa-panel").style.display = "none";
-          document.getElementById("login-panel").style.display = "block";
-          // Clear password field
-          document.getElementById("login-password").value = "";
+          showMessage("Verified! Attempting to log you in...");
+          
+          // Try to log in again - the MFA check should now pass
+          const password = document.getElementById("login-password").value;
+          if (password) {
+            try {
+              await ensureSessionPersistence();
+              const userCredential = await signInWithEmailAndPassword(auth, email, password);
+              currentUser = userCredential.user;
+              
+              // Check MFA requirement again
+              const token = await currentUser.getIdToken();
+              const mfaCheckResponse = await fetch("/.netlify/functions/check-mfa-required", {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              
+              const mfaData = await mfaCheckResponse.json();
+              
+              if (!mfaData.mfaRequired) {
+                showMessage("Logged in. Redirecting...");
+                setTimeout(() => redirectHome(), 500);
+                return;
+              }
+            } catch (loginErr) {
+              if (loginErr.code === "auth/multi-factor-auth-required") {
+                showError("Your account still has phone-based MFA enabled. Please contact shareldoron@gmail.com to have it removed.");
+                document.getElementById("mfa-panel").style.display = "none";
+                document.getElementById("login-panel").style.display = "block";
+                document.getElementById("login-password").value = "";
+              } else {
+                showError("Verification successful, but login failed. Please try logging in again.");
+                document.getElementById("mfa-panel").style.display = "none";
+                document.getElementById("login-panel").style.display = "block";
+                document.getElementById("login-password").value = "";
+              }
+            }
+          } else {
+            showMessage("Verification successful. Please log in again.");
+            document.getElementById("mfa-panel").style.display = "none";
+            document.getElementById("login-panel").style.display = "block";
+          }
         }
       } catch (err) {
         console.error("Verify email MFA code error:", err);
