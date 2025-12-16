@@ -314,29 +314,18 @@
         await ensureSessionPersistence();
         console.log("[handleLogin] Starting login for:", email);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log("[handleLogin] Login successful, userCredential.user:", userCredential.user.uid);
+        const loggedInUser = userCredential.user; // This is ALWAYS available after successful login
+        console.log("[handleLogin] Login successful, user:", loggedInUser.uid);
         
-        // signInWithEmailAndPassword should set auth.currentUser immediately
-        // But let's give it a tiny moment and verify
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-        // Use auth.currentUser as source of truth, fallback to userCredential.user
-        currentUser = auth.currentUser || userCredential.user;
-        console.log("[handleLogin] After login - userCredential.user:", userCredential.user.uid);
-        console.log("[handleLogin] After login - auth.currentUser:", auth.currentUser?.uid || "null");
-        console.log("[handleLogin] After login - currentUser:", currentUser?.uid);
-        
-        if (!currentUser) {
-          console.error("[handleLogin] ERROR: No user found after login!");
-          throw new Error("Authentication failed. Please try again.");
-        }
+        // Store user immediately - don't rely on auth.currentUser
+        currentUser = loggedInUser;
         
         // Reload user to ensure we have the latest data
-        await currentUser.reload();
-        console.log("[handleLogin] User reloaded, emailVerified:", currentUser.emailVerified);
+        await loggedInUser.reload();
+        console.log("[handleLogin] User reloaded, emailVerified:", loggedInUser.emailVerified);
         
         // Check if MFA is required (once per week)
-        const token = await currentUser.getIdToken();
+        const token = await loggedInUser.getIdToken();
         const mfaCheckResponse = await fetch("/.netlify/functions/check-mfa-required", {
           method: "GET",
           headers: {
@@ -345,6 +334,7 @@
         });
         
         const mfaData = await mfaCheckResponse.json();
+        console.log("[handleLogin] MFA check result:", mfaData);
         
         if (mfaData.mfaRequired) {
           // Show MFA panel
@@ -356,47 +346,9 @@
             document.getElementById("phone-input-section").style.display = "none";
             document.getElementById("code-input-section").style.display = "block";
             
-            // Ensure we have a valid user - use auth.currentUser as source of truth
-            let userToUse = auth.currentUser || currentUser;
-            
-            // If still no user, wait a bit more for auth state
-            if (!userToUse) {
-              console.log("[handleLogin] Waiting for auth.currentUser to be set...");
-              userToUse = await new Promise((resolve) => {
-                const timeout = setTimeout(() => {
-                  unsubscribe();
-                  resolve(null);
-                }, 2000);
-                
-                const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-                  if (authUser) {
-                    clearTimeout(timeout);
-                    unsubscribe();
-                    resolve(authUser);
-                  }
-                });
-                
-                // Check immediately
-                if (auth.currentUser) {
-                  clearTimeout(timeout);
-                  unsubscribe();
-                  resolve(auth.currentUser);
-                }
-              });
-            }
-            
-            if (!userToUse) {
-              console.error("[handleLogin] ERROR: No user found after waiting!");
-              showError("Authentication error. Please try logging in again.");
-              document.getElementById("mfa-panel").style.display = "none";
-              document.getElementById("login-panel").style.display = "block";
-              return;
-            }
-            
-            // Update currentUser for consistency
-            currentUser = userToUse;
-            console.log("[handleLogin] Calling sendMfaCode with phone:", mfaData.phoneNumber, "user:", userToUse.uid);
-            await sendMfaCode(mfaData.phoneNumber, userToUse);
+            // Use the loggedInUser directly - it's guaranteed to be valid
+            console.log("[handleLogin] Calling sendMfaCode with phone:", mfaData.phoneNumber, "user:", loggedInUser.uid);
+            await sendMfaCode(mfaData.phoneNumber, loggedInUser);
           } else {
             document.getElementById("phone-input-section").style.display = "block";
             document.getElementById("code-input-section").style.display = "none";
@@ -439,49 +391,20 @@
       try {
         showMessage("Sending verification code...");
         
-        // Get the current user - prioritize provided user, then currentUser, then auth.currentUser
+        // Get the current user - prioritize provided user (from login), then currentUser, then auth.currentUser
         let user = providedUser || currentUser || auth.currentUser;
-        console.log("[sendMfaCode] ===== DEBUG START =====");
-        console.log("[sendMfaCode] providedUser:", providedUser ? {uid: providedUser.uid, email: providedUser.email} : "null");
-        console.log("[sendMfaCode] currentUser:", currentUser ? {uid: currentUser.uid, email: currentUser.email} : "null");
-        console.log("[sendMfaCode] auth.currentUser:", auth.currentUser ? {uid: auth.currentUser.uid, email: auth.currentUser.email} : "null");
-        console.log("[sendMfaCode] Selected user:", user ? {uid: user.uid, email: user.email} : "null");
-        console.log("[sendMfaCode] ===== DEBUG END =====");
+        console.log("[sendMfaCode] providedUser:", providedUser?.uid || "null", "currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
         
-        // If still no user, wait for auth state to be available
+        // If still no user, this is a problem - but try one more time with a short wait
         if (!user) {
-          console.log("[sendMfaCode] No user found, waiting for auth state...");
-          // Wait for auth state to update (up to 2 seconds)
-          user = await new Promise((resolve) => {
-            const timeout = setTimeout(() => {
-              unsubscribe();
-              console.log("[sendMfaCode] Auth state timeout");
-              resolve(null);
-            }, 2000);
-            
-            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-              if (authUser) {
-                clearTimeout(timeout);
-                unsubscribe();
-                console.log("[sendMfaCode] Auth state updated:", authUser.uid);
-                resolve(authUser);
-              }
-            });
-            
-            // Also check immediately in case it's already set
-            if (auth.currentUser) {
-              clearTimeout(timeout);
-              unsubscribe();
-              console.log("[sendMfaCode] Found auth.currentUser immediately:", auth.currentUser.uid);
-              resolve(auth.currentUser);
-            }
-          });
+          console.warn("[sendMfaCode] No user found, waiting briefly...");
+          await new Promise(resolve => setTimeout(resolve, 200));
+          user = providedUser || currentUser || auth.currentUser;
         }
         
         if (!user) {
-          console.error("[sendMfaCode] User authentication failed - providedUser:", providedUser, "currentUser:", currentUser, "auth.currentUser:", auth.currentUser);
-          showError("User not authenticated. Please log in again.");
-          // Redirect back to login panel
+          console.error("[sendMfaCode] CRITICAL: No user available! providedUser:", !!providedUser, "currentUser:", !!currentUser, "auth.currentUser:", !!auth.currentUser);
+          showError("Authentication error. Please refresh the page and log in again.");
           document.getElementById("mfa-panel").style.display = "none";
           document.getElementById("login-panel").style.display = "block";
           return;
