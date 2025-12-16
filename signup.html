@@ -167,6 +167,9 @@
       } catch (e) {
         console.warn("Token decode error:", e);
       }
+      console.log("[signup] Token extracted from URL, length:", token.length, "first 10 chars:", token.substring(0, 10));
+    } else {
+      console.error("[signup] No token found in URL");
     }
 
     const emailInput = document.getElementById("email");
@@ -195,6 +198,7 @@
         return;
       }
 
+      console.log("[signup] Validating token via API...");
       try {
         const res = await fetch("/.netlify/functions/complete-signup", {
           method: "POST",
@@ -202,6 +206,7 @@
           body: JSON.stringify({ token, action: "preview" }),
         });
         const data = await res.json();
+        console.log("[signup] API response:", res.status, data);
         if (!res.ok) {
           throw new Error(data.error || "Invalid or expired signup link.");
         }
