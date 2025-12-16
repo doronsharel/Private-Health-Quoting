@@ -377,9 +377,13 @@
       clearMessages();
       
       if (!phoneNumber) {
-        phoneNumber = document.getElementById("mfa-phone").value.trim();
+        phoneNumber = document.getElementById("mfa-phone")?.value.trim();
         if (!phoneNumber) {
-          showError("Phone number is required.");
+          console.log("[sendMfaCode] Phone number is required - showing error");
+          showError("Phone number is required. Please enter your phone number in the format +1XXXXXXXXXX.");
+          // Make sure phone input section is visible
+          document.getElementById("phone-input-section").style.display = "block";
+          document.getElementById("code-input-section").style.display = "none";
           return;
         }
         if (!phoneNumber.startsWith("+")) {
@@ -648,13 +652,13 @@
     
     // MFA button handlers
     document.getElementById("btn-send-code")?.addEventListener("click", async () => {
-      // Try to get user - check multiple sources and wait if needed
+      // Get user - check multiple sources
       let user = currentUser || auth.currentUser;
       
-      // If no user found, wait for auth state (up to 1 second)
+      // If no user found, wait briefly for auth state
       if (!user) {
         user = await new Promise((resolve) => {
-          const timeout = setTimeout(() => resolve(null), 1000);
+          const timeout = setTimeout(() => resolve(null), 500);
           const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
               clearTimeout(timeout);
@@ -662,7 +666,6 @@
               resolve(authUser);
             }
           });
-          // Check immediately in case it's already set
           if (auth.currentUser) {
             clearTimeout(timeout);
             unsubscribe();
@@ -680,6 +683,8 @@
       
       // Update currentUser for consistency
       currentUser = user;
+      
+      // sendMfaCode will check for phone number itself
       await sendMfaCode(null, user);
     });
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
