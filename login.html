@@ -369,6 +369,15 @@
             document.getElementById("phone-input-section").style.display = "none";
             document.getElementById("code-input-section").style.display = "block";
             // Pass the user directly to ensure it's available
+            // Double-check user is still available before calling
+            if (!currentUser) {
+              console.error("[handleLogin] ERROR: currentUser is null when trying to send MFA code!");
+              showError("Authentication error. Please try logging in again.");
+              document.getElementById("mfa-panel").style.display = "none";
+              document.getElementById("login-panel").style.display = "block";
+              return;
+            }
+            console.log("[handleLogin] Calling sendMfaCode with phone:", mfaData.phoneNumber, "user:", currentUser.uid);
             await sendMfaCode(mfaData.phoneNumber, currentUser);
           } else {
             document.getElementById("phone-input-section").style.display = "block";
@@ -697,12 +706,30 @@
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
     // MFA button handlers
-    document.getElementById("btn-send-code")?.addEventListener("click", () => sendMfaCode());
+    document.getElementById("btn-send-code")?.addEventListener("click", async () => {
+      // Ensure we have a user before sending code
+      const user = currentUser || auth.currentUser;
+      if (!user) {
+        showError("Please log in first.");
+        document.getElementById("mfa-panel").style.display = "none";
+        document.getElementById("login-panel").style.display = "block";
+        return;
+      }
+      await sendMfaCode(null, user);
+    });
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
-    document.getElementById("btn-resend-code")?.addEventListener("click", () => {
+    document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
       const phoneNumber = document.getElementById("mfa-phone").value.trim();
+      // Ensure we have a user before sending code
+      const user = currentUser || auth.currentUser;
+      if (!user) {
+        showError("Please log in first.");
+        document.getElementById("mfa-panel").style.display = "none";
+        document.getElementById("login-panel").style.display = "block";
+        return;
+      }
       if (phoneNumber) {
-        sendMfaCode(phoneNumber);
+        await sendMfaCode(phoneNumber, user);
       } else {
         document.getElementById("code-input-section").style.display = "none";
         document.getElementById("phone-input-section").style.display = "block";
