@@ -4,6 +4,7 @@ const {
   userHasPaidAccess,
   updateSubscription,
 } = require("./lib/users.js");
+const { getFirestore } = require("./lib/firebase");
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const priceId = process.env.STRIPE_PRICE_ID;
