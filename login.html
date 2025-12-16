@@ -346,6 +346,8 @@
           if (sendCodeBtn) {
             sendCodeBtn.disabled = false;
             console.log("[handleLogin] Send code button enabled, disabled state:", sendCodeBtn.disabled);
+            // Attach direct handler as fallback
+            attachDirectHandler();
           } else {
             console.error("[handleLogin] Send code button not found!");
           }
@@ -741,17 +743,41 @@
     const mfaPanel = document.getElementById("mfa-panel");
     if (mfaPanel) {
       mfaPanel.addEventListener("click", (e) => {
+        console.log("[event-delegation] Click detected in mfa-panel, target:", e.target.id, "tagName:", e.target.tagName);
+        
         // Check if the clicked element is the send code button or a child of it
-        const clickedBtn = e.target.closest("#btn-send-code");
+        const clickedBtn = e.target.id === "btn-send-code" ? e.target : e.target.closest("#btn-send-code");
         if (clickedBtn) {
-          console.log("[event-delegation] Send code button clicked via delegation");
+          console.log("[event-delegation] Send code button clicked via delegation, button disabled:", clickedBtn.disabled);
           handleSendCode(e);
+        } else {
+          console.log("[event-delegation] Click was not on send code button");
         }
       });
       console.log("[init] Event delegation attached to mfa-panel for send code button");
     } else {
       console.error("[init] mfa-panel not found!");
     }
+    
+    // Also attach directly to button as fallback (when it becomes available)
+    const attachDirectHandler = () => {
+      const sendCodeBtn = document.getElementById("btn-send-code");
+      if (sendCodeBtn && !sendCodeBtn.hasAttribute("data-direct-handler")) {
+        sendCodeBtn.addEventListener("click", (e) => {
+          console.log("[direct-handler] Send code button clicked directly, disabled:", sendCodeBtn.disabled);
+          e.stopPropagation(); // Prevent delegation handler from also firing
+          handleSendCode(e);
+        });
+        sendCodeBtn.setAttribute("data-direct-handler", "true");
+        console.log("[attachDirectHandler] Direct handler attached to button");
+      }
+    };
+    
+    // Try to attach immediately
+    attachDirectHandler();
+    
+    // Also try after a delay in case button isn't ready
+    setTimeout(attachDirectHandler, 500);
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
       const phoneNumber = document.getElementById("mfa-phone").value.trim();
