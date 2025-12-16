@@ -248,6 +248,7 @@
       PhoneAuthProvider,
       PhoneMultiFactorGenerator,
       RecaptchaVerifier,
+      onAuthStateChanged,
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
     const msgEl = document.getElementById("msg");
@@ -400,10 +401,45 @@
           await recaptchaVerifier.render();
         }
 
-        const user = currentUser || auth.currentUser;
+        // Get the current user - try multiple sources
+        let user = currentUser || auth.currentUser;
+        
+        // If still no user, wait for auth state to be available
         if (!user) {
-          throw new Error("User not authenticated.");
+          // Wait for auth state to update (up to 2 seconds)
+          user = await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              unsubscribe();
+              resolve(null);
+            }, 2000);
+            
+            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+              if (authUser) {
+                clearTimeout(timeout);
+                unsubscribe();
+                resolve(authUser);
+              }
+            });
+            
+            // Also check immediately in case it's already set
+            if (auth.currentUser) {
+              clearTimeout(timeout);
+              unsubscribe();
+              resolve(auth.currentUser);
+            }
+          });
         }
+        
+        if (!user) {
+          showError("User not authenticated. Please log in again.");
+          // Redirect back to login panel
+          document.getElementById("mfa-panel").style.display = "none";
+          document.getElementById("login-panel").style.display = "block";
+          return;
+        }
+        
+        // Update currentUser for consistency
+        currentUser = user;
 
         // Check if email is verified - Firebase requires this before MFA enrollment
         if (!user.emailVerified) {
