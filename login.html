@@ -315,38 +315,25 @@
         console.log("[handleLogin] Starting login for:", email);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log("[handleLogin] Login successful, userCredential.user:", userCredential.user.uid);
-        currentUser = userCredential.user;
         
-        // Wait for auth.currentUser to be set (Firebase auth state propagation)
-        // This ensures auth.currentUser is available for MFA operations
-        console.log("[handleLogin] Checking auth.currentUser:", auth.currentUser?.uid || "not set yet");
-        if (!auth.currentUser) {
-          console.log("[handleLogin] Waiting for auth state to update...");
-          await new Promise((resolve) => {
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-              if (user) {
-                console.log("[handleLogin] Auth state updated, user:", user.uid);
-                unsubscribe();
-                resolve();
-              }
-            });
-            // If it's already set, resolve immediately
-            if (auth.currentUser) {
-              console.log("[handleLogin] auth.currentUser already set:", auth.currentUser.uid);
-              unsubscribe();
-              resolve();
-            }
-          });
-        }
+        // signInWithEmailAndPassword should set auth.currentUser immediately
+        // But let's give it a tiny moment and verify
+        await new Promise(resolve => setTimeout(resolve, 100));
         
-        // Ensure currentUser is still set (use auth.currentUser as source of truth)
-        currentUser = auth.currentUser || currentUser;
-        console.log("[handleLogin] Final currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
+        // Use auth.currentUser as source of truth, fallback to userCredential.user
+        currentUser = auth.currentUser || userCredential.user;
+        console.log("[handleLogin] After login - userCredential.user:", userCredential.user.uid);
+        console.log("[handleLogin] After login - auth.currentUser:", auth.currentUser?.uid || "null");
+        console.log("[handleLogin] After login - currentUser:", currentUser?.uid);
         
         if (!currentUser) {
           console.error("[handleLogin] ERROR: No user found after login!");
           throw new Error("Authentication failed. Please try again.");
         }
+        
+        // Reload user to ensure we have the latest data
+        await currentUser.reload();
+        console.log("[handleLogin] User reloaded, emailVerified:", currentUser.emailVerified);
         
         // Check if MFA is required (once per week)
         const token = await currentUser.getIdToken();
