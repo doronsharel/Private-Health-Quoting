@@ -382,6 +382,7 @@ const subgroupOrder = [
   "med-access",
   "med-max",
   "med-value",
+  "ahw-first-health",
   "bmi-cigna",
   "bmi-mec-phcs",
   "bmi-phcs",
@@ -409,6 +410,9 @@ const subgroupPlanOrder = {
     "med-value-hdvp-2000",
     "med-value-hdvp-4000",
     "med-value-hdvp-6000",
+  ],
+  "ahw-first-health": [
+    "ahw-first-health-1",
   ],
   "lifex-cigna": [
     "lifex-cigna-epo-500",

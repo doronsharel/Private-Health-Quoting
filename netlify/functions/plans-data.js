@@ -794,6 +794,36 @@ module.exports = [
   },
 
   /***************
+   *  AHW – FIRST HEALTH NETWORK
+   ***************/
+  {
+    id: "ahw-first-health-1",
+    name: "AHW 1",
+    subgroupFilter: "ahw-first-health",
+    benefitGroup: "ahw-first-health",
+    planTag: "vl",
+    badge: "First Health Network",
+    pdf: "pdfs/AHW 1.pdf",
+    // TODO: Update this once you have the live enrollment URL
+    enrollUrl: null,
+    premiums: {
+      member: 139.99,
+      memberSpouse: 169.99,
+      memberChildren: 164.99,
+      family: 209.99,
+    },
+    benefits: {
+      deductible: "$0",
+      oopMax: "None",
+      preventative: "$0",
+      primaryCare: "$25 (3/yr)",
+      specialist: "$50 (1/yr)",
+      emergencyRoom: "Not Covered",
+      inpatient: "$1,000 (5/yr)",
+    },
+  },
+
+  /***************
    *  AFI – PHCS NETWORK
    ***************/
   {
