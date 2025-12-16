@@ -389,14 +389,20 @@
           throw new Error("User not authenticated.");
         }
 
-        const session = await multiFactor(user).getSession();
-        const phoneAuthCredential = PhoneAuthProvider.credentialFromResult(session);
+        // Get multi-factor session
+        const multiFactorUser = multiFactor(user);
+        const session = await multiFactorUser.getSession();
+        
+        // Create phone info options for MFA enrollment
         const phoneInfoOptions = {
           phoneNumber: phoneNumber,
           session: session,
         };
 
+        // Verify phone number using static method
+        // For Firebase web MFA, verifyPhoneNumber is a static method
         mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
+          auth,
           phoneInfoOptions,
           recaptchaVerifier
         );
