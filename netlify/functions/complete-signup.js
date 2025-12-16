@@ -68,6 +68,8 @@ exports.handler = async (event) => {
       };
     }
 
+    // Preview requests are only used to validate the token and fetch email,
+    // so do NOT require first/last name or password yet.
     if (isPreview) {
       return {
         statusCode: 200,
@@ -76,6 +78,7 @@ exports.handler = async (event) => {
       };
     }
 
+    // For actual account creation, require first/last name.
     if (!firstName || !lastName) {
       return {
         statusCode: 400,
