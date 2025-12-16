@@ -262,6 +262,32 @@
     let mfaResolver = null;
     let mfaVerificationId = null;
     let recaptchaVerifier = null;
+    
+    const ensureRecaptcha = async () => {
+      if (recaptchaVerifier) return recaptchaVerifier;
+
+      // Create a container for visible reCAPTCHA
+      let recaptchaContainer = document.getElementById("recaptcha-container");
+      if (!recaptchaContainer) {
+        recaptchaContainer = document.createElement("div");
+        recaptchaContainer.id = "recaptcha-container";
+        recaptchaContainer.style.marginTop = "12px";
+        document.getElementById("phone-input-section").appendChild(recaptchaContainer);
+      }
+
+      recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "normal", // Use visible reCAPTCHA
+        callback: () => {
+          // reCAPTCHA verified, can proceed
+        },
+        "expired-callback": () => {
+          showError("reCAPTCHA expired. Please try again.");
+        },
+      });
+
+      await recaptchaVerifier.render();
+      return recaptchaVerifier;
+    };
 
     const clearMessages = () => {
       msgEl.style.display = "none";
@@ -381,7 +407,25 @@
           mfaResolver = err.resolver;
           document.getElementById("login-panel").style.display = "none";
           document.getElementById("mfa-panel").style.display = "block";
-          showMessage("Please complete phone verification.");
+          
+          const sendCodeBtn = document.getElementById("btn-send-code");
+          if (sendCodeBtn) {
+            sendCodeBtn.disabled = false;
+            attachDirectHandler();
+          }
+
+          // Pre-fill the stored phone hint and send code for sign-in flows
+          const hintPhone = mfaResolver?.hints?.[0]?.phoneNumber || "";
+          const phoneInput = document.getElementById("mfa-phone");
+          if (phoneInput && hintPhone) {
+            phoneInput.value = hintPhone;
+            phoneInput.disabled = true;
+          }
+          document.getElementById("phone-input-section").style.display = "block";
+          document.getElementById("code-input-section").style.display = "none";
+          
+          showMessage("Sending verification code to your enrolled phone...");
+          await sendMfaCodeForResolver();
         } else {
           showError(err.message || "Unable to log in.");
         }
@@ -442,27 +486,7 @@
         console.log("[sendMfaCode] Using user:", user.uid, user.email);
         
         // Initialize reCAPTCHA verifier
-        // Use visible reCAPTCHA to avoid domain authorization issues
-        if (!recaptchaVerifier) {
-          // Create a container for visible reCAPTCHA
-          const recaptchaContainer = document.createElement("div");
-          recaptchaContainer.id = "recaptcha-container";
-          recaptchaContainer.style.marginTop = "12px";
-          document.getElementById("phone-input-section").appendChild(recaptchaContainer);
-          
-          recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-            size: "normal", // Use visible reCAPTCHA
-            callback: () => {
-              // reCAPTCHA verified, can proceed
-            },
-            "expired-callback": () => {
-              showError("reCAPTCHA expired. Please try again.");
-            },
-          });
-          
-          // Render the reCAPTCHA
-          await recaptchaVerifier.render();
-        }
+        const appVerifier = await ensureRecaptcha();
 
         // Check if email is verified - Firebase requires this before MFA enrollment
         if (!user.emailVerified) {
@@ -521,9 +545,8 @@
         // According to Firebase docs, for web MFA it should be a static method
         if (PhoneAuthProvider && typeof PhoneAuthProvider.verifyPhoneNumber === 'function') {
           mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
-            auth,
             phoneInfoOptions,
-            recaptchaVerifier
+            appVerifier
           );
         } else {
           // If static method doesn't exist, try instance method
@@ -531,7 +554,7 @@
           if (typeof phoneAuthProvider.verifyPhoneNumber === 'function') {
             mfaVerificationId = await phoneAuthProvider.verifyPhoneNumber(
               phoneInfoOptions,
-              recaptchaVerifier
+              appVerifier
             );
           } else {
             throw new Error("PhoneAuthProvider.verifyPhoneNumber is not available. Check Firebase SDK version and imports.");
@@ -723,7 +746,11 @@
         });
       }
       
-      if (!user) {
+      if (!user && mfaResolver) {
+        console.log("[handleSendCode] No current user but resolver exists, using resolver flow");
+        await sendMfaCodeForResolver();
+        return;
+      } else if (!user) {
         console.error("[handleSendCode] ERROR: No user found after all checks");
         showError("Please log in first.");
         document.getElementById("mfa-panel").style.display = "none";
@@ -822,6 +849,43 @@
         document.getElementById("phone-input-section").style.display = "block";
       }
     });
+
+    // MFA code sender for sign-in flows where mfaResolver is returned
+    const sendMfaCodeForResolver = async () => {
+      clearMessages();
+      if (!mfaResolver) {
+        showError("Login session expired. Please sign in again.");
+        return;
+      }
+
+      const hint = mfaResolver.hints?.[0];
+      const phoneNumber = hint?.phoneNumber;
+      if (!phoneNumber) {
+        showError("No phone number on file. Please contact support.");
+        return;
+      }
+
+      try {
+        showMessage("Sending verification code...");
+        const appVerifier = await ensureRecaptcha();
+
+        const phoneAuthProvider = new PhoneAuthProvider(auth);
+        mfaVerificationId = await phoneAuthProvider.verifyPhoneNumber(
+          {
+            multiFactorHint: hint,
+            session: mfaResolver.session,
+          },
+          appVerifier
+        );
+
+        document.getElementById("phone-input-section").style.display = "none";
+        document.getElementById("code-input-section").style.display = "block";
+        showMessage("Verification code sent! Check your phone.");
+      } catch (err) {
+        console.error("Send MFA code (resolver) error:", err);
+        showError(err.message || "Failed to send verification code.");
+      }
+    };
   </script>
 </body>
 </html>
