@@ -346,8 +346,12 @@
           if (sendCodeBtn) {
             sendCodeBtn.disabled = false;
             console.log("[handleLogin] Send code button enabled, disabled state:", sendCodeBtn.disabled);
-            // Re-attach handler in case it wasn't attached before
-            attachSendCodeHandler();
+            // Attach handler if not already attached
+            if (!sendCodeBtn.hasAttribute("data-handler-attached")) {
+              sendCodeBtn.addEventListener("click", handleSendCode);
+              sendCodeBtn.setAttribute("data-handler-attached", "true");
+              console.log("[handleLogin] Send code button handler attached");
+            }
           } else {
             console.error("[handleLogin] Send code button not found!");
           }
@@ -673,84 +677,75 @@
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
-    // MFA button handlers - use event delegation or attach when button is available
-    const attachSendCodeHandler = () => {
+    // MFA button handler - use a function that can be called when button is available
+    const handleSendCode = async () => {
       const sendCodeBtn = document.getElementById("btn-send-code");
       if (!sendCodeBtn) {
-        console.warn("[attachSendCodeHandler] Button not found, will retry");
-        return false;
+        console.error("[handleSendCode] Button not found!");
+        return;
       }
       
-      // Remove any existing listeners by cloning the button
-      const newBtn = sendCodeBtn.cloneNode(true);
-      sendCodeBtn.parentNode.replaceChild(newBtn, sendCodeBtn);
+      console.log("[handleSendCode] Button clicked, disabled state:", sendCodeBtn.disabled);
       
-      newBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("[btn-send-code] Button clicked, disabled state:", newBtn.disabled);
-        
-        // Check if button is disabled (login not complete)
-        if (newBtn.disabled) {
-          console.log("[btn-send-code] Button is disabled, login not complete yet");
-          showError("Please wait for login to complete.");
-          return;
-        }
-        
-        // Get user - check multiple sources
-        let user = currentUser || auth.currentUser;
-        console.log("[btn-send-code] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
-        
-        // If no user found, wait briefly for auth state
-        if (!user) {
-          console.log("[btn-send-code] No user found, waiting...");
-          user = await new Promise((resolve) => {
-            const timeout = setTimeout(() => {
-              console.log("[btn-send-code] Timeout waiting for user");
-              resolve(null);
-            }, 2000); // Increased timeout
-            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-              if (authUser) {
-                console.log("[btn-send-code] User found via onAuthStateChanged:", authUser.uid);
-                clearTimeout(timeout);
-                unsubscribe();
-                resolve(authUser);
-              }
-            });
-            if (auth.currentUser) {
-              console.log("[btn-send-code] User found immediately:", auth.currentUser.uid);
+      // Check if button is disabled (login not complete)
+      if (sendCodeBtn.disabled) {
+        console.log("[handleSendCode] Button is disabled, login not complete yet");
+        showError("Please wait for login to complete.");
+        return;
+      }
+      
+      // Get user - check multiple sources
+      let user = currentUser || auth.currentUser;
+      console.log("[handleSendCode] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
+      
+      // If no user found, wait briefly for auth state
+      if (!user) {
+        console.log("[handleSendCode] No user found, waiting...");
+        user = await new Promise((resolve) => {
+          const timeout = setTimeout(() => {
+            console.log("[handleSendCode] Timeout waiting for user");
+            resolve(null);
+          }, 2000);
+          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            if (authUser) {
+              console.log("[handleSendCode] User found via onAuthStateChanged:", authUser.uid);
               clearTimeout(timeout);
               unsubscribe();
-              resolve(auth.currentUser);
+              resolve(authUser);
             }
           });
-        }
-        
-        if (!user) {
-          console.error("[btn-send-code] ERROR: No user found after all checks");
-          showError("Please log in first.");
-          document.getElementById("mfa-panel").style.display = "none";
-          document.getElementById("login-panel").style.display = "block";
-          return;
-        }
-        
-        console.log("[btn-send-code] User found:", user.uid, "calling sendMfaCode");
-        // Update currentUser for consistency
-        currentUser = user;
-        
-        // sendMfaCode will check for phone number itself
-        await sendMfaCode(null, user);
-      });
-      console.log("[attachSendCodeHandler] Button handler attached successfully");
-      return true;
+          if (auth.currentUser) {
+            console.log("[handleSendCode] User found immediately:", auth.currentUser.uid);
+            clearTimeout(timeout);
+            unsubscribe();
+            resolve(auth.currentUser);
+          }
+        });
+      }
+      
+      if (!user) {
+        console.error("[handleSendCode] ERROR: No user found after all checks");
+        showError("Please log in first.");
+        document.getElementById("mfa-panel").style.display = "none";
+        document.getElementById("login-panel").style.display = "block";
+        return;
+      }
+      
+      console.log("[handleSendCode] User found:", user.uid, "calling sendMfaCode");
+      // Update currentUser for consistency
+      currentUser = user;
+      
+      // sendMfaCode will check for phone number itself
+      await sendMfaCode(null, user);
     };
     
-    // Try to attach immediately
-    if (!attachSendCodeHandler()) {
-      // If button doesn't exist yet, try again after a short delay
-      setTimeout(() => {
-        attachSendCodeHandler();
-      }, 100);
+    // Attach handler to button when it exists
+    const sendCodeBtn = document.getElementById("btn-send-code");
+    if (sendCodeBtn) {
+      sendCodeBtn.addEventListener("click", handleSendCode);
+      console.log("[init] Send code button handler attached");
+    } else {
+      console.warn("[init] Send code button not found on page load, will attach when MFA panel shows");
     }
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
