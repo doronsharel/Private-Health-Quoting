@@ -393,14 +393,15 @@
         const multiFactorUser = multiFactor(user);
         const session = await multiFactorUser.getSession();
         
-        // Create phone info options for MFA enrollment
+        // For Firebase web MFA, the correct API is:
+        // PhoneAuthProvider.verifyPhoneNumber(auth, phoneInfoOptions, appVerifier)
+        // where phoneInfoOptions contains phoneNumber and session
         const phoneInfoOptions = {
           phoneNumber: phoneNumber,
-          session: session,
+          session: session
         };
-
-        // Verify phone number using static method
-        // For Firebase web MFA, verifyPhoneNumber is a static method
+        
+        // Use static method with auth, options, and recaptcha
         mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
           auth,
           phoneInfoOptions,
