@@ -312,21 +312,27 @@
 
       try {
         await ensureSessionPersistence();
+        console.log("[handleLogin] Starting login for:", email);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("[handleLogin] Login successful, userCredential.user:", userCredential.user.uid);
         currentUser = userCredential.user;
         
         // Wait for auth.currentUser to be set (Firebase auth state propagation)
         // This ensures auth.currentUser is available for MFA operations
+        console.log("[handleLogin] Checking auth.currentUser:", auth.currentUser?.uid || "not set yet");
         if (!auth.currentUser) {
+          console.log("[handleLogin] Waiting for auth state to update...");
           await new Promise((resolve) => {
             const unsubscribe = onAuthStateChanged(auth, (user) => {
               if (user) {
+                console.log("[handleLogin] Auth state updated, user:", user.uid);
                 unsubscribe();
                 resolve();
               }
             });
             // If it's already set, resolve immediately
             if (auth.currentUser) {
+              console.log("[handleLogin] auth.currentUser already set:", auth.currentUser.uid);
               unsubscribe();
               resolve();
             }
@@ -335,8 +341,10 @@
         
         // Ensure currentUser is still set (use auth.currentUser as source of truth)
         currentUser = auth.currentUser || currentUser;
+        console.log("[handleLogin] Final currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
         
         if (!currentUser) {
+          console.error("[handleLogin] ERROR: No user found after login!");
           throw new Error("Authentication failed. Please try again.");
         }
         
@@ -406,7 +414,12 @@
         
         // Get the current user - prioritize provided user, then currentUser, then auth.currentUser
         let user = providedUser || currentUser || auth.currentUser;
-        console.log("[sendMfaCode] Initial check - providedUser:", providedUser?.uid, "currentUser:", currentUser?.uid, "auth.currentUser:", auth.currentUser?.uid);
+        console.log("[sendMfaCode] ===== DEBUG START =====");
+        console.log("[sendMfaCode] providedUser:", providedUser ? {uid: providedUser.uid, email: providedUser.email} : "null");
+        console.log("[sendMfaCode] currentUser:", currentUser ? {uid: currentUser.uid, email: currentUser.email} : "null");
+        console.log("[sendMfaCode] auth.currentUser:", auth.currentUser ? {uid: auth.currentUser.uid, email: auth.currentUser.email} : "null");
+        console.log("[sendMfaCode] Selected user:", user ? {uid: user.uid, email: user.email} : "null");
+        console.log("[sendMfaCode] ===== DEBUG END =====");
         
         // If still no user, wait for auth state to be available
         if (!user) {
