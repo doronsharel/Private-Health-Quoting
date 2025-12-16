@@ -707,27 +707,77 @@
     
     // MFA button handlers
     document.getElementById("btn-send-code")?.addEventListener("click", async () => {
-      // Ensure we have a user before sending code
-      const user = currentUser || auth.currentUser;
+      // Try to get user - check multiple sources and wait if needed
+      let user = currentUser || auth.currentUser;
+      
+      // If no user found, wait for auth state (up to 1 second)
+      if (!user) {
+        user = await new Promise((resolve) => {
+          const timeout = setTimeout(() => resolve(null), 1000);
+          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            if (authUser) {
+              clearTimeout(timeout);
+              unsubscribe();
+              resolve(authUser);
+            }
+          });
+          // Check immediately in case it's already set
+          if (auth.currentUser) {
+            clearTimeout(timeout);
+            unsubscribe();
+            resolve(auth.currentUser);
+          }
+        });
+      }
+      
       if (!user) {
         showError("Please log in first.");
         document.getElementById("mfa-panel").style.display = "none";
         document.getElementById("login-panel").style.display = "block";
         return;
       }
+      
+      // Update currentUser for consistency
+      currentUser = user;
       await sendMfaCode(null, user);
     });
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
       const phoneNumber = document.getElementById("mfa-phone").value.trim();
-      // Ensure we have a user before sending code
-      const user = currentUser || auth.currentUser;
+      
+      // Try to get user - check multiple sources and wait if needed
+      let user = currentUser || auth.currentUser;
+      
+      // If no user found, wait for auth state (up to 1 second)
+      if (!user) {
+        user = await new Promise((resolve) => {
+          const timeout = setTimeout(() => resolve(null), 1000);
+          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            if (authUser) {
+              clearTimeout(timeout);
+              unsubscribe();
+              resolve(authUser);
+            }
+          });
+          // Check immediately in case it's already set
+          if (auth.currentUser) {
+            clearTimeout(timeout);
+            unsubscribe();
+            resolve(auth.currentUser);
+          }
+        });
+      }
+      
       if (!user) {
         showError("Please log in first.");
         document.getElementById("mfa-panel").style.display = "none";
         document.getElementById("login-panel").style.display = "block";
         return;
       }
+      
+      // Update currentUser for consistency
+      currentUser = user;
+      
       if (phoneNumber) {
         await sendMfaCode(phoneNumber, user);
       } else {
