@@ -341,6 +341,13 @@
           document.getElementById("login-panel").style.display = "none";
           document.getElementById("mfa-panel").style.display = "block";
           
+          // Enable the send code button now that login is complete
+          const sendCodeBtn = document.getElementById("btn-send-code");
+          if (sendCodeBtn) {
+            sendCodeBtn.disabled = false;
+            console.log("[handleLogin] Send code button enabled");
+          }
+          
           // If phone number exists, go straight to code input and send code automatically
           if (mfaData.phoneNumber) {
             console.log("[handleLogin] Phone number exists, sending code automatically");
@@ -355,11 +362,6 @@
             console.log("[handleLogin] No phone number stored, showing phone input section");
             document.getElementById("phone-input-section").style.display = "block";
             document.getElementById("code-input-section").style.display = "none";
-            // Enable the send code button now that login is complete
-            const sendCodeBtn = document.getElementById("btn-send-code");
-            if (sendCodeBtn) {
-              sendCodeBtn.disabled = false;
-            }
             showMessage("Please enter your phone number to receive a verification code.");
           }
         } else {
@@ -668,61 +670,63 @@
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
     // MFA button handlers
-    document.getElementById("btn-send-code")?.addEventListener("click", async () => {
-      console.log("[btn-send-code] Button clicked");
-      
-      // Check if button is disabled (login not complete)
-      const sendCodeBtn = document.getElementById("btn-send-code");
-      if (sendCodeBtn?.disabled) {
-        console.log("[btn-send-code] Button is disabled, login not complete yet");
-        showError("Please wait for login to complete.");
-        return;
-      }
-      
-      // Get user - check multiple sources
-      let user = currentUser || auth.currentUser;
-      console.log("[btn-send-code] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
-      
-      // If no user found, wait briefly for auth state
-      if (!user) {
-        console.log("[btn-send-code] No user found, waiting...");
-        user = await new Promise((resolve) => {
-          const timeout = setTimeout(() => {
-            console.log("[btn-send-code] Timeout waiting for user");
-            resolve(null);
-          }, 2000); // Increased timeout
-          const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            if (authUser) {
-              console.log("[btn-send-code] User found via onAuthStateChanged:", authUser.uid);
+    const sendCodeBtn = document.getElementById("btn-send-code");
+    if (sendCodeBtn) {
+      sendCodeBtn.addEventListener("click", async () => {
+        console.log("[btn-send-code] Button clicked, disabled state:", sendCodeBtn.disabled);
+        
+        // Check if button is disabled (login not complete)
+        if (sendCodeBtn.disabled) {
+          console.log("[btn-send-code] Button is disabled, login not complete yet");
+          showError("Please wait for login to complete.");
+          return;
+        }
+        
+        // Get user - check multiple sources
+        let user = currentUser || auth.currentUser;
+        console.log("[btn-send-code] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
+        
+        // If no user found, wait briefly for auth state
+        if (!user) {
+          console.log("[btn-send-code] No user found, waiting...");
+          user = await new Promise((resolve) => {
+            const timeout = setTimeout(() => {
+              console.log("[btn-send-code] Timeout waiting for user");
+              resolve(null);
+            }, 2000); // Increased timeout
+            const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+              if (authUser) {
+                console.log("[btn-send-code] User found via onAuthStateChanged:", authUser.uid);
+                clearTimeout(timeout);
+                unsubscribe();
+                resolve(authUser);
+              }
+            });
+            if (auth.currentUser) {
+              console.log("[btn-send-code] User found immediately:", auth.currentUser.uid);
               clearTimeout(timeout);
               unsubscribe();
-              resolve(authUser);
+              resolve(auth.currentUser);
             }
           });
-          if (auth.currentUser) {
-            console.log("[btn-send-code] User found immediately:", auth.currentUser.uid);
-            clearTimeout(timeout);
-            unsubscribe();
-            resolve(auth.currentUser);
-          }
-        });
-      }
-      
-      if (!user) {
-        console.error("[btn-send-code] ERROR: No user found after all checks");
-        showError("Please log in first.");
-        document.getElementById("mfa-panel").style.display = "none";
-        document.getElementById("login-panel").style.display = "block";
-        return;
-      }
-      
-      console.log("[btn-send-code] User found:", user.uid, "calling sendMfaCode");
-      // Update currentUser for consistency
-      currentUser = user;
-      
-      // sendMfaCode will check for phone number itself
-      await sendMfaCode(null, user);
-    });
+        }
+        
+        if (!user) {
+          console.error("[btn-send-code] ERROR: No user found after all checks");
+          showError("Please log in first.");
+          document.getElementById("mfa-panel").style.display = "none";
+          document.getElementById("login-panel").style.display = "block";
+          return;
+        }
+        
+        console.log("[btn-send-code] User found:", user.uid, "calling sendMfaCode");
+        // Update currentUser for consistency
+        currentUser = user;
+        
+        // sendMfaCode will check for phone number itself
+        await sendMfaCode(null, user);
+      });
+    }
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
       const phoneNumber = document.getElementById("mfa-phone").value.trim();
