@@ -664,21 +664,30 @@
     
     // MFA button handlers
     document.getElementById("btn-send-code")?.addEventListener("click", async () => {
+      console.log("[btn-send-code] Button clicked");
+      
       // Get user - check multiple sources
       let user = currentUser || auth.currentUser;
+      console.log("[btn-send-code] Initial user check - currentUser:", currentUser?.uid || "null", "auth.currentUser:", auth.currentUser?.uid || "null");
       
       // If no user found, wait briefly for auth state
       if (!user) {
+        console.log("[btn-send-code] No user found, waiting...");
         user = await new Promise((resolve) => {
-          const timeout = setTimeout(() => resolve(null), 500);
+          const timeout = setTimeout(() => {
+            console.log("[btn-send-code] Timeout waiting for user");
+            resolve(null);
+          }, 500);
           const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
+              console.log("[btn-send-code] User found via onAuthStateChanged:", authUser.uid);
               clearTimeout(timeout);
               unsubscribe();
               resolve(authUser);
             }
           });
           if (auth.currentUser) {
+            console.log("[btn-send-code] User found immediately:", auth.currentUser.uid);
             clearTimeout(timeout);
             unsubscribe();
             resolve(auth.currentUser);
@@ -687,12 +696,14 @@
       }
       
       if (!user) {
+        console.error("[btn-send-code] ERROR: No user found after all checks");
         showError("Please log in first.");
         document.getElementById("mfa-panel").style.display = "none";
         document.getElementById("login-panel").style.display = "block";
         return;
       }
       
+      console.log("[btn-send-code] User found:", user.uid, "calling sendMfaCode");
       // Update currentUser for consistency
       currentUser = user;
       
