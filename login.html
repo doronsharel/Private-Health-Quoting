@@ -226,7 +226,7 @@
 
       <div class="divider"></div>
       <div class="meta">
-        <div>Need help? Email <a href="mailto:support@privatehealthquoting.com">support@privatehealthquoting.com</a> or call your admin.</div>
+        <div>Need help? Email <a href="mailto:shareldoron@gmail.com">shareldoron@gmail.com</a> or call your admin.</div>
         <div>Trouble receiving codes? Confirm phone format (e.g., +1XXXXXXXXXX).</div>
         <div>
           <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
@@ -521,11 +521,12 @@
           await multiFactorUser.enroll(assertion, "Phone");
         }
 
-        // Update last MFA verification date
+        // Update last MFA verification date - wait for it to complete before redirecting
         const token = await auth.currentUser.getIdToken();
         const phoneNumber = document.getElementById("mfa-phone").value.trim() || null;
         
-        await fetch("/.netlify/functions/update-mfa-verification", {
+        showMessage("Saving verification...");
+        const updateResponse = await fetch("/.netlify/functions/update-mfa-verification", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -533,6 +534,12 @@
           },
           body: JSON.stringify({ phoneNumber }),
         });
+        
+        if (!updateResponse.ok) {
+          const errorData = await updateResponse.json();
+          console.error("Failed to update MFA verification:", errorData);
+          // Still allow login, but log the error
+        }
 
         showMessage("Verified! Redirecting...");
         setTimeout(() => redirectHome(), 500);
@@ -594,11 +601,11 @@
         // Also open a pre-filled email so you get notified immediately.
         const subject = encodeURIComponent("Access request for Private Health Quoting");
         const body = encodeURIComponent(`Please grant access for: ${email}`);
-        window.location.href = `mailto:support@privatehealthquoting.com?subject=${subject}&body=${body}`;
+          window.location.href = `mailto:shareldoron@gmail.com?subject=${subject}&body=${body}`;
       } catch (err) {
         console.error("request-access failed", err);
         showError(
-          err.message || "Unable to submit access request. Please email support@privatehealthquoting.com."
+          err.message || "Unable to submit access request. Please email shareldoron@gmail.com."
         );
       }
     };

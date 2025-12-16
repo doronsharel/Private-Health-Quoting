@@ -48,10 +48,17 @@ exports.handler = async (event) => {
 
     if (lastMfaVerification) {
       const lastVerificationDate = lastMfaVerification.toDate();
-      const daysSinceVerification = Math.floor(
-        (Date.now() - lastVerificationDate.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      mfaRequired = daysSinceVerification >= MFA_REQUIRED_DAYS;
+      const now = new Date();
+      const diffMs = now.getTime() - lastVerificationDate.getTime();
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+      
+      // Only require MFA if 7 or more days have passed since last verification
+      // This means if they verified today (0 days), they won't need to verify again for 7 days
+      mfaRequired = diffDays >= MFA_REQUIRED_DAYS;
+      
+      console.log(`[check-mfa-required] User ${uid}: Last verification: ${lastVerificationDate.toISOString()}, Days since: ${diffDays.toFixed(2)}, MFA required: ${mfaRequired}`);
+    } else {
+      console.log(`[check-mfa-required] User ${uid}: No previous MFA verification found, requiring MFA`);
     }
 
     return {

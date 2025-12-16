@@ -1,6 +1,7 @@
 // access-control.js
-// Central place to define privileged accounts. Update OWNER_EMAILS with the
-// email(s) that should always bypass future subscription/license checks.
+// Shared helper to determine which emails should always bypass subscription
+// checks. Keep this file in the root so the frontend can import it, and copy
+// updates into netlify/functions/access-control.js for the server bundle.
 
 const DEFAULT_OWNER_EMAILS = ["shareldoron@gmail.com"];
 
