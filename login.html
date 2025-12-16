@@ -759,6 +759,20 @@
       console.error("[init] mfa-panel not found!");
     }
     
+    // Function to attach direct handler to button (defined after handleSendCode)
+    const attachDirectHandler = () => {
+      const sendCodeBtn = document.getElementById("btn-send-code");
+      if (sendCodeBtn && !sendCodeBtn.hasAttribute("data-direct-handler")) {
+        sendCodeBtn.addEventListener("click", (e) => {
+          console.log("[direct-handler] Send code button clicked directly, disabled:", sendCodeBtn.disabled);
+          e.stopPropagation(); // Prevent delegation handler from also firing
+          handleSendCode(e);
+        });
+        sendCodeBtn.setAttribute("data-direct-handler", "true");
+        console.log("[attachDirectHandler] Direct handler attached to button");
+      }
+    };
+    
     // Try to attach direct handler immediately
     attachDirectHandler();
     
