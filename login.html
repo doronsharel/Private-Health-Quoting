@@ -189,7 +189,7 @@
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="login-panel">
         <strong>Existing user</strong>
         <label for="login-email">Email</label>
         <input id="login-email" type="email" autocomplete="email" />
@@ -200,6 +200,25 @@
         <button class="btn" id="btn-login" type="button">Log in</button>
         <button class="link-btn" id="btn-reset-password" type="button">Forgot password?</button>
         <button class="link-btn" id="btn-request-access" type="button">Request access</button>
+      </div>
+
+      <div class="panel" id="mfa-panel" style="display: none;">
+        <strong>Phone Verification Required</strong>
+        <p class="muted" style="margin: 8px 0 12px;">For security, please verify your phone number. This is required once per week.</p>
+        
+        <div id="phone-input-section">
+          <label for="mfa-phone">Phone Number</label>
+          <input id="mfa-phone" type="tel" placeholder="+1234567890" autocomplete="tel" />
+          <p class="muted">Format: +1 followed by your 10-digit number</p>
+          <button class="btn" id="btn-send-code" type="button">Send Verification Code</button>
+        </div>
+
+        <div id="code-input-section" style="display: none;">
+          <label for="mfa-code">Verification Code</label>
+          <input id="mfa-code" type="text" placeholder="Enter 6-digit code" maxlength="6" />
+          <button class="btn" id="btn-verify-code" type="button">Verify Code</button>
+          <button class="link-btn" id="btn-resend-code" type="button">Resend code</button>
+        </div>
       </div>
 
       <div class="alert" id="msg"></div>
@@ -224,6 +243,10 @@
       browserSessionPersistence,
       sendPasswordResetEmail,
       signOut,
+      multiFactor,
+      PhoneAuthProvider,
+      PhoneMultiFactorGenerator,
+      RecaptchaVerifier,
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
     const msgEl = document.getElementById("msg");
@@ -233,6 +256,10 @@
     const requestAccessBtn = document.getElementById("btn-request-access");
 
     let persistencePromise = null;
+    let currentUser = null;
+    let mfaResolver = null;
+    let mfaVerificationId = null;
+    let recaptchaVerifier = null;
 
     const clearMessages = () => {
       msgEl.style.display = "none";
@@ -283,39 +310,160 @@
 
       try {
         await ensureSessionPersistence();
-        await signInWithEmailAndPassword(auth, email, password);
-        showMessage("Logged in. Redirecting...");
-        redirectHome();
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        currentUser = userCredential.user;
+        
+        // Check if MFA is required (once per week)
+        const token = await currentUser.getIdToken();
+        const mfaCheckResponse = await fetch("/.netlify/functions/check-mfa-required", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+        const mfaData = await mfaCheckResponse.json();
+        
+        if (mfaData.mfaRequired) {
+          // Show MFA panel
+          document.getElementById("login-panel").style.display = "none";
+          document.getElementById("mfa-panel").style.display = "block";
+          
+          // If phone number exists, go straight to code input
+          if (mfaData.phoneNumber) {
+            document.getElementById("phone-input-section").style.display = "none";
+            document.getElementById("code-input-section").style.display = "block";
+            await sendMfaCode(mfaData.phoneNumber);
+          } else {
+            document.getElementById("phone-input-section").style.display = "block";
+            document.getElementById("code-input-section").style.display = "none";
+          }
+        } else {
+          // MFA not required, proceed to home
+          showMessage("Logged in. Redirecting...");
+          redirectHome();
+        }
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           showError("No account found for that email. Contact admin to be added.");
+        } else if (err.code === "auth/multi-factor-auth-required") {
+          // User has MFA enrolled, handle it
+          mfaResolver = err.resolver;
+          document.getElementById("login-panel").style.display = "none";
+          document.getElementById("mfa-panel").style.display = "block";
+          showMessage("Please complete phone verification.");
         } else {
           showError(err.message || "Unable to log in.");
         }
       }
     };
 
-    const confirmMfa = async () => {
+    const sendMfaCode = async (phoneNumber) => {
       clearMessages();
-      if (!mfaResolver || !mfaVerificationId) {
-        showError("No verification in progress. Please log in again.");
-        return;
+      
+      if (!phoneNumber) {
+        phoneNumber = document.getElementById("mfa-phone").value.trim();
+        if (!phoneNumber) {
+          showError("Phone number is required.");
+          return;
+        }
+        if (!phoneNumber.startsWith("+")) {
+          showError("Phone number must include country code (e.g., +1234567890).");
+          return;
+        }
       }
-      const code = document.getElementById("mfa-code").value.trim();
-      if (!code) {
-        showError("Enter the SMS code.");
-        return;
-      }
+
       try {
-        const cred = PhoneAuthProvider.credential(mfaVerificationId, code);
-        const assertion = PhoneMultiFactorGenerator.assertion(cred);
-        await mfaResolver.resolveSignIn(assertion);
-        showMessage("Signed in. Redirecting...");
-        redirectHome();
+        showMessage("Sending verification code...");
+        
+        // Initialize reCAPTCHA verifier
+        if (!recaptchaVerifier) {
+          recaptchaVerifier = new RecaptchaVerifier(auth, "btn-send-code", {
+            size: "invisible",
+            callback: () => {},
+          });
+        }
+
+        const user = currentUser || auth.currentUser;
+        if (!user) {
+          throw new Error("User not authenticated.");
+        }
+
+        const session = await multiFactor(user).getSession();
+        const phoneAuthCredential = PhoneAuthProvider.credentialFromResult(session);
+        const phoneInfoOptions = {
+          phoneNumber: phoneNumber,
+          session: session,
+        };
+
+        mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
+          phoneInfoOptions,
+          recaptchaVerifier
+        );
+
+        // Show code input
+        document.getElementById("phone-input-section").style.display = "none";
+        document.getElementById("code-input-section").style.display = "block";
+        showMessage("Verification code sent! Check your phone.");
       } catch (err) {
-        showError(err.message || "Code invalid. Try again.");
+        console.error("Send MFA code error:", err);
+        showError(err.message || "Failed to send verification code.");
       }
     };
+
+    const verifyMfaCode = async () => {
+      clearMessages();
+      
+      const code = document.getElementById("mfa-code").value.trim();
+      if (!code) {
+        showError("Enter the verification code.");
+        return;
+      }
+
+      if (!mfaVerificationId) {
+        showError("No verification in progress. Please send a new code.");
+        return;
+      }
+
+      try {
+        showMessage("Verifying code...");
+        
+        const cred = PhoneAuthProvider.credential(mfaVerificationId, code);
+        
+        if (mfaResolver) {
+          // User has MFA enrolled, resolve sign-in
+          const assertion = PhoneMultiFactorGenerator.assertion(cred);
+          await mfaResolver.resolveSignIn(assertion);
+        } else {
+          // First time setting up MFA
+          const user = currentUser || auth.currentUser;
+          const multiFactorUser = multiFactor(user);
+          const phoneAuthCredential = PhoneAuthProvider.credential(mfaVerificationId, code);
+          const assertion = PhoneMultiFactorGenerator.assertion(phoneAuthCredential);
+          await multiFactorUser.enroll(assertion, "Phone");
+        }
+
+        // Update last MFA verification date
+        const token = await auth.currentUser.getIdToken();
+        const phoneNumber = document.getElementById("mfa-phone").value.trim() || null;
+        
+        await fetch("/.netlify/functions/update-mfa-verification", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phoneNumber }),
+        });
+
+        showMessage("Verified! Redirecting...");
+        setTimeout(() => redirectHome(), 500);
+      } catch (err) {
+        console.error("Verify MFA code error:", err);
+        showError(err.message || "Invalid code. Please try again.");
+      }
+    };
+
 
     const handlePasswordReset = async () => {
       clearMessages();
@@ -380,6 +528,19 @@
     loginBtn.addEventListener("click", handleLogin);
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
+    
+    // MFA button handlers
+    document.getElementById("btn-send-code")?.addEventListener("click", () => sendMfaCode());
+    document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
+    document.getElementById("btn-resend-code")?.addEventListener("click", () => {
+      const phoneNumber = document.getElementById("mfa-phone").value.trim();
+      if (phoneNumber) {
+        sendMfaCode(phoneNumber);
+      } else {
+        document.getElementById("code-input-section").style.display = "none";
+        document.getElementById("phone-input-section").style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
