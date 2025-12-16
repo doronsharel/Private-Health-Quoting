@@ -69,7 +69,7 @@ function updateSubscriptionBanner() {
   }
 
   // If user has active subscription, show manage button
-  if (subscriptionAccess.status === "active" || subscriptionAccess.status === "trialing") {
+  if (subscriptionAccess.status === "active" || subscriptionAccess.status === "trialing" || subscriptionAccess.status === "owner") {
     if (!subscriptionBannerOverride) {
       banner.hidden = false;
       banner.dataset.state = "success";
@@ -78,6 +78,7 @@ function updateSubscriptionBanner() {
       if (manageBtn) {
         manageBtn.hidden = false;
         manageBtn.disabled = false;
+        manageBtn.style.display = "block"; // Force show
       }
       return;
     }
