@@ -346,12 +346,6 @@
           if (sendCodeBtn) {
             sendCodeBtn.disabled = false;
             console.log("[handleLogin] Send code button enabled, disabled state:", sendCodeBtn.disabled);
-            // Attach handler if not already attached
-            if (!sendCodeBtn.hasAttribute("data-handler-attached")) {
-              sendCodeBtn.addEventListener("click", handleSendCode);
-              sendCodeBtn.setAttribute("data-handler-attached", "true");
-              console.log("[handleLogin] Send code button handler attached");
-            }
           } else {
             console.error("[handleLogin] Send code button not found!");
           }
@@ -677,8 +671,12 @@
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
-    // MFA button handler - use a function that can be called when button is available
-    const handleSendCode = async () => {
+    // MFA button handler - use event delegation on the mfa-panel container
+    const handleSendCode = async (e) => {
+      // Prevent default and stop propagation
+      e.preventDefault();
+      e.stopPropagation();
+      
       const sendCodeBtn = document.getElementById("btn-send-code");
       if (!sendCodeBtn) {
         console.error("[handleSendCode] Button not found!");
@@ -739,13 +737,20 @@
       await sendMfaCode(null, user);
     };
     
-    // Attach handler to button when it exists
-    const sendCodeBtn = document.getElementById("btn-send-code");
-    if (sendCodeBtn) {
-      sendCodeBtn.addEventListener("click", handleSendCode);
-      console.log("[init] Send code button handler attached");
+    // Use event delegation on the mfa-panel container - this works even if button is dynamically shown
+    const mfaPanel = document.getElementById("mfa-panel");
+    if (mfaPanel) {
+      mfaPanel.addEventListener("click", (e) => {
+        // Check if the clicked element is the send code button or a child of it
+        const clickedBtn = e.target.closest("#btn-send-code");
+        if (clickedBtn) {
+          console.log("[event-delegation] Send code button clicked via delegation");
+          handleSendCode(e);
+        }
+      });
+      console.log("[init] Event delegation attached to mfa-panel for send code button");
     } else {
-      console.warn("[init] Send code button not found on page load, will attach when MFA panel shows");
+      console.error("[init] mfa-panel not found!");
     }
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
