@@ -393,20 +393,38 @@
         const multiFactorUser = multiFactor(user);
         const session = await multiFactorUser.getSession();
         
-        // For Firebase web MFA, the correct API is:
-        // PhoneAuthProvider.verifyPhoneNumber(auth, phoneInfoOptions, appVerifier)
-        // where phoneInfoOptions contains phoneNumber and session
+        // For Firebase web MFA, the API structure is different
+        // We need to pass phoneNumber and session to verifyPhoneNumber
+        // The method signature for web MFA is: verifyPhoneNumber(auth, phoneInfoOptions, appVerifier)
         const phoneInfoOptions = {
           phoneNumber: phoneNumber,
           session: session
         };
         
-        // Use static method with auth, options, and recaptcha
-        mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
-          auth,
-          phoneInfoOptions,
-          recaptchaVerifier
-        );
+        // Debug: Check what's available on PhoneAuthProvider
+        console.log("PhoneAuthProvider:", PhoneAuthProvider);
+        console.log("Available methods:", Object.getOwnPropertyNames(PhoneAuthProvider));
+        
+        // Try the correct Firebase web MFA API
+        // According to Firebase docs, for web MFA it should be a static method
+        if (PhoneAuthProvider && typeof PhoneAuthProvider.verifyPhoneNumber === 'function') {
+          mfaVerificationId = await PhoneAuthProvider.verifyPhoneNumber(
+            auth,
+            phoneInfoOptions,
+            recaptchaVerifier
+          );
+        } else {
+          // If static method doesn't exist, try instance method
+          const phoneAuthProvider = new PhoneAuthProvider(auth);
+          if (typeof phoneAuthProvider.verifyPhoneNumber === 'function') {
+            mfaVerificationId = await phoneAuthProvider.verifyPhoneNumber(
+              phoneInfoOptions,
+              recaptchaVerifier
+            );
+          } else {
+            throw new Error("PhoneAuthProvider.verifyPhoneNumber is not available. Check Firebase SDK version and imports.");
+          }
+        }
 
         // Show code input
         document.getElementById("phone-input-section").style.display = "none";
