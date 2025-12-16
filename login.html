@@ -345,7 +345,11 @@
           const sendCodeBtn = document.getElementById("btn-send-code");
           if (sendCodeBtn) {
             sendCodeBtn.disabled = false;
-            console.log("[handleLogin] Send code button enabled");
+            console.log("[handleLogin] Send code button enabled, disabled state:", sendCodeBtn.disabled);
+            // Re-attach handler in case it wasn't attached before
+            attachSendCodeHandler();
+          } else {
+            console.error("[handleLogin] Send code button not found!");
           }
           
           // If phone number exists, go straight to code input and send code automatically
@@ -669,14 +673,25 @@
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
-    // MFA button handlers
-    const sendCodeBtn = document.getElementById("btn-send-code");
-    if (sendCodeBtn) {
-      sendCodeBtn.addEventListener("click", async () => {
-        console.log("[btn-send-code] Button clicked, disabled state:", sendCodeBtn.disabled);
+    // MFA button handlers - use event delegation or attach when button is available
+    const attachSendCodeHandler = () => {
+      const sendCodeBtn = document.getElementById("btn-send-code");
+      if (!sendCodeBtn) {
+        console.warn("[attachSendCodeHandler] Button not found, will retry");
+        return false;
+      }
+      
+      // Remove any existing listeners by cloning the button
+      const newBtn = sendCodeBtn.cloneNode(true);
+      sendCodeBtn.parentNode.replaceChild(newBtn, sendCodeBtn);
+      
+      newBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("[btn-send-code] Button clicked, disabled state:", newBtn.disabled);
         
         // Check if button is disabled (login not complete)
-        if (sendCodeBtn.disabled) {
+        if (newBtn.disabled) {
           console.log("[btn-send-code] Button is disabled, login not complete yet");
           showError("Please wait for login to complete.");
           return;
@@ -726,6 +741,16 @@
         // sendMfaCode will check for phone number itself
         await sendMfaCode(null, user);
       });
+      console.log("[attachSendCodeHandler] Button handler attached successfully");
+      return true;
+    };
+    
+    // Try to attach immediately
+    if (!attachSendCodeHandler()) {
+      // If button doesn't exist yet, try again after a short delay
+      setTimeout(() => {
+        attachSendCodeHandler();
+      }, 100);
     }
     document.getElementById("btn-verify-code")?.addEventListener("click", verifyMfaCode);
     document.getElementById("btn-resend-code")?.addEventListener("click", async () => {
