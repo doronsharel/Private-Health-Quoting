@@ -673,20 +673,6 @@
     resetBtn.addEventListener("click", handlePasswordReset);
     requestAccessBtn.addEventListener("click", handleRequestAccess);
     
-    // Function to attach direct handler to button (defined early so it can be used in handleLogin)
-    const attachDirectHandler = () => {
-      const sendCodeBtn = document.getElementById("btn-send-code");
-      if (sendCodeBtn && !sendCodeBtn.hasAttribute("data-direct-handler")) {
-        sendCodeBtn.addEventListener("click", (e) => {
-          console.log("[direct-handler] Send code button clicked directly, disabled:", sendCodeBtn.disabled);
-          e.stopPropagation(); // Prevent delegation handler from also firing
-          handleSendCode(e);
-        });
-        sendCodeBtn.setAttribute("data-direct-handler", "true");
-        console.log("[attachDirectHandler] Direct handler attached to button");
-      }
-    };
-    
     // MFA button handler - use event delegation on the mfa-panel container
     const handleSendCode = async (e) => {
       // Prevent default and stop propagation
