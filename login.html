@@ -315,6 +315,31 @@
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         currentUser = userCredential.user;
         
+        // Wait for auth.currentUser to be set (Firebase auth state propagation)
+        // This ensures auth.currentUser is available for MFA operations
+        if (!auth.currentUser) {
+          await new Promise((resolve) => {
+            const unsubscribe = onAuthStateChanged(auth, (user) => {
+              if (user) {
+                unsubscribe();
+                resolve();
+              }
+            });
+            // If it's already set, resolve immediately
+            if (auth.currentUser) {
+              unsubscribe();
+              resolve();
+            }
+          });
+        }
+        
+        // Ensure currentUser is still set (use auth.currentUser as source of truth)
+        currentUser = auth.currentUser || currentUser;
+        
+        if (!currentUser) {
+          throw new Error("Authentication failed. Please try again.");
+        }
+        
         // Check if MFA is required (once per week)
         const token = await currentUser.getIdToken();
         const mfaCheckResponse = await fetch("/.netlify/functions/check-mfa-required", {
