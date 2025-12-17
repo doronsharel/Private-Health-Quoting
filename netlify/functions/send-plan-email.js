@@ -1,5 +1,4 @@
-const { getAuth } = require("./lib/firebase");
-const { userHasPaidAccess } = require("./lib/users");
+const { authenticateRequest, userHasPaidAccess } = require("./lib/users");
 const plans = require("./plans-data.js");
 const sgMail = require("@sendgrid/mail");
 
@@ -172,25 +171,11 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Authenticate user
-    const authHeader = event.headers.authorization || "";
-    if (!authHeader.startsWith("Bearer ")) {
-      return {
-        statusCode: 401,
-        headers: { ...CORS_HEADERS },
-        body: JSON.stringify({ error: "Missing authorization header." }),
-      };
-    }
-
-    const token = authHeader.replace(/^Bearer\s+/i, "");
-    const decoded = await getAuth().verifyIdToken(token);
-    const userRecord = {
-      uid: decoded.uid,
-      email: decoded.email,
-    };
-
+    // Authenticate user and fetch their Firestore data
+    const userRecord = await authenticateRequest(event);
+    
     // Check if user has paid access
-    const hasAccess = userHasPaidAccess({ ...userRecord, docData: {} });
+    const hasAccess = userHasPaidAccess(userRecord);
     if (!hasAccess) {
       return {
         statusCode: 403,
