@@ -32,6 +32,7 @@ exports.handler = async (event) => {
     const password = body.password || "";
     const firstName = (body.firstName || "").trim();
     const lastName = (body.lastName || "").trim();
+    const phone = (body.phone || "").trim();
     const isPreview = body.action === "preview";
 
     if (!token) {
@@ -136,17 +137,24 @@ exports.handler = async (event) => {
       { merge: true }
     );
 
-    // Store user name in Firestore users collection
+    // Store user name and phone in Firestore users collection
     // (db was already declared above, reuse it)
     const userRef = db.collection("users").doc(userRecord.uid);
-    await userRef.set({
+    const userData = {
       uid: userRecord.uid,
       email: data.email,
       firstName,
       lastName,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    }, { merge: true });
+    };
+    
+    // Only add phone if provided
+    if (phone) {
+      userData.phone = phone;
+    }
+    
+    await userRef.set(userData, { merge: true });
 
     return {
       statusCode: 200,

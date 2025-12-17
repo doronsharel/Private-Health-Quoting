@@ -132,6 +132,9 @@
         <label for="lastName">Last Name</label>
         <input id="lastName" type="text" autocomplete="family-name" required />
 
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="tel" autocomplete="tel" placeholder="(555) 123-4567" />
+
         <label for="password">Password</label>
         <input id="password" type="password" autocomplete="new-password" />
 
@@ -175,6 +178,7 @@
     const emailInput = document.getElementById("email");
     const firstNameInput = document.getElementById("firstName");
     const lastNameInput = document.getElementById("lastName");
+    const phoneInput = document.getElementById("phone");
     const passwordInput = document.getElementById("password");
     const confirmInput = document.getElementById("confirm");
     const form = document.getElementById("signup-form");
@@ -226,6 +230,7 @@
       const confirm = confirmInput.value;
       const firstName = firstNameInput.value.trim();
       const lastName = lastNameInput.value.trim();
+      const phone = phoneInput.value.trim();
 
       if (!firstName || !lastName) {
         showError("First name and last name are required.");
@@ -244,7 +249,7 @@
         const res = await fetch("/.netlify/functions/complete-signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, password, firstName, lastName }),
+          body: JSON.stringify({ token, password, firstName, lastName, phone }),
         });
         const data = await res.json();
         if (!res.ok) {

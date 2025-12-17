@@ -33,3 +33,14 @@ If you want to clean up Stripe as well:
 
 You can also delete programmatically, but the Firebase Console method above is easiest.
 
+
+
+
+
+
+
+
+
+
+
+

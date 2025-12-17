@@ -32,7 +32,7 @@ function getPremiumsForPlan(plan, ageBand) {
   return plan.premiums || {};
 }
 
-function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agentPhone) {
+function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agentPhone, recipientEmail, agentEmail) {
   // Get base URL for PDF links (use environment variable or default)
   const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
   
@@ -45,6 +45,9 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
   const agentNumberHtml = agentPhone ? `<br>${agentPhone}` : "";
   // Format agent number (phone) if available - Text version
   const agentNumberText = agentPhone ? `\n${agentPhone}` : "";
+  
+  // Build unsubscribe URL
+  const unsubscribeUrl = `${baseUrl}/unsubscribe?email=${encodeURIComponent(recipientEmail || '')}&agent=${encodeURIComponent(agentEmail || '')}`;
   
   // Format each plan
   const planSections = plans.map((plan, index) => {
@@ -85,11 +88,6 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
           </ul>
         </div>
 
-        ${plan.enrollUrl ? `
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${plan.enrollUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 15px 0; font-weight: bold;">Enroll Now</a>
-        </div>
-        ` : ''}
 
         ${pdfUrl ? `
         <p style="margin-top: 20px;">
@@ -139,7 +137,10 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
       </div>
     </div>
     <div class="footer">
-      <p>This plan information was sent to you by your agent.</p>
+      <p style="margin: 0 0 10px 0;">This plan information was sent to you by your agent.</p>
+      <p style="margin: 0; font-size: 11px;">
+        <a href="${unsubscribeUrl}" style="color: #6b7280; text-decoration: underline;">Unsubscribe from these emails</a>
+      </p>
     </div>
   </div>
 </body>
@@ -173,7 +174,6 @@ Plan Benefits:
 - Emergency Room: ${b.emergencyRoom || 'N/A'}
 - Hospital Inpatient: ${b.inpatient || 'N/A'}
 
-${plan.enrollUrl ? `\nEnroll: ${plan.enrollUrl}` : ''}
 ${pdfUrl ? `\nSummary of Benefits: ${pdfUrl}` : ''}
 `;
   }).join('\n\n---\n\n');
@@ -187,6 +187,8 @@ ${agentName}${agentNumberText}
 
 ---
 This plan information was sent to you by your agent.
+
+To unsubscribe from these emails, visit: ${unsubscribeUrl}
   `;
 
   return { html, text };
@@ -282,24 +284,58 @@ exports.handler = async (event) => {
     const agentLastName = userRecord.docData?.lastName || "";
     const agentPhone = userRecord.docData?.phone || userRecord.docData?.phoneNumber || "";
     
-    // Format agent name for subject line
-    const agentName = agentFirstName && agentLastName 
-      ? `${agentFirstName} ${agentLastName}` 
-      : agentFirstName || agentLastName || "Agent";
+    // Debug logging
+    console.log("[send-plan-email] Agent info:", {
+      firstName: agentFirstName,
+      lastName: agentLastName,
+      phone: agentPhone,
+      email: userRecord.email,
+      docData: userRecord.docData
+    });
+    
+    // Format agent name for subject line - ensure we have a name
+    let agentName = "Agent";
+    if (agentFirstName && agentLastName) {
+      agentName = `${agentFirstName} ${agentLastName}`;
+    } else if (agentFirstName) {
+      agentName = agentFirstName;
+    } else if (agentLastName) {
+      agentName = agentLastName;
+    }
     
     // Format and send email
     sgMail.setApiKey(SENDGRID_API_KEY);
-    const { html, text } = formatPlanEmail(selectedPlans, ageBands || {}, agentFirstName, agentLastName, agentPhone);
+    const { html, text } = formatPlanEmail(selectedPlans, ageBands || {}, agentFirstName, agentLastName, agentPhone, recipientEmail, userRecord.email);
     
     const subject = `${agentName} - Recommended Private Health Options for 2026`;
 
+    // Build unsubscribe URL (using agent's email as identifier)
+    const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
+    const unsubscribeUrl = `${baseUrl}/unsubscribe?email=${encodeURIComponent(recipientEmail)}&agent=${encodeURIComponent(userRecord.email)}`;
+
     const msg = {
       to: recipientEmail,
-      from: SENDGRID_FROM_EMAIL,
+      from: {
+        email: SENDGRID_FROM_EMAIL,
+        name: agentName || "Private Health Quoting"
+      },
       replyTo: userRecord.email,
       subject: subject,
       text,
       html,
+      // Add headers to improve deliverability
+      headers: {
+        "List-Unsubscribe": `<${unsubscribeUrl}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        "X-Mailer": "Private Health Quoting System",
+      },
+      // Add categories for better tracking
+      categories: ["plan-details", "agent-communication"],
+      // Custom args for tracking
+      customArgs: {
+        agentEmail: userRecord.email,
+        planCount: selectedPlans.length.toString(),
+      },
     };
 
     try {

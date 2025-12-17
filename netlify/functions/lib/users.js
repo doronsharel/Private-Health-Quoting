@@ -44,12 +44,16 @@ async function authenticateRequest(event) {
 
     await userRef.set(baseData, { merge: true });
 
+    // Re-fetch the document to get the latest data including firstName, lastName, phone, etc.
+    const updatedSnapshot = await userRef.get();
+    const updatedData = updatedSnapshot.exists ? updatedSnapshot.data() : {};
+
     return {
       uid,
       email,
       isOwner: owner,
       docRef: userRef,
-      docData: { ...(existing || {}), ...baseData },
+      docData: updatedData,
     };
   } catch (err) {
     if (!err.statusCode) err.statusCode = 401;
