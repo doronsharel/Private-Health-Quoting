@@ -16,9 +16,19 @@ function formatMoney(amount) {
   return `$${parseFloat(amount).toFixed(2)}`;
 }
 
-function formatPlanEmail(plans, agentEmail) {
+function formatPlanEmail(plans, agentFirstName, agentLastName, agentPhone) {
   // Get base URL for PDF links (use environment variable or default)
   const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
+  
+  // Format agent name
+  const agentName = agentFirstName && agentLastName 
+    ? `${agentFirstName} ${agentLastName}` 
+    : agentFirstName || agentLastName || "Your Agent";
+  
+  // Format agent number (phone) if available - HTML version
+  const agentNumberHtml = agentPhone ? `<br>${agentPhone}` : "";
+  // Format agent number (phone) if available - Text version
+  const agentNumberText = agentPhone ? `\n${agentPhone}` : "";
   
   // Format each plan
   const planSections = plans.map((plan, index) => {
@@ -72,9 +82,6 @@ function formatPlanEmail(plans, agentEmail) {
     `;
   }).join('');
 
-  const planCount = plans.length;
-  const titleText = planCount === 1 ? "Health Plan Details" : `${planCount} Health Plan Details`;
-  
   const html = `
 <!DOCTYPE html>
 <html>
@@ -85,6 +92,7 @@ function formatPlanEmail(plans, agentEmail) {
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
     .header { background: linear-gradient(90deg, #2563eb, #4f46e5); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
     .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
+    .intro-message { margin-bottom: 30px; padding: 15px; background: #ffffff; border-left: 4px solid #2563eb; }
     .plan-name { font-size: 24px; font-weight: bold; margin: 0 0 10px 0; color: #1f2937; }
     .section { margin: 20px 0; }
     .section-title { font-size: 18px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
@@ -94,20 +102,26 @@ function formatPlanEmail(plans, agentEmail) {
     .benefits-list { list-style: none; padding: 0; }
     .benefits-list li { padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
     .footer { background: #f3f4f6; padding: 15px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; }
+    .agent-signature { margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb; }
     .enroll-btn { display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 15px 0; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0;">${titleText}</h1>
+      <h1 style="margin: 0;">Recommended Private Health Options for 2026</h1>
     </div>
     <div class="content">
+      <div class="intro-message">
+        <p style="margin: 0 0 15px 0;">Please look over the plans. These are best options available in your area through private health insurance this year. If you have any questions reach out.</p>
+      </div>
       ${planSections}
+      <div class="agent-signature">
+        <p style="margin: 0; font-weight: bold;">${agentName}${agentNumberHtml}</p>
+      </div>
     </div>
     <div class="footer">
       <p>This plan information was sent to you by your agent.</p>
-      <p>For questions, please contact your agent at ${agentEmail}</p>
     </div>
   </div>
 </body>
@@ -144,11 +158,15 @@ ${pdfUrl ? `\nSummary of Benefits: ${pdfUrl}` : ''}
 `;
   }).join('\n\n---\n\n');
 
-  const text = `${textSections}
+  const text = `Please look over the plans. These are best options available in your area through private health insurance this year. If you have any questions reach out.
+
+${textSections}
+
+---
+${agentName}${agentNumberText}
 
 ---
 This plan information was sent to you by your agent.
-For questions, please contact your agent at ${agentEmail}
   `;
 
   return { html, text };
@@ -239,14 +257,21 @@ exports.handler = async (event) => {
       };
     }
 
+    // Get agent information from user record
+    const agentFirstName = userRecord.docData?.firstName || "";
+    const agentLastName = userRecord.docData?.lastName || "";
+    const agentPhone = userRecord.docData?.phone || userRecord.docData?.phoneNumber || "";
+    
+    // Format agent name for subject line
+    const agentName = agentFirstName && agentLastName 
+      ? `${agentFirstName} ${agentLastName}` 
+      : agentFirstName || agentLastName || "Agent";
+    
     // Format and send email
     sgMail.setApiKey(SENDGRID_API_KEY);
-    const { html, text } = formatPlanEmail(selectedPlans, userRecord.email);
+    const { html, text } = formatPlanEmail(selectedPlans, agentFirstName, agentLastName, agentPhone);
     
-    const planCount = selectedPlans.length;
-    const subject = planCount === 1 
-      ? `Health Plan Details: ${selectedPlans[0].name}`
-      : `${planCount} Health Plan Details`;
+    const subject = `${agentName} - Recommended Private Health Options for 2026`;
 
     const msg = {
       to: recipientEmail,
