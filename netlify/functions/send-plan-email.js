@@ -279,10 +279,36 @@ exports.handler = async (event) => {
       };
     }
 
-    // Get agent information from user record
-    const agentFirstName = userRecord.docData?.firstName || "";
-    const agentLastName = userRecord.docData?.lastName || "";
-    const agentPhone = userRecord.docData?.phone || userRecord.docData?.phoneNumber || "";
+    // Get agent information - fetch directly from Firestore to ensure we have latest data
+    const { getFirestore } = require("./lib/firebase");
+    const db = getFirestore();
+    const userDoc = await db.collection("users").doc(userRecord.uid).get();
+    const userData = userDoc.exists ? userDoc.data() : {};
+    
+    let agentFirstName = userData.firstName || "";
+    let agentLastName = userData.lastName || "";
+    const agentPhone = userData.phone || userData.phoneNumber || "";
+    
+    // If firstName/lastName are still missing, try to get from Firebase Auth displayName
+    if (!agentFirstName && !agentLastName) {
+      try {
+        const { getAuth } = require("./lib/firebase");
+        const auth = getAuth();
+        const authUser = await auth.getUser(userRecord.uid);
+        if (authUser.displayName) {
+          // Try to parse displayName into first/last name
+          const nameParts = authUser.displayName.trim().split(/\s+/);
+          if (nameParts.length >= 2) {
+            agentFirstName = nameParts[0];
+            agentLastName = nameParts.slice(1).join(" ");
+          } else if (nameParts.length === 1) {
+            agentFirstName = nameParts[0];
+          }
+        }
+      } catch (authErr) {
+        console.error("[send-plan-email] Failed to get user from Auth:", authErr);
+      }
+    }
     
     // Debug logging
     console.log("[send-plan-email] Agent info:", {
@@ -290,7 +316,9 @@ exports.handler = async (event) => {
       lastName: agentLastName,
       phone: agentPhone,
       email: userRecord.email,
-      docData: userRecord.docData
+      uid: userRecord.uid,
+      userDataKeys: Object.keys(userData),
+      userData: userData
     });
     
     // Format agent name for subject line - ensure we have a name
@@ -301,6 +329,15 @@ exports.handler = async (event) => {
       agentName = agentFirstName;
     } else if (agentLastName) {
       agentName = agentLastName;
+    } else {
+      // Last resort: use email username part (capitalize first letter)
+      const emailParts = userRecord.email.split("@");
+      if (emailParts[0]) {
+        const username = emailParts[0];
+        // Try to extract name from email like "doronsharel" -> "Doron Sharel"
+        // This is a fallback, so it's okay if it's not perfect
+        agentName = username.charAt(0).toUpperCase() + username.slice(1);
+      }
     }
     
     // Format and send email
