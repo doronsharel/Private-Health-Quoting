@@ -17,21 +17,65 @@ function formatMoney(amount) {
   return `$${parseFloat(amount).toFixed(2)}`;
 }
 
-function formatPlanEmail(plan, agentEmail) {
-  const b = plan.benefits;
-  const premiums = plan.premiums || {};
-  
+function formatPlanEmail(plans, agentEmail) {
   // Get base URL for PDF links (use environment variable or default)
   const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
-  const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
   
-  // Format premium rows
-  const premiumRows = [];
-  if (premiums.member) premiumRows.push(`<tr><td><strong>Member:</strong></td><td>${formatMoney(premiums.member)}</td></tr>`);
-  if (premiums.memberSpouse) premiumRows.push(`<tr><td><strong>Member & Spouse:</strong></td><td>${formatMoney(premiums.memberSpouse)}</td></tr>`);
-  if (premiums.memberChildren) premiumRows.push(`<tr><td><strong>Member & Children:</strong></td><td>${formatMoney(premiums.memberChildren)}</td></tr>`);
-  if (premiums.family) premiumRows.push(`<tr><td><strong>Family:</strong></td><td>${formatMoney(premiums.family)}</td></tr>`);
+  // Format each plan
+  const planSections = plans.map((plan, index) => {
+    const b = plan.benefits;
+    const premiums = plan.premiums || {};
+    const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
+    
+    // Format premium rows
+    const premiumRows = [];
+    if (premiums.member) premiumRows.push(`<tr><td><strong>Member:</strong></td><td>${formatMoney(premiums.member)}</td></tr>`);
+    if (premiums.memberSpouse) premiumRows.push(`<tr><td><strong>Member & Spouse:</strong></td><td>${formatMoney(premiums.memberSpouse)}</td></tr>`);
+    if (premiums.memberChildren) premiumRows.push(`<tr><td><strong>Member & Children:</strong></td><td>${formatMoney(premiums.memberChildren)}</td></tr>`);
+    if (premiums.family) premiumRows.push(`<tr><td><strong>Family:</strong></td><td>${formatMoney(premiums.family)}</td></tr>`);
+    
+    return `
+      <div class="plan-section" style="margin-bottom: 40px; padding-bottom: 30px; border-bottom: ${index < plans.length - 1 ? '2px solid #e5e7eb' : 'none'};">
+        <h2 class="plan-name" style="font-size: 24px; font-weight: bold; margin: 0 0 10px 0; color: #1f2937;">${plan.name}</h2>
+        ${plan.badge ? `<p style="color: #6b7280; margin-top: 0;"><strong>${plan.badge}</strong></p>` : ''}
+        
+        <div class="section" style="margin: 20px 0;">
+          <div class="section-title" style="font-size: 18px; font-weight: bold; color: #2563eb; margin-bottom: 10px;">Monthly Premiums</div>
+          <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+            ${premiumRows.join('')}
+          </table>
+        </div>
 
+        <div class="section" style="margin: 20px 0;">
+          <div class="section-title" style="font-size: 18px; font-weight: bold; color: #2563eb; margin-bottom: 10px;">Plan Benefits</div>
+          <ul class="benefits-list" style="list-style: none; padding: 0;">
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Deductible:</strong> ${b.deductible || 'N/A'}</li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Max Out-of-Pocket:</strong> ${b.oopMax || 'N/A'}</li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Primary Care Visit:</strong> ${b.primaryCare || 'N/A'}</li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Specialist Visit:</strong> ${b.specialist || 'N/A'}</li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Emergency Room:</strong> ${b.emergencyRoom || 'N/A'}</li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Hospital Inpatient:</strong> ${b.inpatient || 'N/A'}</li>
+          </ul>
+        </div>
+
+        ${plan.enrollUrl ? `
+        <div style="text-align: center; margin: 20px 0;">
+          <a href="${plan.enrollUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 15px 0; font-weight: bold;">Enroll Now</a>
+        </div>
+        ` : ''}
+
+        ${pdfUrl ? `
+        <p style="margin-top: 20px;">
+          <a href="${pdfUrl}" style="color: #2563eb; text-decoration: underline;">View Full Summary of Benefits (PDF)</a>
+        </p>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  const planCount = plans.length;
+  const titleText = planCount === 1 ? "Health Plan Details" : `${planCount} Health Plan Details`;
+  
   const html = `
 <!DOCTYPE html>
 <html>
@@ -57,42 +101,10 @@ function formatPlanEmail(plan, agentEmail) {
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0;">Health Plan Details</h1>
+      <h1 style="margin: 0;">${titleText}</h1>
     </div>
     <div class="content">
-      <h2 class="plan-name">${plan.name}</h2>
-      ${plan.badge ? `<p style="color: #6b7280; margin-top: 0;"><strong>${plan.badge}</strong></p>` : ''}
-      
-      <div class="section">
-        <div class="section-title">Monthly Premiums</div>
-        <table>
-          ${premiumRows.join('')}
-        </table>
-      </div>
-
-      <div class="section">
-        <div class="section-title">Plan Benefits</div>
-        <ul class="benefits-list">
-          <li><strong>Deductible:</strong> ${b.deductible || 'N/A'}</li>
-          <li><strong>Max Out-of-Pocket:</strong> ${b.oopMax || 'N/A'}</li>
-          <li><strong>Primary Care Visit:</strong> ${b.primaryCare || 'N/A'}</li>
-          <li><strong>Specialist Visit:</strong> ${b.specialist || 'N/A'}</li>
-          <li><strong>Emergency Room:</strong> ${b.emergencyRoom || 'N/A'}</li>
-          <li><strong>Hospital Inpatient:</strong> ${b.inpatient || 'N/A'}</li>
-        </ul>
-      </div>
-
-      ${plan.enrollUrl ? `
-      <div style="text-align: center;">
-        <a href="${plan.enrollUrl}" class="enroll-btn">Enroll Now</a>
-      </div>
-      ` : ''}
-
-      ${pdfUrl ? `
-      <p style="margin-top: 20px;">
-        <a href="${pdfUrl}" style="color: #2563eb; text-decoration: underline;">View Full Summary of Benefits (PDF)</a>
-      </p>
-      ` : ''}
+      ${planSections}
     </div>
     <div class="footer">
       <p>This plan information was sent to you by your agent.</p>
@@ -103,7 +115,14 @@ function formatPlanEmail(plan, agentEmail) {
 </html>
   `;
 
-  const text = `
+  // Format text version
+  const textSections = plans.map((plan) => {
+    const b = plan.benefits;
+    const premiums = plan.premiums || {};
+    const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
+    const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
+    
+    return `
 Health Plan Details: ${plan.name}
 ${plan.badge ? `\n${plan.badge}\n` : ''}
 
@@ -123,6 +142,10 @@ Plan Benefits:
 
 ${plan.enrollUrl ? `\nEnroll: ${plan.enrollUrl}` : ''}
 ${pdfUrl ? `\nSummary of Benefits: ${pdfUrl}` : ''}
+`;
+  }).join('\n\n---\n\n');
+
+  const text = `${textSections}
 
 ---
 This plan information was sent to you by your agent.
@@ -178,13 +201,25 @@ exports.handler = async (event) => {
 
     // Parse request body
     const body = JSON.parse(event.body || "{}");
-    const { planId, recipientEmail } = body;
+    const { planIds, planId, recipientEmail } = body;
 
-    if (!planId || !recipientEmail) {
+    // Support both single planId (backward compat) and multiple planIds
+    const planIdArray = planIds || (planId ? [planId] : []);
+
+    if (!planIdArray.length || !recipientEmail) {
       return {
         statusCode: 400,
         headers: { ...CORS_HEADERS },
-        body: JSON.stringify({ error: "planId and recipientEmail are required." }),
+        body: JSON.stringify({ error: "planIds (or planId) and recipientEmail are required." }),
+      };
+    }
+
+    // Limit to 5 plans per email
+    if (planIdArray.length > 5) {
+      return {
+        statusCode: 400,
+        headers: { ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Maximum 5 plans per email allowed." }),
       };
     }
 
@@ -198,13 +233,14 @@ exports.handler = async (event) => {
       };
     }
 
-    // Find the plan
-    const plan = plans.find((p) => p.id === planId);
-    if (!plan) {
+    // Find all plans
+    const selectedPlans = planIdArray.map(id => plans.find((p) => p.id === id)).filter(Boolean);
+    
+    if (selectedPlans.length !== planIdArray.length) {
       return {
         statusCode: 404,
         headers: { ...CORS_HEADERS },
-        body: JSON.stringify({ error: "Plan not found." }),
+        body: JSON.stringify({ error: "One or more plans not found." }),
       };
     }
 
@@ -220,13 +256,18 @@ exports.handler = async (event) => {
 
     // Format and send email
     sgMail.setApiKey(SENDGRID_API_KEY);
-    const { html, text } = formatPlanEmail(plan, userRecord.email);
+    const { html, text } = formatPlanEmail(selectedPlans, userRecord.email);
+    
+    const planCount = selectedPlans.length;
+    const subject = planCount === 1 
+      ? `Health Plan Details: ${selectedPlans[0].name}`
+      : `${planCount} Health Plan Details`;
 
     const msg = {
       to: recipientEmail,
       from: SENDGRID_FROM_EMAIL,
       replyTo: userRecord.email,
-      subject: `Health Plan Details: ${plan.name}`,
+      subject: subject,
       text,
       html,
     };

@@ -253,11 +253,17 @@
     </main>
   </div>
 
+  <!-- Floating Email Selected Plans Button -->
+  <button id="emailSelectedPlansBtn" class="email-selected-btn" hidden>
+    📧 Email Selected Plans (<span id="selectedPlansCount">0</span>/5)
+  </button>
+
   <!-- Email Plan Modal -->
   <div id="emailPlanModal" class="email-modal" hidden>
     <div class="email-modal-content">
       <h3>Email Plan Details</h3>
-      <p>Enter the customer's email address to send them plan details:</p>
+      <p id="emailPlanDescription">Enter the customer's email address to send them plan details:</p>
+      <div id="selectedPlansList" class="selected-plans-list"></div>
       <input
         type="email"
         id="emailPlanInput"

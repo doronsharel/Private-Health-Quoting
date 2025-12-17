@@ -1191,12 +1191,23 @@ function renderPlans() {
       footer.appendChild(enrollBtn);
     }
 
-    // Email Plan Details button
-    const emailBtn = document.createElement("button");
-    emailBtn.className = "email-plan-btn";
-    emailBtn.dataset.planId = plan.id;
-    emailBtn.textContent = "📧 Email Plan";
-    footer.appendChild(emailBtn);
+    // Plan selection checkbox for email
+    const emailCheckbox = document.createElement("input");
+    emailCheckbox.type = "checkbox";
+    emailCheckbox.className = "plan-email-checkbox";
+    emailCheckbox.dataset.planId = plan.id;
+    emailCheckbox.id = `plan-checkbox-${plan.id}`;
+    
+    const emailLabel = document.createElement("label");
+    emailLabel.className = "plan-email-label";
+    emailLabel.htmlFor = `plan-checkbox-${plan.id}`;
+    emailLabel.textContent = "📧 Select to email";
+    
+    const emailCheckboxWrap = document.createElement("div");
+    emailCheckboxWrap.className = "plan-email-checkbox-wrap";
+    emailCheckboxWrap.appendChild(emailCheckbox);
+    emailCheckboxWrap.appendChild(emailLabel);
+    footer.appendChild(emailCheckboxWrap);
 
     card.appendChild(footer);
 
@@ -1296,18 +1307,102 @@ document.addEventListener("click", (e) => {
  *  EMAIL PLAN DETAILS
  ************************************************************/
 
-let currentEmailPlanId = null;
+const MAX_PLANS_PER_EMAIL = 5;
+let selectedPlanIds = new Set();
 
+function updateEmailButton() {
+  const btn = document.getElementById("emailSelectedPlansBtn");
+  const countSpan = document.getElementById("selectedPlansCount");
+  
+  if (!btn || !countSpan) return;
+  
+  const count = selectedPlanIds.size;
+  countSpan.textContent = count;
+  
+  if (count > 0) {
+    btn.hidden = false;
+    btn.disabled = count > MAX_PLANS_PER_EMAIL;
+  } else {
+    btn.hidden = true;
+  }
+}
+
+function updateSelectedPlansList() {
+  const list = document.getElementById("selectedPlansList");
+  if (!list) return;
+  
+  list.innerHTML = "";
+  
+  if (selectedPlanIds.size === 0) {
+    list.hidden = true;
+    return;
+  }
+  
+  list.hidden = false;
+  const selectedPlans = plans.filter(p => selectedPlanIds.has(p.id));
+  
+  const ul = document.createElement("ul");
+  selectedPlans.forEach(plan => {
+    const li = document.createElement("li");
+    li.textContent = plan.name;
+    ul.appendChild(li);
+  });
+  list.appendChild(ul);
+}
+
+// Handle plan checkbox changes
+document.addEventListener("change", (e) => {
+  const checkbox = e.target.closest(".plan-email-checkbox");
+  if (!checkbox) return;
+  
+  const planId = checkbox.dataset.planId;
+  
+  if (checkbox.checked) {
+    if (selectedPlanIds.size >= MAX_PLANS_PER_EMAIL) {
+      checkbox.checked = false;
+      showSubscriptionNotice(
+        `You can only select up to ${MAX_PLANS_PER_EMAIL} plans per email.`,
+        "warning",
+        3000
+      );
+      return;
+    }
+    selectedPlanIds.add(planId);
+  } else {
+    selectedPlanIds.delete(planId);
+  }
+  
+  updateEmailButton();
+  updateSelectedPlansList();
+});
+
+// Open modal when clicking "Email Selected Plans" button
 document.addEventListener("click", (e) => {
-  const emailBtn = e.target.closest(".email-plan-btn");
-  if (!emailBtn) return;
-
-  currentEmailPlanId = emailBtn.dataset.planId;
+  const emailBtn = e.target.closest("#emailSelectedPlansBtn");
+  if (!emailBtn || emailBtn.disabled) return;
+  
+  if (selectedPlanIds.size === 0) {
+    return;
+  }
+  
+  if (selectedPlanIds.size > MAX_PLANS_PER_EMAIL) {
+    showSubscriptionNotice(
+      `You can only select up to ${MAX_PLANS_PER_EMAIL} plans per email.`,
+      "warning",
+      3000
+    );
+    return;
+  }
+  
   const modal = document.getElementById("emailPlanModal");
   const input = document.getElementById("emailPlanInput");
   const error = document.getElementById("emailPlanError");
+  const description = document.getElementById("emailPlanDescription");
 
   if (modal && input) {
+    updateSelectedPlansList();
+    const count = selectedPlanIds.size;
+    description.textContent = `Enter the customer's email address to send ${count} plan detail${count > 1 ? 's' : ''}:`;
     modal.hidden = false;
     input.value = "";
     error.hidden = true;
@@ -1321,19 +1416,17 @@ document.addEventListener("click", (e) => {
   const modal = document.getElementById("emailPlanModal");
   if (cancelBtn && modal) {
     modal.hidden = true;
-    currentEmailPlanId = null;
   }
 
   // Close modal when clicking outside
   if (e.target === modal) {
     modal.hidden = true;
-    currentEmailPlanId = null;
   }
 });
 
 document.addEventListener("click", async (e) => {
   const sendBtn = e.target.closest("#emailPlanSend");
-  if (!sendBtn || !currentEmailPlanId) return;
+  if (!sendBtn || selectedPlanIds.size === 0) return;
 
   const input = document.getElementById("emailPlanInput");
   const error = document.getElementById("emailPlanError");
@@ -1348,6 +1441,19 @@ document.addEventListener("click", async (e) => {
   if (!recipientEmail || !emailRegex.test(recipientEmail)) {
     error.hidden = false;
     error.textContent = "Please enter a valid email address.";
+    return;
+  }
+
+  // Validate plan count
+  if (selectedPlanIds.size === 0) {
+    error.hidden = false;
+    error.textContent = "Please select at least one plan.";
+    return;
+  }
+
+  if (selectedPlanIds.size > MAX_PLANS_PER_EMAIL) {
+    error.hidden = false;
+    error.textContent = `You can only send up to ${MAX_PLANS_PER_EMAIL} plans per email.`;
     return;
   }
 
@@ -1370,7 +1476,7 @@ document.addEventListener("click", async (e) => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        planId: currentEmailPlanId,
+        planIds: Array.from(selectedPlanIds),
         recipientEmail: recipientEmail,
       }),
     });
@@ -1381,14 +1487,22 @@ document.addEventListener("click", async (e) => {
       throw new Error(data.error || "Failed to send email");
     }
 
-    // Success - show message and close modal
+    // Success - show message, close modal, and clear selections
+    const count = selectedPlanIds.size;
     showSubscriptionNotice(
-      `Plan details sent successfully to ${recipientEmail}!`,
+      `${count} plan detail${count > 1 ? 's' : ''} sent successfully to ${recipientEmail}!`,
       "success",
       5000
     );
     modal.hidden = true;
-    currentEmailPlanId = null;
+    
+    // Clear all selections
+    selectedPlanIds.clear();
+    document.querySelectorAll(".plan-email-checkbox").forEach(cb => {
+      cb.checked = false;
+    });
+    updateEmailButton();
+    updateSelectedPlansList();
   } catch (err) {
     console.error("[email-plan] Error:", err);
     error.hidden = false;

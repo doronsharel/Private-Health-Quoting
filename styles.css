@@ -758,28 +758,59 @@ body {
   filter: brightness(1.07);
 }
 
-.email-plan-btn {
-  width: 100%;
-  padding: 7px 12px;
-  margin-top: 2px;
+.plan-email-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 4px 0;
+}
+
+.plan-email-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #7c3aed;
+}
+
+.plan-email-label {
+  font-size: 12px;
+  color: var(--text-main);
+  cursor: pointer;
+  user-select: none;
+}
+
+.plan-email-label:hover {
+  color: #7c3aed;
+}
+
+/* Floating Email Selected Plans Button */
+.email-selected-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 24px;
   border: none;
   border-radius: 999px;
-
-  font-size: 12px;
-  font-weight: 500;
-
+  font-size: 14px;
+  font-weight: 600;
   background: linear-gradient(90deg, #7c3aed, #a855f7);
   color: #ffffff;
   cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+  z-index: 999;
+  transition: all 0.2s;
 }
 
-.email-plan-btn:hover {
-  filter: brightness(1.07);
+.email-selected-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(124, 58, 237, 0.5);
+}
+
+.email-selected-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* =========================================================
@@ -797,6 +828,10 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+.email-modal[hidden] {
+  display: none !important;
 }
 
 .email-modal-content {
@@ -819,6 +854,27 @@ body {
   margin: 0 0 16px 0;
   font-size: 14px;
   color: var(--text-muted);
+}
+
+.selected-plans-list {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.selected-plans-list ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.selected-plans-list li {
+  font-size: 13px;
+  color: var(--text-main);
+  margin-bottom: 4px;
 }
 
 .email-input {
