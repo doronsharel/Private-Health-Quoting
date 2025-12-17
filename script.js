@@ -1191,6 +1191,13 @@ function renderPlans() {
       footer.appendChild(enrollBtn);
     }
 
+    // Email Plan Details button
+    const emailBtn = document.createElement("button");
+    emailBtn.className = "email-plan-btn";
+    emailBtn.dataset.planId = plan.id;
+    emailBtn.textContent = "📧 Email Plan";
+    footer.appendChild(emailBtn);
+
     card.appendChild(footer);
 
     // Carrier logos
@@ -1283,6 +1290,123 @@ document.addEventListener("click", (e) => {
   allButtons.forEach((b) => {
     b.textContent = open ? "Hide Benefits ▲" : "View Benefits ▼";
   });
+});
+
+/************************************************************
+ *  EMAIL PLAN DETAILS
+ ************************************************************/
+
+let currentEmailPlanId = null;
+
+document.addEventListener("click", (e) => {
+  const emailBtn = e.target.closest(".email-plan-btn");
+  if (!emailBtn) return;
+
+  currentEmailPlanId = emailBtn.dataset.planId;
+  const modal = document.getElementById("emailPlanModal");
+  const input = document.getElementById("emailPlanInput");
+  const error = document.getElementById("emailPlanError");
+
+  if (modal && input) {
+    modal.hidden = false;
+    input.value = "";
+    error.hidden = true;
+    error.textContent = "";
+    input.focus();
+  }
+});
+
+document.addEventListener("click", (e) => {
+  const cancelBtn = e.target.closest("#emailPlanCancel");
+  const modal = document.getElementById("emailPlanModal");
+  if (cancelBtn && modal) {
+    modal.hidden = true;
+    currentEmailPlanId = null;
+  }
+
+  // Close modal when clicking outside
+  if (e.target === modal) {
+    modal.hidden = true;
+    currentEmailPlanId = null;
+  }
+});
+
+document.addEventListener("click", async (e) => {
+  const sendBtn = e.target.closest("#emailPlanSend");
+  if (!sendBtn || !currentEmailPlanId) return;
+
+  const input = document.getElementById("emailPlanInput");
+  const error = document.getElementById("emailPlanError");
+  const modal = document.getElementById("emailPlanModal");
+
+  if (!input || !error || !modal) return;
+
+  const recipientEmail = input.value.trim();
+
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!recipientEmail || !emailRegex.test(recipientEmail)) {
+    error.hidden = false;
+    error.textContent = "Please enter a valid email address.";
+    return;
+  }
+
+  // Disable button and show loading state
+  sendBtn.disabled = true;
+  sendBtn.textContent = "Sending...";
+  error.hidden = true;
+
+  try {
+    const user = window.__PHQ_USER;
+    if (!user || !user.uid) {
+      throw new Error("User not authenticated");
+    }
+
+    const token = await auth.currentUser.getIdToken();
+    const response = await fetch("/.netlify/functions/send-plan-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        planId: currentEmailPlanId,
+        recipientEmail: recipientEmail,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to send email");
+    }
+
+    // Success - show message and close modal
+    showSubscriptionNotice(
+      `Plan details sent successfully to ${recipientEmail}!`,
+      "success",
+      5000
+    );
+    modal.hidden = true;
+    currentEmailPlanId = null;
+  } catch (err) {
+    console.error("[email-plan] Error:", err);
+    error.hidden = false;
+    error.textContent = err.message || "Failed to send email. Please try again.";
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.textContent = "Send Email";
+  }
+});
+
+// Allow Enter key to submit email form
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.id === "emailPlanInput") {
+    const sendBtn = document.getElementById("emailPlanSend");
+    if (sendBtn && !sendBtn.disabled) {
+      sendBtn.click();
+    }
+  }
 });
 
 /************************************************************

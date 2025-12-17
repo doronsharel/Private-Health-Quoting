@@ -253,6 +253,26 @@
     </main>
   </div>
 
+  <!-- Email Plan Modal -->
+  <div id="emailPlanModal" class="email-modal" hidden>
+    <div class="email-modal-content">
+      <h3>Email Plan Details</h3>
+      <p>Enter the customer's email address to send them plan details:</p>
+      <input
+        type="email"
+        id="emailPlanInput"
+        class="email-input"
+        placeholder="customer@example.com"
+        required
+      />
+      <div id="emailPlanError" class="email-error" hidden></div>
+      <div class="email-modal-actions">
+        <button id="emailPlanCancel" class="email-btn-cancel" type="button">Cancel</button>
+        <button id="emailPlanSend" class="email-btn-send" type="button">Send Email</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="script.js"></script>
 </body>
 </html>
