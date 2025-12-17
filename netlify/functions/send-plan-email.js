@@ -16,7 +16,23 @@ function formatMoney(amount) {
   return `$${parseFloat(amount).toFixed(2)}`;
 }
 
-function formatPlanEmail(plans, agentFirstName, agentLastName, agentPhone) {
+function getPremiumsForPlan(plan, ageBand) {
+  // If no age band specified or plan has no age bands, use base premiums
+  if (!ageBand || ageBand === "all" || !plan.ageBands || !plan.ageBands.length) {
+    return plan.premiums || {};
+  }
+  
+  // Find the matching age band
+  const match = plan.ageBands.find((band) => band.age === ageBand);
+  if (match && match.premiums) {
+    return match.premiums;
+  }
+  
+  // Fallback to base premiums
+  return plan.premiums || {};
+}
+
+function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agentPhone) {
   // Get base URL for PDF links (use environment variable or default)
   const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
   
@@ -33,7 +49,9 @@ function formatPlanEmail(plans, agentFirstName, agentLastName, agentPhone) {
   // Format each plan
   const planSections = plans.map((plan, index) => {
     const b = plan.benefits;
-    const premiums = plan.premiums || {};
+    // Use the selected age band's premiums if available
+    const selectedAgeBand = ageBandMap && ageBandMap[plan.id];
+    const premiums = getPremiumsForPlan(plan, selectedAgeBand);
     const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
     
     // Format premium rows
@@ -131,7 +149,9 @@ function formatPlanEmail(plans, agentFirstName, agentLastName, agentPhone) {
   // Format text version
   const textSections = plans.map((plan) => {
     const b = plan.benefits;
-    const premiums = plan.premiums || {};
+    // Use the selected age band's premiums if available
+    const selectedAgeBand = ageBandMap && ageBandMap[plan.id];
+    const premiums = getPremiumsForPlan(plan, selectedAgeBand);
     const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
     const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
     
@@ -204,7 +224,7 @@ exports.handler = async (event) => {
 
     // Parse request body
     const body = JSON.parse(event.body || "{}");
-    const { planIds, planId, recipientEmail } = body;
+    const { planIds, planId, recipientEmail, ageBands } = body;
 
     // Support both single planId (backward compat) and multiple planIds
     const planIdArray = planIds || (planId ? [planId] : []);
@@ -269,7 +289,7 @@ exports.handler = async (event) => {
     
     // Format and send email
     sgMail.setApiKey(SENDGRID_API_KEY);
-    const { html, text } = formatPlanEmail(selectedPlans, agentFirstName, agentLastName, agentPhone);
+    const { html, text } = formatPlanEmail(selectedPlans, ageBands || {}, agentFirstName, agentLastName, agentPhone);
     
     const subject = `${agentName} - Recommended Private Health Options for 2026`;
 

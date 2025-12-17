@@ -1468,6 +1468,16 @@ document.addEventListener("click", async (e) => {
       throw new Error("User not authenticated");
     }
 
+    // Collect age band selections for each selected plan
+    const selectedPlans = plans.filter(p => selectedPlanIds.has(p.id));
+    const ageBandMap = {};
+    selectedPlans.forEach(plan => {
+      const ageBand = getAgeSelectionForPlan(plan);
+      if (ageBand && ageBand !== "all") {
+        ageBandMap[plan.id] = ageBand;
+      }
+    });
+
     const token = await auth.currentUser.getIdToken();
     const response = await fetch("/.netlify/functions/send-plan-email", {
       method: "POST",
@@ -1478,6 +1488,7 @@ document.addEventListener("click", async (e) => {
       body: JSON.stringify({
         planIds: Array.from(selectedPlanIds),
         recipientEmail: recipientEmail,
+        ageBands: ageBandMap, // Send age band selections
       }),
     });
 
