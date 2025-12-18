@@ -1173,7 +1173,7 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – PHCS Network",
     pdf: "pdfs/AFI PHCS.pdf",
-    eocPdf: "pdfs/AFI COPAY PHCS 3500 List of Covered Services.pdf", // Evidence of Coverage PDF
+    eocPdf: "pdfs/AFI COPAY PHCS 4500 List of Covered Services.pdf", // Evidence of Coverage PDF (shared with COPAY 4500)
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
