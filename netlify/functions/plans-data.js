@@ -239,6 +239,8 @@ module.exports = [
     planTag: "vl",
     badge: "ACUSA – Guarantee Issue",
     pdf: "pdfs/Bronze and Silver.pdf",
+    eocPdf: "pdfs/Bronze 2 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
