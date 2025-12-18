@@ -1108,6 +1108,17 @@ body {
   border-bottom: 2px solid #e5e7eb;
 }
 
+.underwriting-instructions {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
 .underwriting-question {
   margin-bottom: 24px;
   padding: 16px;
@@ -1164,6 +1175,23 @@ body {
   position: absolute;
   left: -16px;
   color: var(--accent);
+  font-weight: 700;
+}
+
+.underwriting-disclaimer {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #991b1b;
+  line-height: 1.6;
+}
+
+.underwriting-disclaimer::before {
+  content: "Disclaimer: ";
   font-weight: 700;
 }
 

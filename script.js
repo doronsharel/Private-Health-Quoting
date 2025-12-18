@@ -1619,6 +1619,68 @@ const UNDERWRITING_QUESTIONS = {
         required: true
       }
     ]
+  },
+  "population-science": {
+    name: "Population Science Management",
+    instructions: "Please answer the following questions for yourself, your spouse, and any dependents included in the application for coverage. NOTE: Dependent children are covered until the end of the month in which they turn 26. Domestic partners are not eligible for coverage—only legal spouses qualify.",
+    disclaimer: "If the account holder, their spouse, or any dependents answer 'yes' to any of these questions, they will not be eligible for coverage.",
+    questions: [
+      {
+        number: 1,
+        text: "Has the prospective client or any of his/her dependents been under a doctor's care currently or within the past five years for any of the following conditions: cancer, heart disease (including bypass), heart attack, heart surgery, or stroke?",
+        required: true
+      },
+      {
+        number: 2,
+        text: "Has the prospective client or any of his/her dependents applying for coverage been home-bound, incapacitated, or incapable of self-support due to a medical condition within the past five years?",
+        required: true
+      },
+      {
+        number: 3,
+        text: "Has the prospective client or any of his/her dependents applying for coverage been under a doctor's care currently or within the past five years for an autoimmune or blood disease (e.g., lupus, MS, anemia, AIDS, HIV, hemophilia, IBS, or Crohn's)?",
+        required: true
+      },
+      {
+        number: 4,
+        text: "Has the prospective client or any of his/her dependents been under a doctor's care currently or within the past five years for organ failure or an organ transplant involving the kidney, liver, lung, or heart, or for any form of organ support (e.g., dialysis)?",
+        required: true
+      },
+      {
+        number: 5,
+        text: "Is the prospective client or any of his/her dependents applying for coverage currently pregnant or expecting?",
+        required: true
+      },
+      {
+        number: 6,
+        text: "Is the prospective client or any of his/her dependents currently receiving treatment for a condition that required hospitalization within the past five years?",
+        required: true
+      },
+      {
+        number: 7,
+        text: "Has the prospective client or any of his/her dependents been under a doctor's care currently or within the past five years for a respiratory disorder, such as emphysema, chronic bronchitis, COPD, or chronic pneumonia?",
+        required: true
+      },
+      {
+        number: 8,
+        text: "Has the prospective client or any of his/her dependents seeking coverage been under a doctor's care currently or within the past five years for a musculoskeletal disorder, such as back disorders, muscular dystrophy, cerebral palsy, dermatomyositis, compartment syndrome, sciatica, or osteoporosis?",
+        required: true
+      },
+      {
+        number: 9,
+        text: "Has the prospective client or any of his/her dependents seeking coverage been under a doctor's care currently or within the past five years for alcohol or substance abuse or dependency?",
+        required: true
+      },
+      {
+        number: 10,
+        text: "Has the prospective client or any of his/her dependents seeking coverage been under a doctor's care currently or within the past five years for Type 1 diabetes, required insulin on a semi-regular or regular basis, or been under the care of a healthcare professional for any diabetes-related conditions?",
+        required: true
+      },
+      {
+        number: 11,
+        text: "Has the prospective client or any of his/her dependents seeking coverage been under a doctor's care currently or within the past five years for a previous major surgery, or have an upcoming planned surgery?",
+        required: true
+      }
+    ]
   }
 };
 
@@ -1633,6 +1695,11 @@ function renderUnderwritingQuestions(carrierKey) {
   }
 
   let html = `<div class="underwriting-carrier-name">${carrier.name}</div>`;
+  
+  // Add instructions if available
+  if (carrier.instructions) {
+    html += `<div class="underwriting-instructions">${carrier.instructions}</div>`;
+  }
   
   carrier.questions.forEach((q) => {
     html += `<div class="underwriting-question">`;
@@ -1654,6 +1721,11 @@ function renderUnderwritingQuestions(carrierKey) {
     
     html += `</div>`;
   });
+
+  // Add disclaimer if available
+  if (carrier.disclaimer) {
+    html += `<div class="underwriting-disclaimer">${carrier.disclaimer}</div>`;
+  }
 
   content.innerHTML = html;
 }
