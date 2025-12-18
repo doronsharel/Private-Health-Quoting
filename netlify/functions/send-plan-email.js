@@ -70,6 +70,20 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
       }
     }
     
+    // Build EOC PDF URL (Evidence of Coverage)
+    let eocPdfUrl = null;
+    if (plan.eocPdf) {
+      if (plan.eocPdf.startsWith("http")) {
+        eocPdfUrl = plan.eocPdf;
+      } else {
+        const encodedPath = plan.eocPdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        eocPdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
+    
+    // Doctor search URL (can be full URL or relative)
+    const doctorSearchUrl = plan.doctorSearchUrl || null;
+    
     // Format premium rows
     const premiumRows = [];
     if (premiums.member) premiumRows.push(`<tr><td><strong>Member:</strong></td><td>${formatMoney(premiums.member)}</td></tr>`);
@@ -105,6 +119,16 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
         ${pdfUrl ? `
         <p style="margin-top: 20px;">
           <a href="${pdfUrl}" style="color: #2563eb; text-decoration: underline;">View Full Summary of Benefits (PDF)</a>
+        </p>
+        ` : ''}
+        ${eocPdfUrl ? `
+        <p style="margin-top: 10px;">
+          <a href="${eocPdfUrl}" style="color: #2563eb; text-decoration: underline;">List of Covered Services</a>
+        </p>
+        ` : ''}
+        ${doctorSearchUrl ? `
+        <p style="margin-top: 10px;">
+          <a href="${doctorSearchUrl}" style="color: #2563eb; text-decoration: underline;">Look Up Doctors Network</a>
         </p>
         ` : ''}
       </div>
@@ -179,6 +203,20 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
       }
     }
     
+    // Build EOC PDF URL (Evidence of Coverage)
+    let eocPdfUrl = null;
+    if (plan.eocPdf) {
+      if (plan.eocPdf.startsWith("http")) {
+        eocPdfUrl = plan.eocPdf;
+      } else {
+        const encodedPath = plan.eocPdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        eocPdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
+    
+    // Doctor search URL (can be full URL or relative)
+    const doctorSearchUrl = plan.doctorSearchUrl || null;
+    
     return `
 Health Plan Details: ${plan.name}
 ${plan.badge ? `\n${plan.badge}\n` : ''}
@@ -198,6 +236,8 @@ Plan Benefits:
 - Hospital Inpatient: ${b.inpatient || 'N/A'}
 
 ${pdfUrl ? `\nSummary of Benefits: ${pdfUrl}` : ''}
+${eocPdfUrl ? `\nList of Covered Services: ${eocPdfUrl}` : ''}
+${doctorSearchUrl ? `\nLook Up Doctors Network: ${doctorSearchUrl}` : ''}
 `;
   }).join('\n\n---\n\n');
 

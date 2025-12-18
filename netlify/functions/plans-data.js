@@ -1,4 +1,11 @@
 module.exports = [
+  /*
+   * Plan structure includes:
+   * - pdf: Summary of Benefits PDF (required)
+   * - eocPdf: Evidence of Coverage PDF - displayed as "List of Covered Services" (optional)
+   * - doctorSearchUrl: URL to search doctors in network - displayed as "Look Up Doctors Network" (optional)
+   * - enrollUrl: Enrollment URL (optional)
+   */
 
   /***************
    *  ACUSA (GUARANTEE ISSUE)
@@ -11,6 +18,8 @@ module.exports = [
     planTag: "vl",
     badge: "ACUSA – Guarantee Issue",
     pdf: "pdfs/Elite Health.pdf",
+    // eocPdf: "pdfs/Elite Health EOC.pdf", // Optional: Evidence of Coverage PDF
+    // doctorSearchUrl: "https://example.com/doctor-search", // Optional: Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {

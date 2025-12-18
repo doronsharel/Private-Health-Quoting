@@ -1175,6 +1175,27 @@ function renderPlans() {
     link.textContent = "Summary of Benefits (PDF)";
     footer.appendChild(link);
 
+    // Add "List of Covered Services" link if EOC PDF exists
+    if (plan.eocPdf) {
+      const eocLink = document.createElement("a");
+      eocLink.className = "summary-link";
+      eocLink.href = plan.eocPdf;
+      eocLink.target = "_blank";
+      eocLink.textContent = "List of Covered Services";
+      footer.appendChild(eocLink);
+    }
+
+    // Add "Look Up Doctors Network" link if doctor search URL exists
+    if (plan.doctorSearchUrl) {
+      const doctorLink = document.createElement("a");
+      doctorLink.className = "summary-link";
+      doctorLink.href = plan.doctorSearchUrl;
+      doctorLink.target = "_blank";
+      doctorLink.rel = "noopener noreferrer";
+      doctorLink.textContent = "Look Up Doctors Network";
+      footer.appendChild(doctorLink);
+    }
+
     const btn = document.createElement("button");
     btn.className = "toggle-benefits";
     btn.dataset.group = plan.benefitGroup;
