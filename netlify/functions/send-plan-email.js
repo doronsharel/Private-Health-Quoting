@@ -1,9 +1,12 @@
 const { authenticateRequest, userHasPaidAccess } = require("./lib/users");
 const plans = require("./plans-data.js");
 const sgMail = require("@sendgrid/mail");
+const stripeLib = require("stripe");
 
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 const SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
+const stripeSecret = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeSecret ? stripeLib(stripeSecret) : null;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -289,7 +292,31 @@ exports.handler = async (event) => {
     let agentLastName = userData.lastName || "";
     const agentPhone = userData.phone || userData.phoneNumber || "";
     
-    // If firstName/lastName are still missing, try to get from Firebase Auth displayName
+    // Fallback 1: If firstName/lastName are missing, try to get from Stripe customer
+    if (!agentFirstName && !agentLastName && stripe) {
+      try {
+        const customerId = userData.stripeCustomerId || userData.customerId;
+        if (customerId) {
+          const customer = await stripe.customers.retrieve(customerId);
+          if (customer && customer.name) {
+            // Parse Stripe customer name into first/last name
+            const nameParts = customer.name.trim().split(/\s+/);
+            if (nameParts.length >= 2) {
+              agentFirstName = nameParts[0];
+              agentLastName = nameParts.slice(1).join(" ");
+              console.log("[send-plan-email] Retrieved name from Stripe:", { agentFirstName, agentLastName });
+            } else if (nameParts.length === 1) {
+              agentFirstName = nameParts[0];
+              console.log("[send-plan-email] Retrieved first name from Stripe:", agentFirstName);
+            }
+          }
+        }
+      } catch (stripeErr) {
+        console.error("[send-plan-email] Failed to get customer from Stripe:", stripeErr);
+      }
+    }
+    
+    // Fallback 2: If still missing, try to get from Firebase Auth displayName
     if (!agentFirstName && !agentLastName) {
       try {
         const { getAuth } = require("./lib/firebase");
@@ -301,8 +328,10 @@ exports.handler = async (event) => {
           if (nameParts.length >= 2) {
             agentFirstName = nameParts[0];
             agentLastName = nameParts.slice(1).join(" ");
+            console.log("[send-plan-email] Retrieved name from Auth displayName:", { agentFirstName, agentLastName });
           } else if (nameParts.length === 1) {
             agentFirstName = nameParts[0];
+            console.log("[send-plan-email] Retrieved first name from Auth displayName:", agentFirstName);
           }
         }
       } catch (authErr) {
