@@ -718,12 +718,18 @@ let plansLoadError = null;
 // Cache plans in localStorage to reduce function invocations
 const PLANS_CACHE_KEY = "phq_plans_cache";
 const PLANS_CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
+const PLANS_CACHE_VERSION = 2; // Increment this when plan structure changes
 
 function getCachedPlans() {
   try {
     const cached = localStorage.getItem(PLANS_CACHE_KEY);
     if (!cached) return null;
     const data = JSON.parse(cached);
+    // Check cache version - if it doesn't match, invalidate cache
+    if (data.version !== PLANS_CACHE_VERSION) {
+      localStorage.removeItem(PLANS_CACHE_KEY);
+      return null;
+    }
     const now = Date.now();
     if (now - data.timestamp > PLANS_CACHE_DURATION_MS) {
       localStorage.removeItem(PLANS_CACHE_KEY);
@@ -738,6 +744,7 @@ function getCachedPlans() {
 function setCachedPlans(payload) {
   try {
     localStorage.setItem(PLANS_CACHE_KEY, JSON.stringify({
+      version: PLANS_CACHE_VERSION,
       timestamp: Date.now(),
       payload: payload
     }));
