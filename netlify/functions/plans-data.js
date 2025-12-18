@@ -973,6 +973,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – Cigna Network",
     pdf: "pdfs/AFI Cigna.pdf",
+    eocPdf: "pdfs/AFI HSA CIGNA 8050 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
     premiums: {
@@ -999,6 +1001,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – Cigna Network",
     pdf: "pdfs/AFI Cigna.pdf",
+    eocPdf: "pdfs/AFI HSA Cigna 3500 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
     premiums: {
@@ -1025,6 +1029,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – Cigna Network",
     pdf: "pdfs/AFI Cigna.pdf",
+    eocPdf: "pdfs/AFI COPAY Cigna List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
     premiums: {
@@ -1051,6 +1057,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – Cigna Network",
     pdf: "pdfs/AFI Cigna.pdf",
+    eocPdf: "pdfs/AFI COPAY Cigna List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-CIGNA",
     premiums: {
