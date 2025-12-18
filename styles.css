@@ -943,6 +943,255 @@ body {
 }
 
 /* =========================================================
+   UNDERWRITING QUESTIONS
+========================================================= */
+
+.underwriting-btn {
+  padding: 6px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.underwriting-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.underwriting-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.underwriting-modal[hidden] {
+  display: none !important;
+}
+
+.underwriting-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.underwriting-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.underwriting-modal-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.underwriting-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.underwriting-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+.underwriting-carrier-selector {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.underwriting-carrier-selector label {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.underwriting-carrier-selector select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 2px solid var(--divider);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.underwriting-carrier-selector select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.underwriting-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-bottom: 20px;
+}
+
+.underwriting-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.underwriting-content::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.underwriting-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.underwriting-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.underwriting-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+.underwriting-carrier-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.underwriting-question {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+}
+
+.underwriting-question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.question-number {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 16px;
+  min-width: 24px;
+}
+
+.question-text {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.question-required {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.underwriting-subquestions {
+  margin: 12px 0 0 0;
+  padding-left: 24px;
+  list-style-type: none;
+}
+
+.underwriting-subquestions li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.6;
+  position: relative;
+  padding-left: 8px;
+}
+
+.underwriting-subquestions li::before {
+  content: "•";
+  position: absolute;
+  left: -16px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.underwriting-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.underwriting-btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  color: white;
+}
+
+.underwriting-btn-cancel:hover {
+  filter: brightness(1.07);
+}
+
+/* =========================================================
    BENEFITS PANEL (DROPDOWN)
 ========================================================= */
 

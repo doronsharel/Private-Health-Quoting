@@ -1563,6 +1563,176 @@ document.addEventListener("keydown", (e) => {
 });
 
 /************************************************************
+ *  UNDERWRITING QUESTIONS
+ ************************************************************/
+
+// Underwriting questions data by carrier
+const UNDERWRITING_QUESTIONS = {
+  "enroll-prime": {
+    name: "Enroll Prime",
+    questions: [
+      {
+        number: 1,
+        text: "Are any applicants:",
+        subQuestions: [
+          "A: on COBRA and considered disabled.",
+          "B: currently NOT working or missed 10 or more consecutive days of work in the last 12 months due to injury or illness? *"
+        ],
+        required: true
+      },
+      {
+        number: 2,
+        text: "Are any covered persons: Contemplating treatment or hospitalization, been advised to seek treatment, or been scheduled for hospitalization and/or surgery within the past 12 months? (other than for routine childbirth without complications)? *",
+        required: true
+      },
+      {
+        number: 3,
+        text: "Does any applicant have:",
+        subQuestions: [
+          "A: any medical or test results pending, or a medical service that has not yet been performed?",
+          "B: any applicants currently pregnant or plan to become pregnant in the next 12 months?"
+        ],
+        required: true
+      },
+      {
+        number: 4,
+        text: "Has any applicant ever:",
+        subQuestions: [
+          "A. been diagnosed with chronic kidney disease, kidney failure, or required dialysis?",
+          "B. been diagnosed with Type 1 diabetes?",
+          "C. been diagnosed with Type 2 diabetes with complications (such as neuropathy, kidney disease, or retinopathy)?",
+          "D. been diagnosed with Lung, Emphysema, Chronic Bronchitis, COPD or Chronic Pneumonia, pulmonary fibrosis, or another chronic lung disease requiring oxygen",
+          "E. been diagnosed with liver or blood disorder?",
+          "F. been diagnosed with a severe mental health condition (such as schizophrenia, bipolar disorder, or any mental illness requiring hospitalization), or is any applicant currently receiving counseling or therapy for a mental health condition",
+          "G. been diagnosed with HIV, AIDS, any other serious immune deficiency disorder, or an autoimmune disease such as Crohn's disease, ulcerative colitis, lupus, multiple sclerosis, or rheumatoid arthritis",
+          "H. been diagnosed with a neurological disorder (ALS, Parkinson's disease, multiple sclerosis, muscular dystrophy, or an uncontrolled seizure disorder), or rheumatoid arthritis?",
+          "I. been diagnosed with or treated for cancer (other than fully removed basal cell skin cancer)",
+          "J. had a heart attack, heart surgery, angioplasty, stent, heart failure, stroke, TIA, or other serious vascular disease?",
+          "K. been treated for substance or alcohol dependency in the past?",
+          "L. received an organ transplant?"
+        ],
+        required: true
+      },
+      {
+        number: 5,
+        text: "Within the past 12 months, has any covered person had an ongoing condition likely to cost $5,000 or more per year for treatment (including prescription) for a serious continuing claim due to a mental or physical disorder (i.e., chronic) or any other medical condition? ( If you are unsure of a medication please visit GoodRX.com and type in the medication. A member might be paying a copay on a previous plan and may not know the full cost of this drug. ) *",
+        required: true
+      }
+    ]
+  }
+};
+
+function renderUnderwritingQuestions(carrierKey) {
+  const content = document.getElementById("underwritingContent");
+  if (!content) return;
+
+  const carrier = UNDERWRITING_QUESTIONS[carrierKey];
+  if (!carrier) {
+    content.innerHTML = '<p class="underwriting-empty">No underwriting questions available for this carrier.</p>';
+    return;
+  }
+
+  let html = `<div class="underwriting-carrier-name">${carrier.name}</div>`;
+  
+  carrier.questions.forEach((q) => {
+    html += `<div class="underwriting-question">`;
+    html += `<div class="underwriting-question-header">`;
+    html += `<span class="question-number">${q.number}.</span>`;
+    html += `<span class="question-text">${q.text}</span>`;
+    if (q.required) {
+      html += `<span class="question-required">*</span>`;
+    }
+    html += `</div>`;
+    
+    if (q.subQuestions && q.subQuestions.length > 0) {
+      html += `<ul class="underwriting-subquestions">`;
+      q.subQuestions.forEach((subQ) => {
+        html += `<li>${subQ}</li>`;
+      });
+      html += `</ul>`;
+    }
+    
+    html += `</div>`;
+  });
+
+  content.innerHTML = html;
+}
+
+function openUnderwritingModal() {
+  const modal = document.getElementById("underwritingModal");
+  const carrierSelect = document.getElementById("underwritingCarrierSelect");
+  
+  if (!modal || !carrierSelect) return;
+
+  // Populate carrier dropdown
+  carrierSelect.innerHTML = '<option value="">-- Select a carrier --</option>';
+  Object.keys(UNDERWRITING_QUESTIONS).forEach((key) => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = UNDERWRITING_QUESTIONS[key].name;
+    carrierSelect.appendChild(option);
+  });
+
+  // Clear content initially
+  const content = document.getElementById("underwritingContent");
+  if (content) {
+    content.innerHTML = '<p class="underwriting-empty">Please select a carrier to view underwriting questions.</p>';
+  }
+
+  modal.hidden = false;
+}
+
+function closeUnderwritingModal() {
+  const modal = document.getElementById("underwritingModal");
+  if (modal) {
+    modal.hidden = true;
+  }
+}
+
+// Initialize underwriting modal event listeners
+function initUnderwritingModal() {
+  const viewBtn = document.getElementById("viewUnderwritingBtn");
+  if (viewBtn) {
+    viewBtn.addEventListener("click", openUnderwritingModal);
+  }
+
+  const closeBtn = document.getElementById("underwritingClose");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeUnderwritingModal);
+  }
+
+  const cancelBtn = document.getElementById("underwritingCancel");
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", closeUnderwritingModal);
+  }
+
+  const carrierSelect = document.getElementById("underwritingCarrierSelect");
+  if (carrierSelect) {
+    carrierSelect.addEventListener("change", (e) => {
+      const carrierKey = e.target.value;
+      if (carrierKey) {
+        renderUnderwritingQuestions(carrierKey);
+      } else {
+        const content = document.getElementById("underwritingContent");
+        if (content) {
+          content.innerHTML = '<p class="underwriting-empty">Please select a carrier to view underwriting questions.</p>';
+        }
+      }
+    });
+  }
+
+  // Close modal when clicking outside
+  const modal = document.getElementById("underwritingModal");
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeUnderwritingModal();
+      }
+    });
+  }
+}
+
+/************************************************************
  *  FILTERS
  ************************************************************/
 
@@ -1594,6 +1764,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   initStateGate();
   attachFilters();
+  initUnderwritingModal();
   try {
     await initializePlans();
   } catch (err) {
