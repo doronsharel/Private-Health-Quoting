@@ -1681,6 +1681,51 @@ const UNDERWRITING_QUESTIONS = {
         required: true
       }
     ]
+  },
+  "lifex": {
+    name: "LifeX",
+    questions: [
+      {
+        number: 1,
+        text: "Tobacco User? *",
+        required: true
+      },
+      {
+        number: 2,
+        text: "Is the applicant, spouse/domestic partner/significant other, dependent children, or any other member of their household currently being treated for or expect to be treated for any of the following currently or over the next 12 months? *",
+        subQuestions: [
+          "Organ failure, leading to Bone Marrow or Organ Transplant",
+          "Any genetic condition that requires cell or gene therapy treatments",
+          "Any cancer that requires chemotherapy, radiation, bone marrow treatments, and/or cell therapy treatments.",
+          "Kidney failure requiring dialysis treatments.",
+          "Hemophilia, or other blood clotting disorders.",
+          "Inpatient Mental Health and/or Substance or Alcohol Treatment",
+          "Pregnancy",
+          "Seeking or receiving infertility services to become pregnant."
+        ],
+        required: true
+      },
+      {
+        number: 3,
+        text: "In the last 5 years, has the applicant, spouse/partner, significant other, or any dependent child seen a doctor, received medical care, stayed in a hospital, or are they currently getting treatment or taking medication for any of the conditions listed below? This includes any current treatment/medications/prescriptions. *",
+        subQuestions: [
+          "Cancer (ONLY exclusion is Basal Cell Carcinoma)",
+          "Heart Disease (such as, but not limited to heart surgery, including bypass surgery/CABG, heart attack, stroke, heart failure- (Does not include high blood pressure)",
+          "Home bound, incapacitated or incapable of carrying out daily activities (such as dressing, bathing or feeding) or receiving end of life, palliative or hospice care.",
+          "Autoimmune or Blood Disease, such as but not limited to Lupus, Multiple Sclerosis/MS, Iron Deficiency Anemia (IDA), AIDS, HIV, Hashimoto's, Immunodeficiency, Hemophilia, IBS or Chron's disease or Ulcerative Colitis, Psoriasis with systemic involvement (see attached sample list)",
+          "Organ Failure/Transplant for Kidney, Liver, Lung or Heart.",
+          "Organ Support, such as dialysis or ECMO",
+          "Hospitalized, have you been hospitalized in the past five years for which you are still receiving treatment, taking medication, or attending follow-up appointments with a healthcare provider (this includes skilled nursing, mental health, substance treatment and rehabilitation facilities)?",
+          "Respiratory Disorders, such as COPD, emphysema, chronic bronchitis or chronic pneumonia (Does not include Asthma).",
+          "Musculoskeletal Disorders, such as but not limited to, sciatica, osteoporosis, cervical/neck/back disorder (including any type of injection or procedure), Muscular Dystrophy, Cerebral Palsy, dermatomyositis, compartment syndrome.",
+          "Substance Abuse or Dependency (including but not limited to alcohol, cocaine, meth, heroin, opioids)- whether diagnosed or undiagnosed.",
+          "Type I Diabetes.",
+          "Major Surgery, (please see attached list for reference but not limited to only the items listed) in the past 5 years for which you are still receiving treatment, taking medication, or attending follow-up appointments with a healthcare provider or any planned or recommended surgeries in the next 12 months.",
+          "Neurological Disorder, such as Parkinson's Disease, epilepsy, stroke, Alzheimer's, MS (multiple sclerosis), ALS (amyotrophic lateral sclerosis), Major Depressive Disorder or Schizophrenia."
+        ],
+        required: true
+      }
+    ]
   }
 };
 
