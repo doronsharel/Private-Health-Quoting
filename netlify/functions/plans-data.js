@@ -1089,6 +1089,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – PHCS Network",
     pdf: "pdfs/AFI PHCS.pdf",
+    eocPdf: "pdfs/AFI HSA PHCS 8050 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
     premiums: {
@@ -1115,6 +1117,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – PHCS Network",
     pdf: "pdfs/AFI PHCS.pdf",
+    eocPdf: "pdfs/AFI HSA PHCS 3500 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
     premiums: {
@@ -1141,6 +1145,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – PHCS Network",
     pdf: "pdfs/AFI PHCS.pdf",
+    eocPdf: "pdfs/AFI COPAY PHCS 4500 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
     premiums: {
@@ -1167,6 +1173,8 @@ module.exports = [
     planTag: "mm",
     badge: "AFI – PHCS Network",
     pdf: "pdfs/AFI PHCS.pdf",
+    eocPdf: "pdfs/AFI COPAY PHCS 3500 List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=AFI-PHCS",
     premiums: {
