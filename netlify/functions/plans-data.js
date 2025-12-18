@@ -18,8 +18,8 @@ module.exports = [
     planTag: "vl",
     badge: "ACUSA – Guarantee Issue",
     pdf: "pdfs/Elite Health.pdf",
-    // eocPdf: "pdfs/Elite Health EOC.pdf", // Optional: Evidence of Coverage PDF
-    // doctorSearchUrl: "https://example.com/doctor-search", // Optional: Doctor search URL
+    eocPdf: "pdfs/Elite Health List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providerlocator.com/DirectoryDisclaimerPage.aspx?RedirectURL=%2fMembers%2fdefault.aspx%3f", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
