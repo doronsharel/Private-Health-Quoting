@@ -58,7 +58,17 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
     // Use the selected age band's premiums if available
     const selectedAgeBand = ageBandMap && ageBandMap[plan.id];
     const premiums = getPremiumsForPlan(plan, selectedAgeBand);
-    const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
+    // Build PDF URL - encode spaces and special characters properly
+    let pdfUrl = null;
+    if (plan.pdf) {
+      if (plan.pdf.startsWith("http")) {
+        pdfUrl = plan.pdf;
+      } else {
+        // Encode the path segments properly (spaces become %20, etc.)
+        const encodedPath = plan.pdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        pdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
     
     // Format premium rows
     const premiumRows = [];
@@ -157,7 +167,17 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
     const selectedAgeBand = ageBandMap && ageBandMap[plan.id];
     const premiums = getPremiumsForPlan(plan, selectedAgeBand);
     const baseUrl = process.env.SITE_URL || "https://aisquoting.netlify.app";
-    const pdfUrl = plan.pdf ? (plan.pdf.startsWith("http") ? plan.pdf : `${baseUrl}/${plan.pdf}`) : null;
+    // Build PDF URL - encode spaces and special characters properly
+    let pdfUrl = null;
+    if (plan.pdf) {
+      if (plan.pdf.startsWith("http")) {
+        pdfUrl = plan.pdf;
+      } else {
+        // Encode the path segments properly (spaces become %20, etc.)
+        const encodedPath = plan.pdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        pdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
     
     return `
 Health Plan Details: ${plan.name}
