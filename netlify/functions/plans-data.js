@@ -299,7 +299,7 @@ module.exports = [
    ***************/
   {
     id: "med-max-dvp-250",
-    name: "Med Max DVP 250",
+    name: "Med Max 250",
     subgroupFilter: "med-max",
     benefitGroup: "med-max",
     planTag: "vl",
@@ -363,7 +363,7 @@ module.exports = [
   },
   {
     id: "med-max-dvp-500",
-    name: "Med Max DVP 500",
+    name: "Med Max 500",
     subgroupFilter: "med-max",
     benefitGroup: "med-max",
     planTag: "vl",
@@ -427,7 +427,7 @@ module.exports = [
   },
   {
     id: "med-max-dvp-750",
-    name: "Med Max DVP 750",
+    name: "Med Max 750",
     subgroupFilter: "med-max",
     benefitGroup: "med-max",
     planTag: "vl",
@@ -491,7 +491,7 @@ module.exports = [
   },
   {
     id: "med-max-dvp-1000",
-    name: "Med Max DVP 1000",
+    name: "Med Max 1000",
     subgroupFilter: "med-max",
     benefitGroup: "med-max",
     planTag: "vl",
@@ -555,7 +555,7 @@ module.exports = [
   },
   {
     id: "med-max-dvp-1500",
-    name: "Med Max DVP 1500",
+    name: "Med Max 1500",
     subgroupFilter: "med-max",
     benefitGroup: "med-max",
     planTag: "vl",
