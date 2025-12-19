@@ -2141,6 +2141,7 @@ module.exports = [
     planTag: "mm",
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 1500.pdf",
+    doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 881.05,
@@ -2205,6 +2206,7 @@ module.exports = [
     planTag: "mm",
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 2500.pdf",
+    doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 821.97,
@@ -2269,6 +2271,7 @@ module.exports = [
     planTag: "mm",
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 5000.pdf",
+    doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 692.17,
@@ -2333,6 +2336,7 @@ module.exports = [
     planTag: "mm",
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 7350.pdf",
+    doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 600.92,
@@ -2397,6 +2401,7 @@ module.exports = [
     planTag: "mm",
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare HSA.pdf",
+    doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 631.37,
@@ -2461,6 +2466,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 329.0,
@@ -2525,6 +2531,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 309.0,
@@ -2589,6 +2596,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 289.0,
@@ -2653,6 +2661,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 269.0,
@@ -2717,6 +2726,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 249.0,
@@ -2781,6 +2791,7 @@ module.exports = [
     planTag: "mm",
     badge: "First Health Network",
     pdf: "pdfs/MaxGuard PSM.pdf",
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 239.0,
