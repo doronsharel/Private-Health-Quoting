@@ -233,11 +233,11 @@ module.exports = [
   },
   {
     id: "acusa-bronze-2",
-    name: "Bronze 2",
+    name: "Bronze 2 - Guaranteed Issue",
     subgroupFilter: "acusa",
     benefitGroup: "acusa",
     planTag: "vl",
-    badge: "ACUSA – Guarantee Issue",
+    badge: "First Health Network",
     pdf: "pdfs/Bronze and Silver.pdf",
     eocPdf: "pdfs/Bronze 2 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
@@ -261,11 +261,11 @@ module.exports = [
   },
   {
     id: "acusa-silver-2",
-    name: "Silver 2",
+    name: "Silver 2 - Guaranteed Issue",
     subgroupFilter: "acusa",
     benefitGroup: "acusa",
     planTag: "vl",
-    badge: "ACUSA – Guarantee Issue",
+    badge: "First Health Network",
     pdf: "pdfs/Bronze and Silver.pdf",
     eocPdf: "pdfs/Silver 2 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
