@@ -1658,7 +1658,7 @@ module.exports = [
    ***************/
   {
     id: "bmi-dvp-ess-7500",
-    name: "BMI Essentials 7500",
+    name: "Essentials 7500",
     subgroupFilter: "bmi-phcs",
     benefitGroup: "bmi-phcs",
     planTag: "vl",
@@ -1686,7 +1686,7 @@ module.exports = [
   },
   {
     id: "bmi-dvp-ess-5000",
-    name: "BMI Essentials 5000",
+    name: "Essentials 5000",
     subgroupFilter: "bmi-phcs",
     benefitGroup: "bmi-phcs",
     planTag: "vl",
@@ -1714,7 +1714,7 @@ module.exports = [
   },
   {
     id: "bmi-dvs-ess-2500",
-    name: "DVS ESSENTIALS 2500",
+    name: "Essentials 2500",
     subgroupFilter: "bmi-phcs",
     benefitGroup: "bmi-phcs",
     planTag: "vl",
