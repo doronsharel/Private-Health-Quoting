@@ -967,7 +967,7 @@ module.exports = [
    ***************/
   {
     id: "afi-hsa-8050",
-    name: "HSA 8050",
+    name: "HSA 8050 - HUMANA 20k Life & Supplemental",
     subgroupFilter: "afi-phcs",
     benefitGroup: "afi-phcs",
     planTag: "mm",
@@ -995,7 +995,7 @@ module.exports = [
   },
   {
     id: "afi-hsa-3500",
-    name: "HSA 3500",
+    name: "HSA 3500 - HUMANA 20k Life & Supplemental",
     subgroupFilter: "afi-phcs",
     benefitGroup: "afi-phcs",
     planTag: "mm",
@@ -1023,7 +1023,7 @@ module.exports = [
   },
   {
     id: "afi-copay-4500",
-    name: "COPAY 4500",
+    name: "COPAY 4500 - HUMANA 20k Life & Supplemental",
     subgroupFilter: "afi-phcs",
     benefitGroup: "afi-phcs",
     planTag: "mm",
@@ -1051,7 +1051,7 @@ module.exports = [
   },
   {
     id: "afi-copay-3500",
-    name: "COPAY 3500",
+    name: "COPAY 3500 - HUMANA 20k Life & Supplemental",
     subgroupFilter: "afi-phcs",
     benefitGroup: "afi-phcs",
     planTag: "mm",
