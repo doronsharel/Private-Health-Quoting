@@ -639,7 +639,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Value 2000.pdf",
-    eocPdf: "pdfs/Med Value 2000 List of Covered Services.pdf", // Evidence of Coverage PDF
+    eocPdf: "pdfs/MED VALUE 2000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
@@ -705,7 +705,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Value 4000.pdf",
-    eocPdf: "pdfs/Med Value 4000 List of Covered Services.pdf", // Evidence of Coverage PDF
+    eocPdf: "pdfs/MED VALUE 4000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
@@ -771,7 +771,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Value 6000.pdf",
-    eocPdf: "pdfs/Med Value 6000 List of Covered Services.pdf", // Evidence of Coverage PDF
+    eocPdf: "pdfs/MED VALUE 6000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
