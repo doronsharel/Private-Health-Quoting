@@ -46,6 +46,8 @@ module.exports = [
     planTag: "mm",
     badge: "Med Performance – Cigna Network",
     pdf: "pdfs/Med Performance.pdf",
+    eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1205,6 +1207,8 @@ module.exports = [
     planTag: "mm",
     badge: "Med Performance – Cigna Network",
     pdf: "pdfs/Med Performance.pdf",
+    eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1278,6 +1282,8 @@ module.exports = [
     planTag: "mm",
     badge: "Med Performance – Cigna Network",
     pdf: "pdfs/Med Performance.pdf",
+    eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1351,6 +1357,8 @@ module.exports = [
     planTag: "mm",
     badge: "Med Performance – Cigna Network",
     pdf: "pdfs/Med Performance.pdf",
+    eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {

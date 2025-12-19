@@ -1182,14 +1182,22 @@ function renderPlans() {
     link.textContent = "Summary of Benefits (PDF)";
     footer.appendChild(link);
 
-    // Add "List of Covered Services" link if EOC PDF exists
+    // Add "List of Covered Services" link if EOC PDF exists, or "Coming Soon" text if set
     if (plan.eocPdf) {
-      const eocLink = document.createElement("a");
-      eocLink.className = "summary-link";
-      eocLink.href = plan.eocPdf;
-      eocLink.target = "_blank";
-      eocLink.textContent = "List of Covered Services";
-      footer.appendChild(eocLink);
+      if (plan.eocPdf === "COMING_SOON") {
+        const comingSoonText = document.createElement("span");
+        comingSoonText.className = "summary-link";
+        comingSoonText.style.cursor = "default";
+        comingSoonText.textContent = "Coming Soon";
+        footer.appendChild(comingSoonText);
+      } else {
+        const eocLink = document.createElement("a");
+        eocLink.className = "summary-link";
+        eocLink.href = plan.eocPdf;
+        eocLink.target = "_blank";
+        eocLink.textContent = "List of Covered Services";
+        footer.appendChild(eocLink);
+      }
     }
 
     // Add "Look Up Doctors Network" link if doctor search URL exists
