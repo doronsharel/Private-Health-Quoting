@@ -1576,8 +1576,56 @@ document.addEventListener("keydown", (e) => {
 
 // Underwriting questions data by carrier
 const UNDERWRITING_QUESTIONS = {
-  "enroll-prime": {
-    name: "Enroll Prime",
+  "enroll-prime-standard": {
+    name: "Enroll Prime - Standard",
+    questions: [
+      {
+        number: 1,
+        text: "Are any applicants:",
+        subQuestions: [
+          "A: on COBRA and considered disabled.",
+          "B: currently NOT working or missed 10 or more consecutive days of work in the last 12 months due to injury or illness? *"
+        ],
+        required: true
+      },
+      {
+        number: 2,
+        text: "Are any covered persons contemplating treatment or hospitalization, been advised to seek treatment, or been scheduled for hospitalization and/or surgery within the past 12 months (other than for routine childbirth without complications)? *",
+        required: true
+      },
+      {
+        number: 3,
+        text: "Does any applicant have:",
+        subQuestions: [
+          "A: any medical or test results pending, or a medical service that has not yet been performed?",
+          "B: any applicants currently pregnant or plan to become pregnant in the next 12 months?"
+        ],
+        required: true
+      },
+      {
+        number: 4,
+        text: "Have you been diagnosed or treated by a member of the medical profession for in the last 12 months for:",
+        subQuestions: [
+          "A: Cancer, cancer related disease or benign tumor?",
+          "B: Disease of the heart or blood vessels, or had a stroke?",
+          "C: Kidney disease?",
+          "D: Alcohol or drug abuse?",
+          "E: Lung, Emphysema, Chronic Bronchitis, COPD or Chronic Pneumonia, liver or blood disorder?",
+          "F: Emotional, nervous system, eating disorder, or mental health problems?",
+          "G: Ulcer, stomach or digestive disorder?",
+          "H: Arthritis, back, bones or joint disorder? *"
+        ],
+        required: true
+      },
+      {
+        number: 5,
+        text: "Within the past 12 months, has any covered person had an ongoing condition likely to cost $5,000 or more per year for treatment (including prescription) for a serious continuing claim due to a mental or physical disorder (i.e., chronic) or any other medical condition? *",
+        required: true
+      }
+    ]
+  },
+  "enroll-prime-med-performance": {
+    name: "Enroll Prime - Med Performance",
     questions: [
       {
         number: 1,
