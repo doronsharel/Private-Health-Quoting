@@ -705,7 +705,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Value 4000.pdf",
-    eocPdf: "pdfs/MED VALUE 4000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    eocPdf: "pdfs/MED VALUE 4000 FRIST HEALTH  List of Covered Services.pdf", // Evidence of Coverage PDF (note: filename has typo "FRIST" and extra space)
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedValue%20-%20HDVP",
