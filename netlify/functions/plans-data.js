@@ -841,6 +841,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 1.pdf",
+    eocPdf: "pdfs/AHW 1 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 139.99,
@@ -866,6 +868,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 2.pdf",
+    eocPdf: "pdfs/AHW 2 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 159.99,
@@ -891,6 +895,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 3.pdf",
+    eocPdf: "pdfs/AHW 3 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 179.99,
@@ -916,6 +922,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 4.pdf",
+    eocPdf: "pdfs/AHW 4 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 199.99,
@@ -941,6 +949,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 5.pdf",
+    eocPdf: "pdfs/AHW 5 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 219.99,
@@ -966,6 +976,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/AHW 6.pdf",
+    eocPdf: "pdfs/AHW 6 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=938160&cat=AHW%20PLAN",
     premiums: {
       member: 199.99,
