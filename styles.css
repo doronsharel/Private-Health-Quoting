@@ -60,6 +60,19 @@ body {
   padding: 12px 24px;
 }
 
+.app-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phq-logo {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .app-title {
   margin: 0;
   font-size: 18px;
