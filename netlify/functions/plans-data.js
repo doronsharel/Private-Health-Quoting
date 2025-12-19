@@ -12,14 +12,14 @@ module.exports = [
    ***************/
   {
     id: "acusa-elite-health",
-    name: "Elite Health USA",
+    name: "Elite Health USA - Guaranteed Issue",
     subgroupFilter: "acusa",
     benefitGroup: "acusa",
     planTag: "vl",
-    badge: "ACUSA – Guarantee Issue",
+    badge: "First Health Network",
     pdf: "pdfs/Elite Health.pdf",
     eocPdf: "pdfs/Elite Health List of Covered Services.pdf", // Evidence of Coverage PDF
-    doctorSearchUrl: "https://providerlocator.com/DirectoryDisclaimerPage.aspx?RedirectURL=%2fMembers%2fdefault.aspx%3f", // Doctor search URL
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
@@ -211,14 +211,14 @@ module.exports = [
   },
   {
     id: "acusa-elite-health-plus",
-    name: "Elite Health PLUS USA",
+    name: "Elite Health PLUS USA - Guaranteed Issue",
     subgroupFilter: "acusa",
     benefitGroup: "acusa",
     planTag: "vl",
-    badge: "ACUSA – Guarantee Issue",
+    badge: "First Health Network",
     pdf: "pdfs/Elite Health.pdf",
     eocPdf: "pdfs/Elite Health Plus List of Covered Services.pdf", // Evidence of Coverage PDF
-    doctorSearchUrl: "https://providerlocator.com/DirectoryDisclaimerPage.aspx?RedirectURL=%2fMembers%2fdefault.aspx%3f", // Doctor search URL
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
