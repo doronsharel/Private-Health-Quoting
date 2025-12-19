@@ -121,6 +121,8 @@ module.exports = [
     planTag: "vl",
     badge: "Cigna Network",
     pdf: "pdfs/Med Access.pdf",
+    eocPdf: "pdfs/MED ACCESS MVP CIGNA List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
     premiums: {
@@ -167,6 +169,8 @@ module.exports = [
     planTag: "vl",
     badge: "Cigna Network",
     pdf: "pdfs/Med Access.pdf",
+    eocPdf: "pdfs/MED ACCESS MVP+ CIGNA List of Covered Sercvices.pdf", // Evidence of Coverage PDF (note: filename has typo "Sercvices")
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
     premiums: {
