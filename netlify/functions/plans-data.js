@@ -503,7 +503,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
-    eocPdf: "pdfs/MED MAX 1000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (corrected from "MEX MAX")
+    eocPdf: "COMING_SOON", // Coming Soon - PDF not yet available
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
@@ -569,7 +569,7 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
-    eocPdf: "pdfs/MED MAX 1500 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (corrected from "MED MEAX")
+    eocPdf: "COMING_SOON", // Coming Soon - PDF not yet available
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
