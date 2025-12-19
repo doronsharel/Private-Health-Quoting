@@ -70,10 +70,13 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
       }
     }
     
-    // Build EOC PDF URL (Evidence of Coverage)
+    // Build EOC PDF URL (Evidence of Coverage) or check for "Coming Soon"
     let eocPdfUrl = null;
+    let eocComingSoon = false;
     if (plan.eocPdf) {
-      if (plan.eocPdf.startsWith("http")) {
+      if (plan.eocPdf === "COMING_SOON") {
+        eocComingSoon = true;
+      } else if (plan.eocPdf.startsWith("http")) {
         eocPdfUrl = plan.eocPdf;
       } else {
         const encodedPath = plan.eocPdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
