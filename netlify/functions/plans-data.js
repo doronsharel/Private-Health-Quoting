@@ -1604,6 +1604,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MEC – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI MEC CLASSIC PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1630,6 +1632,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MEC – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI MEC CHOICE PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1660,6 +1664,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI Essentials – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI ESSENTIALS 7500 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1686,6 +1692,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI Essentials – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI ESSENTIALS 5000 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1712,6 +1720,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI Essentials – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI ESSENTIALS 2500 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1742,6 +1752,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI MVP BASIC PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1768,6 +1780,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI MVP VALUE PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1794,6 +1808,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – PHCS Network",
     pdf: "pdfs/BMI PHCS.pdf",
+    eocPdf: "pdfs/BMI MVP ADVANTAGE List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
