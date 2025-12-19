@@ -813,7 +813,7 @@ module.exports = [
    ***************/
   {
     id: "ahw-first-health-1",
-    name: "AHW 1",
+    name: "AHW 1 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
@@ -838,7 +838,7 @@ module.exports = [
   },
   {
     id: "ahw-first-health-2",
-    name: "AHW 2",
+    name: "AHW 2 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
@@ -863,7 +863,7 @@ module.exports = [
   },
   {
     id: "ahw-first-health-3",
-    name: "AHW 3",
+    name: "AHW 3 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
@@ -888,7 +888,7 @@ module.exports = [
   },
   {
     id: "ahw-first-health-4",
-    name: "AHW 4",
+    name: "AHW 4 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
@@ -913,7 +913,7 @@ module.exports = [
   },
   {
     id: "ahw-first-health-5",
-    name: "AHW 5",
+    name: "AHW 5 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
@@ -938,7 +938,7 @@ module.exports = [
   },
   {
     id: "ahw-first-health-6",
-    name: "AHW 6",
+    name: "AHW 6 - Guaranteed Issue",
     subgroupFilter: "ahw-first-health",
     benefitGroup: "ahw-first-health",
     planTag: "vl",
