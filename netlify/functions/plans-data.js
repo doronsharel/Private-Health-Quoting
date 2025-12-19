@@ -305,6 +305,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
+    eocPdf: "pdfs/MED MAX 250 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -369,6 +371,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
+    eocPdf: "pdfs/MED MAX 500 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -433,6 +437,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
+    eocPdf: "pdfs/MED MAX 750 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -497,6 +503,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
+    eocPdf: "pdfs/MED MAX 1000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (corrected from "MEX MAX")
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -561,6 +569,8 @@ module.exports = [
     planTag: "vl",
     badge: "First Health Network",
     pdf: "pdfs/Med Max.pdf",
+    eocPdf: "pdfs/MED MAX 1500 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (corrected from "MED MEAX")
+    doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
