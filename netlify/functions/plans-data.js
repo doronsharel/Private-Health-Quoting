@@ -1516,6 +1516,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – Cigna Network",
     pdf: "pdfs/BMI Cigna.pdf",
+    eocPdf: "pdfs/BMI MVP CIGNA BASIC List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1542,6 +1544,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – Cigna Network",
     pdf: "pdfs/BMI Cigna.pdf",
+    eocPdf: "pdfs/BMI MVP CIGNA VALUE List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1568,6 +1572,8 @@ module.exports = [
     planTag: "vl",
     badge: "BMI MVP – Cigna Network",
     pdf: "pdfs/BMI Cigna.pdf",
+    eocPdf: "pdfs/BMI MVP CIGNA ADVANTAGE List of Covered Services.pdf", // Evidence of Coverage PDF
+    doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
