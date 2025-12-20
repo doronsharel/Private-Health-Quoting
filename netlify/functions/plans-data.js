@@ -4,6 +4,7 @@ module.exports = [
    * - pdf: Summary of Benefits PDF (required)
    * - eocPdf: Evidence of Coverage PDF - displayed as "List of Covered Services" (optional)
    * - doctorSearchUrl: URL to search doctors in network - displayed as "Look Up Doctors Network" (optional)
+   * - drugFormularyPdf: Drug formulary PDF - displayed as "Drug Search" (optional)
    * - enrollUrl: Enrollment URL (optional)
    */
 
@@ -20,6 +21,7 @@ module.exports = [
     pdf: "pdfs/Elite Health.pdf",
     eocPdf: "pdfs/Elite Health List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/ELITE PLUS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
@@ -219,6 +221,7 @@ module.exports = [
     pdf: "pdfs/Elite Health.pdf",
     eocPdf: "pdfs/Elite Health Plus List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/ELITE PLUS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
@@ -247,6 +250,7 @@ module.exports = [
     pdf: "pdfs/Bronze and Silver.pdf",
     eocPdf: "pdfs/Bronze 2 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/BRONZE 2 & SILVER 2 Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {
@@ -275,6 +279,7 @@ module.exports = [
     pdf: "pdfs/Bronze and Silver.pdf",
     eocPdf: "pdfs/Silver 2 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/BRONZE 2 & SILVER 2 Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=ACUSA",
     premiums: {

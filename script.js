@@ -1211,6 +1211,16 @@ function renderPlans() {
       footer.appendChild(doctorLink);
     }
 
+    // Add "Drug Search" link if drug formulary PDF exists
+    if (plan.drugFormularyPdf) {
+      const drugLink = document.createElement("a");
+      drugLink.className = "summary-link";
+      drugLink.href = plan.drugFormularyPdf;
+      drugLink.target = "_blank";
+      drugLink.textContent = "Drug Search";
+      footer.appendChild(drugLink);
+    }
+
     const btn = document.createElement("button");
     btn.className = "toggle-benefits";
     btn.dataset.group = plan.benefitGroup;

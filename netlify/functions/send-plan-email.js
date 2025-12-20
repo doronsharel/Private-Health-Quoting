@@ -87,6 +87,17 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
     // Doctor search URL (can be full URL or relative)
     const doctorSearchUrl = plan.doctorSearchUrl || null;
     
+    // Build Drug Formulary PDF URL
+    let drugFormularyPdfUrl = null;
+    if (plan.drugFormularyPdf) {
+      if (plan.drugFormularyPdf.startsWith("http")) {
+        drugFormularyPdfUrl = plan.drugFormularyPdf;
+      } else {
+        const encodedPath = plan.drugFormularyPdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        drugFormularyPdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
+    
     // Format premium rows
     const premiumRows = [];
     if (premiums.member) premiumRows.push(`<tr><td><strong>Member:</strong></td><td>${formatMoney(premiums.member)}</td></tr>`);
@@ -137,6 +148,11 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
         ${doctorSearchUrl ? `
         <p style="margin-top: 10px;">
           <a href="${doctorSearchUrl}" style="color: #2563eb; text-decoration: underline;">Look Up Doctors Network</a>
+        </p>
+        ` : ''}
+        ${drugFormularyPdfUrl ? `
+        <p style="margin-top: 10px;">
+          <a href="${drugFormularyPdfUrl}" style="color: #2563eb; text-decoration: underline;">Drug Search</a>
         </p>
         ` : ''}
       </div>
@@ -228,6 +244,17 @@ function formatPlanEmail(plans, ageBandMap, agentFirstName, agentLastName, agent
     // Doctor search URL (can be full URL or relative)
     const doctorSearchUrl = plan.doctorSearchUrl || null;
     
+    // Build Drug Formulary PDF URL
+    let drugFormularyPdfUrl = null;
+    if (plan.drugFormularyPdf) {
+      if (plan.drugFormularyPdf.startsWith("http")) {
+        drugFormularyPdfUrl = plan.drugFormularyPdf;
+      } else {
+        const encodedPath = plan.drugFormularyPdf.split('/').map(segment => encodeURIComponent(segment)).join('/');
+        drugFormularyPdfUrl = `${baseUrl}/${encodedPath}`;
+      }
+    }
+    
     return `
 Health Plan Details: ${plan.name}
 ${plan.badge ? `\n${plan.badge}\n` : ''}
@@ -250,6 +277,7 @@ ${pdfUrl ? `\nSummary of Benefits: ${pdfUrl}` : ''}
 ${eocPdfUrl ? `\nList of Covered Services: ${eocPdfUrl}` : ''}
 ${eocComingSoon ? `\nList of Covered Services: Coming Soon` : ''}
 ${doctorSearchUrl ? `\nLook Up Doctors Network: ${doctorSearchUrl}` : ''}
+${drugFormularyPdfUrl ? `\nDrug Search: ${drugFormularyPdfUrl}` : ''}
 `;
   }).join('\n\n---\n\n');
 
