@@ -1926,6 +1926,7 @@ module.exports = [
     badge: "Cigna Network",
     pdf: "pdfs/LifeX Cigna EPO 500.pdf",
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/LifeX Cigna formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
     premiums: {
       member: 429.0,
@@ -1991,6 +1992,7 @@ module.exports = [
     badge: "Cigna Network",
     pdf: "pdfs/LifeX Cigna EPO 750.pdf",
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/LifeX Cigna formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
     premiums: {
       member: 409.0,
@@ -2056,6 +2058,7 @@ module.exports = [
     badge: "Cigna Network",
     pdf: "pdfs/LifeX Cigna EPO 1000.pdf",
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/LifeX Cigna formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
     premiums: {
       member: 389.0,
@@ -2121,6 +2124,7 @@ module.exports = [
     badge: "Cigna Network",
     pdf: "pdfs/LifeX Cigna EPO 1500.pdf",
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/LifeX Cigna formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=887423",
     premiums: {
       member: 369.0,
