@@ -2190,6 +2190,7 @@ module.exports = [
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 1500.pdf",
     doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
+    drugFormularyPdf: "pdfs/GIGCARE BCBS Formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 881.05,
@@ -2255,6 +2256,7 @@ module.exports = [
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 2500.pdf",
     doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
+    drugFormularyPdf: "pdfs/GIGCARE BCBS Formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 821.97,
@@ -2320,6 +2322,7 @@ module.exports = [
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 5000.pdf",
     doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
+    drugFormularyPdf: "pdfs/GIGCARE BCBS Formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 692.17,
@@ -2385,6 +2388,7 @@ module.exports = [
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare 7350.pdf",
     doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
+    drugFormularyPdf: "pdfs/GIGCARE BCBS Formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 600.92,
@@ -2450,6 +2454,7 @@ module.exports = [
     badge: "Blue Cross Blue Shield Network",
     pdf: "pdfs/GigCare HSA.pdf",
     doctorSearchUrl: "https://bcbsneweb.healthsparq.com/healthsparq/public/#/one/city=&state=&postalCode=&country=&insurerCode=BCBSNE_I&brandCode=BCBSNE&alphaPrefix=&bcbsaProductId=&productCode=0351000057", // Doctor search URL
+    drugFormularyPdf: "pdfs/GIGCARE BCBS Formulary.pdf", // Drug formulary PDF
     enrollUrl: "https://www.1enrollment.com/index.cfm?id=888145",
     premiums: {
       member: 631.37,
