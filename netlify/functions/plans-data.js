@@ -1585,7 +1585,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI MVP CIGNA BASIC List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1614,7 +1614,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI MVP CIGNA VALUE List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1643,7 +1643,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI MVP CIGNA ADVANTAGE List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1676,7 +1676,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI MEC CLASSIC PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1705,7 +1705,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI MEC CHOICE PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1829,7 +1829,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI MVP BASIC PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1858,7 +1858,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI MVP VALUE PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1887,7 +1887,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI MVP ADVANTAGE List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI MVP MEC CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI MEC & MVP CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
