@@ -50,6 +50,7 @@ module.exports = [
     pdf: "pdfs/Med Performance.pdf",
     eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED PERFORMANCE Formulary list.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1254,6 +1255,7 @@ module.exports = [
     pdf: "pdfs/Med Performance.pdf",
     eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED PERFORMANCE Formulary list.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1329,6 +1331,7 @@ module.exports = [
     pdf: "pdfs/Med Performance.pdf",
     eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED PERFORMANCE Formulary list.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
@@ -1404,6 +1407,7 @@ module.exports = [
     pdf: "pdfs/Med Performance.pdf",
     eocPdf: "COMING_SOON", // Coming Soon text instead of PDF link
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED PERFORMANCE Formulary list.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=Med%20Performance",
     premiums: {
