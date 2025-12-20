@@ -1494,7 +1494,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI CIGNA ESSENTIALS 7500 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1523,7 +1523,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI CIGNA ESSENTIALS 5000 List of Covered Service.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1552,7 +1552,7 @@ module.exports = [
     pdf: "pdfs/BMI Cigna.pdf",
     eocPdf: "pdfs/BMI CIGNA ESSENTIALS 2500 List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-CIGNA",
     premiums: {
@@ -1738,7 +1738,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI ESSENTIALS 7500 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1767,7 +1767,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI ESSENTIALS 5000 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
@@ -1796,7 +1796,7 @@ module.exports = [
     pdf: "pdfs/BMI PHCS.pdf",
     eocPdf: "pdfs/BMI ESSENTIALS 2500 PHCS List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://providersearch.multiplan.com/", // Doctor search URL
-    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary List.pdf", // Drug formulary PDF
+    drugFormularyPdf: "pdfs/BMI ESSENTIALS CIGNA & PHCS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=BMI-PHCS",
     premiums: {
