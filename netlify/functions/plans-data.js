@@ -126,6 +126,7 @@ module.exports = [
     pdf: "pdfs/Med Access.pdf",
     eocPdf: "pdfs/MED ACCESS MVP CIGNA List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED ACCESS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
     premiums: {
@@ -174,6 +175,7 @@ module.exports = [
     pdf: "pdfs/Med Access.pdf",
     eocPdf: "pdfs/MED ACCESS MVP+ CIGNA List of Covered Sercvices.pdf", // Evidence of Coverage PDF (note: filename has typo "Sercvices")
     doctorSearchUrl: "https://hcpdirectory.cigna.com/web/public/consumer/directory/search", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED ACCESS Formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedAccess%20-%20MVP",
     premiums: {
@@ -313,6 +315,7 @@ module.exports = [
     pdf: "pdfs/Med Max.pdf",
     eocPdf: "pdfs/MED MAX 250 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED MAX formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -379,6 +382,7 @@ module.exports = [
     pdf: "pdfs/Med Max.pdf",
     eocPdf: "pdfs/MED MAX 500 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED MAX formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -445,6 +449,7 @@ module.exports = [
     pdf: "pdfs/Med Max.pdf",
     eocPdf: "pdfs/MED MAX 750 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED MAX formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -511,6 +516,7 @@ module.exports = [
     pdf: "pdfs/Med Max.pdf",
     eocPdf: "pdfs/MEX MAX 1000 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (note: filename has typo "MEX")
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED MAX formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
@@ -577,6 +583,7 @@ module.exports = [
     pdf: "pdfs/Med Max.pdf",
     eocPdf: "pdfs/MED MEAX 1500 FIRST HEALTH List of Covered Services.pdf", // Evidence of Coverage PDF (note: filename has typo "MEAX")
     doctorSearchUrl: "https://www.myfirsthealth.com/", // Doctor search URL
+    drugFormularyPdf: "pdfs/MED MAX formulary.pdf", // Drug formulary PDF
     enrollUrl:
       "https://www.1enrollment.com/index.cfm?id=938160&cat=MedMax%20-%20DVP",
     premiums: {
