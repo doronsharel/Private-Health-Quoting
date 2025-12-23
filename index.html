@@ -236,9 +236,37 @@
             <option value="vl">Only VL</option>
           </select>
         </div>
-        <button id="viewUnderwritingBtn" class="underwriting-btn" type="button">
-          📋 View Underwriting Questions
-        </button>
+        <div class="filter-actions">
+          <button id="viewUnderwritingBtn" class="underwriting-btn" type="button">
+            📋 View Underwriting Questions
+          </button>
+          <div class="cutoff-dropdown">
+            <button id="cutoffToggleBtn" class="underwriting-btn" type="button">
+              📅 Cut Off Dates
+            </button>
+            <div id="cutoffMenu" class="cutoff-menu" hidden>
+              <div class="cutoff-menu-header">Cut Off Dates</div>
+              <ul class="cutoff-menu-list">
+                <li class="cutoff-item">
+                  <span class="cutoff-label">PSM GigCare</span>
+                  <span class="cutoff-date">15th</span>
+                </li>
+                <li class="cutoff-item">
+                  <span class="cutoff-label">Enroll Prime</span>
+                  <span class="cutoff-date">20th</span>
+                </li>
+                <li class="cutoff-item">
+                  <span class="cutoff-label">LifeX</span>
+                  <span class="cutoff-date">22nd</span>
+                </li>
+                <li class="cutoff-item">
+                  <span class="cutoff-label">PSM MaxGuard</span>
+                  <span class="cutoff-date">23rd</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="subscriptionBanner" class="subscription-banner" hidden>

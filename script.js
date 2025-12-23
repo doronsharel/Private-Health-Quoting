@@ -1916,6 +1916,34 @@ function initUnderwritingModal() {
 }
 
 /************************************************************
+ *  CUT OFF DATES DROPDOWN
+ ************************************************************/
+
+function initCutoffDropdown() {
+  const toggleBtn = document.getElementById("cutoffToggleBtn");
+  const menu = document.getElementById("cutoffMenu");
+  if (!toggleBtn || !menu) return;
+
+  const closeMenu = () => {
+    menu.hidden = true;
+  };
+
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.hidden = !menu.hidden;
+  });
+
+  // Close when clicking anywhere else
+  document.addEventListener("click", (e) => {
+    if (menu.hidden) return;
+    const withinDropdown = e.target.closest(".cutoff-dropdown");
+    if (!withinDropdown) {
+      closeMenu();
+    }
+  });
+}
+
+/************************************************************
  *  FILTERS
  ************************************************************/
 
@@ -1948,6 +1976,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initStateGate();
   attachFilters();
   initUnderwritingModal();
+  initCutoffDropdown();
   try {
     await initializePlans();
   } catch (err) {

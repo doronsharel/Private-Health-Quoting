@@ -980,6 +980,59 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cutoff-dropdown {
+  position: relative;
+}
+
+.cutoff-menu {
+  position: absolute;
+  right: 0;
+  margin-top: 6px;
+  min-width: 260px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  z-index: 40;
+}
+
+.cutoff-menu-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.cutoff-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cutoff-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.cutoff-label {
+  color: #111827;
+}
+
+.cutoff-date {
+  font-weight: 600;
+  color: #2563eb;
+}
+
 .underwriting-modal {
   position: fixed;
   top: 0;
